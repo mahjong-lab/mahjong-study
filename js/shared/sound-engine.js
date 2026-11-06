@@ -161,14 +161,21 @@ const MahjongSound = {
     } catch (e) {}
   },
 
+  audioPool: {},
   playWavKey(key) {
     if (!this.enabled) return;
     this.init();
     const url = this.wavUrls[key];
     if (url && typeof Audio !== 'undefined') {
       try {
-        const a = new Audio(url);
-        a.setAttribute('playsinline', '');
+        let a = this.audioPool[key];
+        if (!a) {
+          a = new Audio(url);
+          a.setAttribute('playsinline', '');
+          this.audioPool[key] = a;
+        } else {
+          a.currentTime = 0;
+        }
         a.volume = 0.95;
         const p = a.play();
         if (p && p.catch) p.catch(() => this.fallbackWebAudio(key));
@@ -226,26 +233,28 @@ const MahjongSound = {
     this.playWavKey(valid);
 
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-      try {
-        const synth = window.speechSynthesis;
-        if (synth.paused) synth.resume();
-        if (!this.jaVoice) this.loadVoice();
-        const callMap = {
-          pon:   { text: 'ポン', rate: 1.25, pitch: 1.12 },
-          chi:   { text: 'チー', rate: 1.22, pitch: 1.15 },
-          kan:   { text: 'カン', rate: 1.22, pitch: 1.02 },
-          tsumo: { text: 'ツモ', rate: 1.20, pitch: 1.12 },
-          ron:   { text: 'ロン', rate: 1.18, pitch: 1.08 }
-        };
-        const cfg = callMap[valid];
-        const utter = new SpeechSynthesisUtterance(cfg.text);
-        utter.lang = 'ja-JP';
-        if (this.jaVoice) utter.voice = this.jaVoice;
-        utter.rate = cfg.rate;
-        utter.pitch = cfg.pitch;
-        utter.volume = 1.0;
-        synth.speak(utter);
-      } catch (e) {}
+      setTimeout(() => {
+        try {
+          const synth = window.speechSynthesis;
+          if (synth.paused) synth.resume();
+          if (!this.jaVoice) this.loadVoice();
+          const callMap = {
+            pon:   { text: 'ポン', rate: 1.25, pitch: 1.12 },
+            chi:   { text: 'チー', rate: 1.22, pitch: 1.15 },
+            kan:   { text: 'カン', rate: 1.22, pitch: 1.02 },
+            tsumo: { text: 'ツモ', rate: 1.20, pitch: 1.12 },
+            ron:   { text: 'ロン', rate: 1.18, pitch: 1.08 }
+          };
+          const cfg = callMap[valid];
+          const utter = new SpeechSynthesisUtterance(cfg.text);
+          utter.lang = 'ja-JP';
+          if (this.jaVoice) utter.voice = this.jaVoice;
+          utter.rate = cfg.rate;
+          utter.pitch = cfg.pitch;
+          utter.volume = 1.0;
+          synth.speak(utter);
+        } catch (e) {}
+      }, 20);
     }
   },
 

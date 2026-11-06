@@ -3,6 +3,16 @@
    対象: index.html (麻雀トレーニングボード) / beginner.html (麻雀ファーストステップ)
    ========================================================================== */
 
+/* 0. モバイルタッチ高速化（300msタップ遅延＆ダブルタップ待ちの完全撤廃） */
+*, *::before, *::after {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+button, a, [role="button"], .mj-tile {
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
 /* 1. 基本麻雀牌スタイル */
 .mj-tile {
   display: inline-flex;

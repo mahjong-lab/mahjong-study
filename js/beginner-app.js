@@ -333,7 +333,7 @@ const app = {
         const btn = document.createElement('button');
         btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-4 sm:p-5 shadow-sm transition transform active:scale-95 flex items-center justify-center';
         btn.innerHTML = TileRenderer.render(opt.tile, { large: true });
-        btn.onclick = () => this.submitChoice(opt.correct, btn, q, 80);
+        btn.onclick = () => this.submitChoice(opt.correct, btn, q, 0);
         grid.appendChild(btn);
       });
       ans.appendChild(grid);
@@ -362,7 +362,7 @@ const app = {
               slotEl.outerHTML = `<div class="animate-pop-in inline-block">${TileRenderer.render(opt.tile, { large: true, badge: '完成!' })}</div>`;
             }
           }
-          this.submitChoice(opt.correct, btn, q, 260);
+          this.submitChoice(opt.correct, btn, q, 80);
         };
         grid.appendChild(btn);
       });
@@ -500,7 +500,9 @@ const app = {
       this.streak = (this.streak || 0) + 1;
       Sound.playCall(callType);
       if (typeof confetti === 'function') {
-        confetti({ particleCount: 35, spread: 55, origin: { y: 0.72 } });
+        setTimeout(() => {
+          confetti({ particleCount: 30, spread: 50, origin: { y: 0.72 } });
+        }, 50);
       }
     } else {
       this.streak = 0;
@@ -573,11 +575,13 @@ const app = {
       mNextText.textContent = isLast ? 'ステージ結果を見る 🎉' : '次の問題へすすむ';
     }
 
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-
-    this.modalTimer = setTimeout(() => {
+    if (popupDelayMs > 0) {
+      this.modalTimer = setTimeout(() => {
+        this.openResultModal();
+      }, popupDelayMs);
+    } else {
       this.openResultModal();
-    }, popupDelayMs);
+    }
   },
 
   nextQuestion() {

@@ -381,11 +381,7 @@ const app = {
       mNextText.textContent = isLast ? 'セッション結果を見る 🎉' : '次の問題へすすむ';
     }
 
-    if (typeof lucide !== 'undefined') lucide.createIcons();
-
-    this.modalTimer = setTimeout(() => {
-      this.openResultModal();
-    }, 80);
+    this.openResultModal();
   },
 
   nextQuestion() {
