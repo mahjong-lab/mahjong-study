@@ -212,7 +212,7 @@ const STAGE_QUESTIONS = {
       ],
       explanation: "バッチリ！真っ赤な「赤ウーピン（赤5筒）」は赤ドラと呼ばれ、通常の5筒とまったく同じように使えて点数もアップするお得牌です！",
       term: {
-        word: "赤ウーピン（赤5筒）",
+        word: "アカウーピン（赤5筒）",
         reading: "アカウーピン",
         tiles: ["0m", "0p", "0s"],
         desc: "五萬・5筒・5索に1枚ずつ入っている赤い5の牌。持っているだけでアガリ点が1段階アップします！"
@@ -440,7 +440,7 @@ const STAGE_QUESTIONS = {
       ],
       explanation: "大正解！真っ赤な「赤ウーマン（赤五萬）」は、普通のウーマンと同じ数字の「5」として使えて、さらにアガると1飜ボーナスがつくお宝牌です！",
       term: {
-        word: "赤ウーマン（赤五萬）",
+        word: "アカウーマン（赤五萬）",
         reading: "アカウーマン",
         tiles: ["0m", "0p", "0s"],
         desc: "五萬・5筒・5索に1枚ずつ入っている赤いボーナス牌。見つけたら大事に使いましょう！"
@@ -770,7 +770,7 @@ const STAGE_QUESTIONS = {
       ],
       explanation: "大正解！［赤ウーピン・ローピン・チーピン（赤5・6・7筒）］で1飜ボーナスつきの最強ブロックが完成しました！",
       term: {
-        word: "赤ドラ入り順子",
+        word: "アカドラ入りシュンツ",
         reading: "アカドラブロック",
         tiles: ["0p", "6p", "7p"],
         desc: "赤5牌は普通の「5」として階段にも3枚組にも使え、アガると1飜ボーナスがつきます！"
@@ -875,7 +875,7 @@ const STAGE_QUESTIONS = {
       ],
       explanation: "超重要ポイント！階段（順子）は必ず「同じ種類（マンズならマンズだけ、ピンズならピンズだけ）」で揃える必要があります！",
       term: {
-        word: "同種のシュンツ（色の統一）",
+        word: "シュンツ（色の統一）",
         reading: "階段のルール",
         tiles: ["3p", "4p", "5p"],
         desc: "階段を作れるのは同じ種類の数牌同士だけ。萬子・筒子・索子を混ぜて1組の階段にすることはできません！"
@@ -938,7 +938,7 @@ const STAGE_QUESTIONS = {
       ],
       explanation: "ナイス！！「赤ウーソー（赤5索）」が真ん中にスポッと入って、ボーナス1飜つきの［4・5・6索］が完成しました！",
       term: {
-        word: "赤ウーソー（赤5索）",
+        word: "アカウーソー（赤5索）",
         reading: "アカウーソー",
         tiles: ["4s", "0s", "6s"],
         desc: "赤い5索も普通の5索と同じく4索と6索の間に入れて階段を作れます！"
@@ -1232,7 +1232,7 @@ const STAGE_QUESTIONS = {
       waitDesc: "ローソー（6索） または キューソー（9索） が来れば完成！",
       explanation: "すごい！！赤ウーマンが「5」だと瞬時に見抜き、離れた「イーソー（1索 / 鳥）」を切れましたね！",
       term: {
-        word: "赤ドラの組み込み",
+        word: "アカドラの組み込み",
         reading: "赤5＋6＋7",
         tiles: ["0m", "6m", "7m"],
         desc: "赤5牌が手牌にあるときは、そこを中心に階段を作ると絶対に捨てずに済むので高得点が確定します！"
@@ -1300,7 +1300,7 @@ const STAGE_QUESTIONS = {
         { text: "サンソー（3索） または スーソー（4索）", correct: false },
         { text: "パーピン（8筒）", correct: false }
       ],
-      explanation: "大正解！完成しているブロックを頭の中で消せば、「3索・4索に何を足すか」だけのシンプルなパズルです！",
+      explanation: "大正解！完成しているブロックを頭の中で消せば、「サンソー・スーソー（3・4索）に何を足すか」だけのシンプルなパズルです！",
       term: {
         word: "リャンメン待ち（両面待ち）",
         reading: "リャンメンマチ",
@@ -1328,7 +1328,7 @@ const STAGE_QUESTIONS = {
         { text: "ウーピン（5筒） または キューピン（9筒）", correct: false },
         { text: "キューマン（九萬）", correct: false }
       ],
-      explanation: "バッチリ！6と8の間、「7筒」がスポッと入れば［6・7・8筒］になってアガリです！",
+      explanation: "バッチリ！間を埋める「チーピン（7筒）」がスポッと入れば［6・7・8筒］になってアガリです！",
       term: {
         word: "カンチャン待ち（嵌張待ち）",
         reading: "カンチャンマチ",
@@ -1384,7 +1384,7 @@ const STAGE_QUESTIONS = {
         { text: "チーソー（7索） または イーソー（1索）", correct: false },
         { text: "ローマン（六萬）", correct: false }
       ],
-      explanation: "大正解！「8・9」と端っこを持っているときは、内側の「7索」だけの片側待ちになります！",
+      explanation: "大正解！「8・9索」と端っこを持っているときは、内側の「チーソー（7索）」だけの片側待ちになります！",
       term: {
         word: "ペンチャン待ち（辺張待ち）",
         reading: "ペンチャンマチ",
@@ -1440,7 +1440,7 @@ const STAGE_QUESTIONS = {
         { text: "スーマン（四萬） または ウーマン（五萬）", correct: false },
         { text: "キューソー（9索）", correct: false }
       ],
-      explanation: "すごい！！補助輪なしでも［567筒］［345索］［99索］［白白白］を消して、残りの［四・五萬］が見えましたね！",
+      explanation: "すごい！！補助輪なしでも完成ブロックを消して、残りの［スーマン・ウーマン（四・五萬）］が見えましたね！",
       term: {
         word: "5ブロック思考",
         reading: "ファイブブロック",
@@ -1468,7 +1468,7 @@ const STAGE_QUESTIONS = {
         { text: "チュン（中） だけ", correct: false },
         { text: "パーマン（八萬） または チュン（中）", correct: false }
       ],
-      explanation: "大正解！形は九萬と中のシャボ待ちです（※もし鳴いていた場合は、役牌の「中」のほうでしかロンできない点も実戦のコツです！）。",
+      explanation: "大正解！形はキューマン（九萬）とチュン（中）のシャボ待ちです（※もし鳴いていた場合は、役牌の「中（チュン）」のほうでしかロンできない点も実戦のコツです！）。",
       term: {
         word: "カタアガリ（片アガリ / 後付け）",
         reading: "カタアガリ",
@@ -1496,7 +1496,7 @@ const STAGE_QUESTIONS = {
         { text: "イーソー（1索） または サンソー（3索）", correct: false },
         { text: "パーマン（八萬）", correct: false }
       ],
-      explanation: "完璧です！「1・2」と持っているときは「3」だけのペンチャン待ちになります。13枚がもう怖くないですね！",
+      explanation: "完璧です！「イーソー・リャンソー（1・2索）」と持っているときは「サンソー（3索）」だけのペンチャン待ちになります。13枚がもう怖くないですね！",
       term: {
         word: "アガリ牌（当たり牌）",
         reading: "アガリハイ",
@@ -1523,7 +1523,7 @@ const STAGE_QUESTIONS = {
         { text: "イーマン（一萬） または ローマン（六萬）", correct: false },
         { text: "サンマン（三萬） または スーマン（四萬）", correct: false }
       ],
-      explanation: "お見事！！4枚連続で並んでいると、両端の「二萬」と「五萬」どちらが重なっても3枚組＋アタマが完成します！",
+      explanation: "お見事！！4枚連続で並んでいると、両端の「リャンマン（二萬）」と「ウーマン（五萬）」どちらが重なっても3枚組＋アタマが完成します！",
       term: {
         word: "ノベタン（延べ単騎）",
         reading: "ノベタンマチ",
@@ -1551,7 +1551,7 @@ const STAGE_QUESTIONS = {
         { text: "スーピン（4筒） または ウーピン（5筒）", correct: false },
         { text: "リャンソー（2索）", correct: false }
       ],
-      explanation: "大正解！［4筒・5筒］の両側、「3筒」か「6筒」が来れば完成です！",
+      explanation: "大正解！［スーピン・ウーピン（4・5筒）］の両側、「サンピン（3筒）」か「ローピン（6筒）」が来れば完成です！",
       term: {
         word: "スジ（3-6・2-5・1-4）",
         reading: "両面のペア",
@@ -1579,7 +1579,7 @@ const STAGE_QUESTIONS = {
         { text: "ローマン（六萬） または チーマン（七萬）", correct: false },
         { text: "キューマン（九萬） だけ", correct: false }
       ],
-      explanation: "バッチリ！［六・七萬］の両側である「五萬」または「八萬（ウー・パーマン）」待ちです！",
+      explanation: "バッチリ！［ローマン・チーマン（六・七萬）］の両側である「ウーマン（五萬）」または「パーマン（八萬）」待ちです！",
       term: {
         word: "ウー・パー待ち（5・8待ち）",
         reading: "6・7の両面",
@@ -1607,7 +1607,7 @@ const STAGE_QUESTIONS = {
         { text: "イーソー（1索） または ウーソー（5索）", correct: false },
         { text: "キューマン（九萬）", correct: false }
       ],
-      explanation: "正解！2索と4索の間の「3索」がハマれば［2・3・4索］になって完成です！",
+      explanation: "正解！間を埋める「サンソー（3索）」がハマれば［2・3・4索］になって完成です！",
       term: {
         word: "カンチャン待ち（嵌張待ち）",
         reading: "カンチャンマチ",
@@ -1635,7 +1635,7 @@ const STAGE_QUESTIONS = {
         { text: "イーマン（一萬） または サンマン（三萬）", correct: false },
         { text: "リャンピン（2筒）", correct: false }
       ],
-      explanation: "完璧！端っこの［一・二萬］なので、「三萬」1種類だけのペンチャン待ちです！",
+      explanation: "完璧！端っこの［イーマン・リャンマン（一・二萬）］なので、「サンマン（三萬）」1種類だけのペンチャン待ちです！",
       term: {
         word: "ペンチャン待ち（辺張待ち）",
         reading: "ペンチャンマチ",
@@ -1691,7 +1691,7 @@ const STAGE_QUESTIONS = {
         { text: "ウーピン（5筒） または チーピン（7筒）", correct: false },
         { text: "トン（東） だけ", correct: false }
       ],
-      explanation: "大正解！6筒と東のどちらが3枚目になっても、もう片方がアタマになってアガリ完成です！",
+      explanation: "大正解！ローピン（6筒）とトン（東）のどちらが3枚目になっても、もう片方がアタマになってアガリ完成です！",
       term: {
         word: "シャボ待ち（双碰待ち）",
         reading: "シャボマチ",
@@ -1706,7 +1706,7 @@ const STAGE_QUESTIONS = {
       callSound: "tsumo",
       modeLabel: "13枚の待ちあて",
       question: "ピンズの［赤ウーピン・ローピン（赤5・6筒）］コンビが待っています！あと何が来ればアガリ？",
-      subtext: "赤5筒は数字の「5筒」と同じです！",
+      subtext: "赤ウーピン（赤5筒）は普通のウーピン（5筒）と同じです！",
       blocks: [
         { tiles: ["2m", "3m", "4m"], label: "完成" },
         { tiles: ["6m", "7m", "8m"], label: "完成" },
@@ -1719,7 +1719,7 @@ const STAGE_QUESTIONS = {
         { text: "ウーピン（5筒） または ローピン（6筒）", correct: false },
         { text: "チーソー（7索）", correct: false }
       ],
-      explanation: "バッチリ！［5筒・6筒］と同じなので「4筒」または「7筒（スー・チーピン）」の両面待ちです！",
+      explanation: "バッチリ！［5筒・6筒］と同じなので「スーピン（4筒）」または「チーピン（7筒）」の両面待ちです！",
       term: {
         word: "スー・チー待ち（4・7待ち）",
         reading: "5・6の両面",
@@ -1746,7 +1746,7 @@ const STAGE_QUESTIONS = {
         { text: "サンピン（3筒） または パーピン（8筒）", correct: false },
         { text: "ウーピン（5筒） または ローピン（6筒）", correct: false }
       ],
-      explanation: "すごい！！4筒が来れば［44］＋［567］、7筒が来れば［456］＋［77］で見事に完成します！",
+      explanation: "すごい！！スーピン（4筒）が来れば［44］＋［567］、チーピン（7筒）が来れば［456］＋［77］で見事に完成します！",
       term: {
         word: "ノベタン（延べ単騎）",
         reading: "ノベタン",
@@ -1867,9 +1867,9 @@ const STAGE_QUESTIONS = {
       doraIndicator: "4m",
       boardNote: "▲ 本番の王牌（めくれている牌の「次」がドラ！）",
       tileOptions: [
-        { tile: "5m", label: "次の数字！", correct: true },
-        { tile: "4m", label: "同じ牌", correct: false },
-        { tile: "3m", label: "前の数字", correct: false }
+        { tile: "5m", label: "ウーマン（五萬 / 次の数字！）", correct: true },
+        { tile: "4m", label: "スーマン（四萬 / 同じ牌）", correct: false },
+        { tile: "3m", label: "サンマン（三萬 / 前の数字）", correct: false }
       ],
       explanation: "大正解！！本番ではめくれている「ドラ表示牌」そのものではなく、その1つ次の『ウーマン（五萬）』がドラになります！（※9の次は1、風牌は東→南→西→北→東、三元牌は白→發→中→白の順）",
       term: {
@@ -1952,7 +1952,7 @@ const STAGE_QUESTIONS = {
         { tiles: ["5p", "6p", "7p"], label: "完成" },
         { tiles: ["7z", "7z", "7z"], label: "中3枚" },
         { tiles: ["8p", "8p"], label: "アタマ" },
-        { tiles: ["3s", "4s"], label: "2・5索待ち", isWait: true }
+        { tiles: ["3s", "4s"], label: "リャン・ウーソー待ち", isWait: true }
       ],
       options: [
         { text: "❌ ウーソー（5索）でもロンできない！（片方でも捨てていたら全部ロン不可）", correct: true },
@@ -1985,7 +1985,7 @@ const STAGE_QUESTIONS = {
         { tiles: ["5p", "6p", "7p"], label: "完成" },
         { tiles: ["7z", "7z", "7z"], label: "中3枚" },
         { tiles: ["8p", "8p"], label: "アタマ" },
-        { tiles: ["3s", "4s"], label: "2・5索待ち", isWait: true }
+        { tiles: ["3s", "4s"], label: "リャン・ウーソー待ち", isWait: true }
       ],
       options: [
         { text: "⭕ 自分の番に山から引けば（ツモなら）アガれる！", correct: true },
@@ -2030,9 +2030,9 @@ const STAGE_QUESTIONS = {
       doraIndicator: "9p",
       boardNote: "▲ 9がめくれた時は最初の数字にループします！",
       tileOptions: [
-        { tile: "1p", label: "1に戻る！", correct: true },
-        { tile: "9p", label: "9のまま", correct: false },
-        { tile: "8p", label: "1つ前の8", correct: false }
+        { tile: "1p", label: "イーピン（1筒 / 1に戻る！）", correct: true },
+        { tile: "9p", label: "キューピン（9筒 / 9のまま）", correct: false },
+        { tile: "8p", label: "パーピン（8筒 / 1つ前の8）", correct: false }
       ],
       explanation: "大正解！！表示牌が「9」のときは、同じ種類の「1（今回はイーピン / 1筒）」にぐるっと戻ってドラになります！",
       term: {
@@ -2074,9 +2074,9 @@ const STAGE_QUESTIONS = {
       doraIndicator: "4z",
       boardNote: "▲ 風牌4つの中だけでループします！",
       tileOptions: [
-        { tile: "1z", label: "東に戻る！", correct: true },
-        { tile: "5z", label: "白に行く", correct: false },
-        { tile: "3z", label: "西に戻る", correct: false }
+        { tile: "1z", label: "東（トン / 東に戻る！）", correct: true },
+        { tile: "5z", label: "白（ハク / 白に行く）", correct: false },
+        { tile: "3z", label: "西（シャー / 西に戻る）", correct: false }
       ],
       explanation: "お見事！！風牌は風牌4種類の中でループするため、「北」の次は最初に戻って『東』がドラになります！",
       term: {
@@ -2118,9 +2118,9 @@ const STAGE_QUESTIONS = {
       doraIndicator: "7z",
       boardNote: "▲ 三元牌3つの中でループします！",
       tileOptions: [
-        { tile: "5z", label: "白に戻る！", correct: true },
-        { tile: "1z", label: "東に行く", correct: false },
-        { tile: "6z", label: "發に戻る", correct: false }
+        { tile: "5z", label: "白（ハク / 白に戻る！）", correct: true },
+        { tile: "1z", label: "東（トン / 東に行く）", correct: false },
+        { tile: "6z", label: "發（ハツ / 發に戻る）", correct: false }
       ],
       explanation: "完璧です！！「白→發→中」の次は先頭の『白（真っ白な牌）』がドラになります。これで本番のドラ読みは完全マスターです！",
       term: {
