@@ -300,9 +300,10 @@ const app = {
       shuffleArray(q.tileOptions).forEach(opt => {
         const btn = document.createElement('button');
         btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-3.5 sm:p-4 shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-2';
+        const labelText = opt.label || TileRenderer.getTileNameJa(opt.tile);
         btn.innerHTML = `
           ${TileRenderer.render(opt.tile, { large: true })}
-          ${opt.label ? `<span class="text-xs font-bold text-slate-600">${opt.label}</span>` : ''}
+          <span class="text-xs font-bold text-slate-700">${labelText}</span>
         `;
         btn.onclick = () => this.submitChoice(opt.correct, btn, q, 80);
         grid.appendChild(btn);
@@ -324,9 +325,10 @@ const app = {
       shuffleArray(q.tileOptions).forEach(opt => {
         const btn = document.createElement('button');
         btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-3.5 shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-1.5';
+        const tileName = TileRenderer.getTileNameJa(opt.tile);
         btn.innerHTML = `
           ${TileRenderer.render(opt.tile, { large: true })}
-          <span class="text-[11px] font-bold text-teal-700">これをはめる</span>
+          <span class="text-xs font-bold text-slate-700">${tileName}</span>
         `;
         btn.onclick = () => {
           if (this.answered) return;

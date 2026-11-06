@@ -14,16 +14,16 @@
  */
 
 const YAKU_MASTER_CHIPS = [
-  { name: "断么九（タンヤオ）", match: "タンヤオ" },
-  { name: "平和（ピンフ）", match: "平和" },
-  { name: "役牌（白・發・中）", match: "役牌" },
-  { name: "一盃口（イーペーコー）", match: "一盃口" },
-  { name: "七対子（チートイツ）", match: "七対子" },
-  { name: "対々和（トイトイ）", match: "トイトイ" },
-  { name: "三色同順", match: "三色同順" },
-  { name: "一気通貫", match: "一気通貫" },
-  { name: "混一色（ホンイツ）", match: "混一色" },
-  { name: "立直（リーチ）", match: "立直" }
+  { name: "タンヤオ（断么九）", match: "タンヤオ" },
+  { name: "ピンフ（平和）", match: "平和" },
+  { name: "ヤクハイ（役牌）", match: "役牌" },
+  { name: "イーペーコー（一盃口）", match: "一盃口" },
+  { name: "チートイツ（七対子）", match: "七対子" },
+  { name: "トイトイ（対々和）", match: "トイトイ" },
+  { name: "サンショク（三色同順）", match: "三色同順" },
+  { name: "イッツー（一気通貫）", match: "一気通貫" },
+  { name: "ホンイツ（混一色）", match: "混一色" },
+  { name: "リーチ（立直）", match: "立直" }
 ];
 
 const QUIZ_DATA = {
