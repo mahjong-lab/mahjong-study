@@ -194,6 +194,25 @@
       border-bottom-width: 2px !important;
       vertical-align: middle;
     }
+    /* 王牌の伏せ牌（大サイズ・超入門パズル用） */
+    .mj-tile-back-lg {
+      display: inline-block;
+      width: 42px;
+      height: 58px;
+      background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+      border: 1.5px solid #92400e;
+      border-bottom: 4px solid #f8fafc;
+      border-radius: 6px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.45);
+      flex-shrink: 0;
+    }
+    @media (max-width: 640px) {
+      .mj-tile-back-lg {
+        width: 34px;
+        height: 48px;
+        border-radius: 5px;
+      }
+    }
     /* タップで意味が出る用語ハイライト（濃緑ボード上） */
     .mj-term-dark {
       border-bottom: 2px dotted rgba(251, 191, 36, 0.95);
@@ -283,7 +302,7 @@
               <span>Stage 1 から順番に遊ぶ</span>
             </button>
             <button onclick="app.startStage('random5')" class="inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 border border-white/35 text-white font-bold px-5 py-3 rounded-xl shadow-sm transition transform active:scale-95 text-xs sm:text-sm">
-              <span>🎲 全53問からランダム5問特訓</span>
+              <span>🎲 全54問からランダム5問特訓</span>
             </button>
           </div>
         </div>
@@ -293,7 +312,7 @@
       <div class="space-y-3">
         <h3 class="text-sm sm:text-base font-bold text-slate-700 flex items-center gap-2 px-1">
           <i data-lucide="layers" class="w-5 h-5 text-teal-700"></i>
-          <span>6つのステップ（全53問・どこからでも遊べます）</span>
+          <span>6つのステップ（全54問・どこからでも遊べます）</span>
         </h3>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="stageCardsContainer">
@@ -2179,6 +2198,28 @@
           }
         },
         {
+          id: 's5-4a',
+          type: 'tile-choice',
+          callSound: 'tsumo',
+          modeLabel: '本番のドラ表示！',
+          question: '場の山に『四萬』が1枚めくれています（ドラ表示牌）。この局でボーナスがつく『ドラ』はどの牌？',
+          subtext: '本番では「めくれている表示牌の『次』の牌」がドラになります！',
+          doraIndicator: '4m',
+          boardNote: '▲ 本番の王牌（めくれている牌の「次」がドラ！）',
+          tileOptions: [
+            { tile: '5m', label: '次の数字！', correct: true },
+            { tile: '4m', label: '同じ牌', correct: false },
+            { tile: '3m', label: '前の数字', correct: false }
+          ],
+          explanation: '大正解！！本番ではめくれている「ドラ表示牌」そのものではなく、その1つ次の『五萬』がドラになります！（※9の次は1、風牌は東→南→西→北→東、三元牌は白→發→中→白の順）',
+          term: {
+            word: 'ドラ表示牌',
+            reading: 'ドラヒョウジハイ',
+            tiles: ['4m', '5m'],
+            desc: '山の端に1枚だけ表向きにめくられた牌のこと。この牌の「次の順番の牌」が実際のドラになります！'
+          }
+        },
+        {
           id: 's5-4',
           type: 'text-choice',
           callSound: 'kan',
@@ -2762,9 +2803,13 @@
         ans.innerHTML = '';
         row.className = 'flex items-center justify-center gap-1.5 sm:gap-2 flex-nowrap py-1 w-max mx-auto';
 
-        // 1) tile-choice: 大きな牌3択
+        // 1) tile-choice: 大きな牌3択（ドラ表示牌の山演出にも対応）
         if (q.type === 'tile-choice') {
-          row.innerHTML = '<div class="text-teal-100 text-xs sm:text-base font-bold py-3 px-4 rounded-xl bg-white/10 border border-white/15">👇 下の大きな牌から正解をタップ！</div>';
+          if (q.doraIndicator) {
+            row.innerHTML = `<span class="mj-tile-back-lg"></span><span class="mj-tile-back-lg"></span>${TileRenderer.render(q.doraIndicator, { large: true, badge: '表示牌' })}<span class="mj-tile-back-lg"></span><span class="mj-tile-back-lg"></span>`;
+          } else {
+            row.innerHTML = '<div class="text-teal-100 text-xs sm:text-base font-bold py-3 px-4 rounded-xl bg-white/10 border border-white/15">👇 下の大きな牌から正解をタップ！</div>';
+          }
           cap.textContent = q.boardNote || '';
 
           const grid = document.createElement('div');

@@ -127,13 +127,25 @@
       border-radius: 3px;
     }
 
-    /* ドラ表示用ミニ牌 */
+    /* ドラ表示牌（王牌のめくれ牌・スマホでも絵柄がくっきり読めるサイズ） */
     .mj-tile-xs {
-      width: 19px !important;
-      height: 26px !important;
-      border-radius: 3px !important;
-      border-bottom-width: 2px !important;
+      width: 25px !important;
+      height: 35px !important;
+      border-radius: 3.5px !important;
+      border-bottom-width: 2.5px !important;
       vertical-align: middle;
+    }
+    /* 王牌の伏せ牌（裏向きの黄色牌） */
+    .mj-tile-back {
+      display: inline-block;
+      width: 17px;
+      height: 25px;
+      background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+      border: 1px solid #92400e;
+      border-bottom: 2.5px solid #f8fafc;
+      border-radius: 3px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.45);
+      flex-shrink: 0;
     }
     /* タップで意味が出る用語ハイライト（濃緑ボード上） */
     .mj-term-dark {
@@ -462,9 +474,9 @@
           <span id="badgeAgariType" class="bg-rose-900/90 text-rose-200 text-xs px-2.5 py-1 rounded-md border border-rose-700/60 font-medium">
             ロンアガリ
           </span>
-          <button type="button" id="badgeDora" onclick="TermHelper.open('dora_ind', event)" class="bg-white/15 hover:bg-white/25 text-white text-xs px-2.5 py-1 rounded-md border border-white/25 flex items-center gap-1.5 transition cursor-pointer" title="タップでドラ表示の意味を確認">
-            <span class="border-b border-dotted border-amber-300 text-amber-100">ドラ表示:</span>
-            <span id="doraTilePreview" class="inline-flex items-center gap-1 font-bold text-amber-300"></span>
+          <button type="button" id="badgeDora" onclick="TermHelper.open('dora_ind', event)" class="bg-black/30 hover:bg-black/45 text-white text-xs px-2.5 py-1 rounded-lg border border-amber-400/35 flex items-center gap-1.5 transition cursor-pointer shadow-inner" title="タップでドラ表示牌のルールを確認">
+            <span class="border-b border-dotted border-amber-300 text-amber-200 font-bold text-[11px] whitespace-nowrap">ドラ表示</span>
+            <span id="doraTilePreview" class="inline-flex items-center gap-0.5"></span>
           </button>
         </div>
 
@@ -1888,11 +1900,11 @@
         {
           id: 'p2-1',
           question: 'このアガリ手、合計で何飜（ハン）？',
-          subtext: '【立直(1)】＋【断么九(1)】＋【ドラ表示が四萬（ドラは五萬）】',
+          subtext: '【立直(1)】＋【断么九(1)】＋ 上のドラ表示牌も忘れずチェック！',
           hand: ['2m','3m','4m', '3p','4p','5p', '6s','7s','8s', '5m','5m', '2s','3s'],
           winTile: '4s',
           isRon: true,
-          dora: '4m', // ドラは5m(手牌に2枚!)
+          dora: '4m', // 表示牌4m -> 次の五萬がドラ(手牌に2枚!)
           options: [
             { text: '2 飜', correct: false },
             { text: '4 飜（満貫手前！）', correct: true },
@@ -2025,8 +2037,8 @@
           id: 'p3-6',
           question: '【子】5飜の手をアガりました！点数は無条件で何点？',
           subtext: '【リーチ(1)】＋【平和(1)】＋【赤ドラ(1)】＋【ドラ2(2)】＝ 合計5飜！',
-          hand: ['2m','3m','4m', '4s','0s','6s', '7s','8s','9s', '8s','8s', '2s','3s'],
-          dora: '7s',
+          hand: ['2m','3m','4m', '4s','0s','6s', '7s','8s','9s', '8p','8p', '2s','3s'],
+          dora: '7p',
           winTile: '4s',
           isRon: true,
           options: [
@@ -2063,9 +2075,9 @@
           id: 'p4-2',
           question: '【親】満貫（4000オール相当）をツモりました！なんとコールする？',
           subtext: '親のツモは3人から均等にもらいます。',
-          hand: ['2m','3m','4m', '4s','0s','6s', '7s','8s','9s', '8s','8s', '2s','3s'],
+          hand: ['2m','3m','4m', '4s','0s','6s', '7s','8s','9s', '8p','8p', '2s','3s'],
           winTile: '4s',
-          dora: '7s',
+          dora: '7p',
           isRon: false, // ツモ
           badgePlayer: '親（東家）',
           options: [
@@ -2080,9 +2092,9 @@
           id: 'p4-3',
           question: '【子】満貫（8000点相当）をツモりました！なんとコールする？',
           subtext: '子は「親が多く払う」ルール。親が4000、子が2000ずつ払います。',
-          hand: ['2m','3m','4m', '4s','0s','6s', '7s','8s','9s', '8s','8s', '2s','3s'],
+          hand: ['2m','3m','4m', '4s','0s','6s', '7s','8s','9s', '8p','8p', '2s','3s'],
           winTile: '4s',
-          dora: '7s',
+          dora: '7p',
           isRon: false, // ツモ
           badgePlayer: '子（南家）',
           options: [
@@ -2210,9 +2222,8 @@
           badgeDora.classList.add('hidden');
         } else {
           badgeDora.classList.remove('hidden');
-          const nextDora = TileRenderer.getNextDoraCode(q.dora);
-          const nextName = TileRenderer.getTileNameJa(nextDora);
-          doraPreview.innerHTML = `${TileRenderer.render(q.dora, { mini: true })}<span class="text-[11px] text-emerald-100 font-normal">→ドラ:</span>${nextDora ? TileRenderer.render(nextDora, { mini: true }) : ''}<span class="text-[11px] text-amber-300 font-bold">(${nextName})</span>`;
+          // 本番の王牌（ワンパイ）と同じ見た目：伏せ牌＋めくれたドラ表示牌1枚のみを表示（次の牌がドラ！）
+          doraPreview.innerHTML = `<span class="mj-tile-back"></span><span class="mj-tile-back"></span>${TileRenderer.render(q.dora, { mini: true })}<span class="mj-tile-back"></span><span class="mj-tile-back"></span>`;
         }
 
         // 設問テキスト（わからない麻雀用語は点線タップで意味表示！）
