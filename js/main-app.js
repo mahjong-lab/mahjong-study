@@ -6,10 +6,10 @@ const PRAISE_CORRECT = [
   'お見事！センス抜群です！👏',
   '完璧！すばらしい判断！✨',
   'さすが！もう見抜けてますね！🎉',
-  'その調子！どんどん感覚掴めてます！🥰',
-  '大正解！実戦でもバッチリ使えますよ！🀄',
-  'ナイスアガリ！めちゃくちゃ筋がいいです！💖',
-  'すごい！もう迷わず選べてますね！💫',
+  'その調子！感覚掴めてます！🥰',
+  '大正解！実戦でもバッチリ！🀄',
+  'ナイス！すごく筋がいいです！💖',
+  'すごい！迷わず選べてますね！💫',
   '大正解！バッチリです！🌟'
 ];
 
@@ -274,10 +274,7 @@ const app = {
     hintBox.classList.toggle('hidden');
   },
 
-  replayCurrentCall() {
-    const q = this.questions[this.currentQuestionIndex];
-    SoundManager.playCall(SoundManager.resolveQuestionCall(q));
-  },
+  replayCurrentCall() {},
 
   openResultModal() {
     const peekBar = document.getElementById('peekActionBar');
@@ -339,18 +336,17 @@ const app = {
     const mReading = document.getElementById('modalTermReading');
     const mTiles = document.getElementById('modalTermTiles');
     const mDesc = document.getElementById('modalTermDesc');
-    const mReplayBtn = document.getElementById('modalReplayVoiceBtn');
     const mNextText = document.getElementById('modalNextBtnText');
 
     if (selectedOpt.correct) {
-      mHeader.className = 'px-4 py-3.5 flex items-center justify-between gap-2 bg-gradient-to-r from-emerald-700 to-felt text-white';
+      mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-emerald-700 to-teal-800 text-white';
       mIcon.textContent = '⭕';
       mTitle.textContent = getPraiseTitle(true, this.stats.streak);
       mStamp.textContent = `🀄 ${callLabel}`;
       mStamp.classList.remove('hidden');
       if (mCorrectBadge) mCorrectBadge.classList.add('hidden');
     } else {
-      mHeader.className = 'px-4 py-3.5 flex items-center justify-between gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white';
+      mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white';
       mIcon.textContent = '💡';
       mTitle.textContent = getPraiseTitle(false, 0);
       mStamp.classList.add('hidden');
@@ -373,9 +369,6 @@ const app = {
       mTermBox.classList.add('hidden');
     }
 
-    if (mReplayBtn) {
-      mReplayBtn.innerHTML = `<span>🔊 「${callLabel}」を聞く</span>`;
-    }
     const isLast = (this.currentQuestionIndex + 1 >= this.questions.length);
     if (mNextText) {
       mNextText.textContent = isLast ? 'セッション結果を見る 🎉' : '次の問題へすすむ';
@@ -474,9 +467,7 @@ const app = {
     }
   },
 
-  toggleSound() {
-    SoundManager.toggle('soundToggleBtn');
-  },
+  toggleSound() {},
 
   saveProgress() {
     try {
