@@ -1,0 +1,277 @@
+/* ==========================================================================
+   麻雀学習アプリシリーズ 共通スタイルシート (css/mahjong.css)
+   対象: index.html (麻雀トレーニングボード) / beginner.html (麻雀ファーストステップ)
+   ========================================================================== */
+
+/* 1. 基本麻雀牌スタイル */
+.mj-tile {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 62px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 85%, #f1f5f9 100%);
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  border-bottom: 4px solid #d97706; /* 背面（竹・琥珀色）の厚み表現 */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  user-select: none;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease, opacity 0.2s ease;
+}
+
+@media (max-width: 640px) {
+  .mj-tile {
+    width: 21px;
+    height: 30px;
+    border-radius: 3px;
+    border-bottom-width: 2px;
+  }
+  /* 実戦編（14枚＋鳴き牌）の卓内はスマホ1画面に収まるスリム幅 */
+  .page-main #tileHandContainer .mj-tile {
+    width: 18.5px;
+    height: 27px;
+    border-radius: 2.5px;
+    border-bottom-width: 2px;
+  }
+}
+
+@media (max-width: 380px) {
+  .mj-tile {
+    width: 19px;
+    height: 27px;
+    border-radius: 2.5px;
+    border-bottom-width: 2px;
+  }
+  .page-main #tileHandContainer .mj-tile {
+    width: 18px;
+    height: 26px;
+    border-radius: 2px;
+    border-bottom-width: 2px;
+  }
+}
+
+/* モーダル内の参考牌はスマホでも見やすいサイズを確保 */
+@media (max-width: 640px) {
+  .mj-modal-tiles .mj-tile {
+    width: 32px;
+    height: 45px;
+    border-radius: 4px;
+    border-bottom-width: 3px;
+  }
+}
+
+/* 2. サイズバリエーション（中大牌・特大牌・ドラ表示ミニ牌） */
+/* 6〜8枚ステージ用の中大牌（Stage 3: 8枚ミニ麻雀など） */
+.mj-tile-md {
+  width: 48px !important;
+  height: 67px !important;
+  border-radius: 6px !important;
+  border-bottom-width: 4px !important;
+}
+@media (max-width: 640px) {
+  .mj-tile-md {
+    width: 34px !important;
+    height: 48px !important;
+    border-radius: 4.5px !important;
+    border-bottom-width: 3px !important;
+  }
+}
+@media (max-width: 380px) {
+  .mj-tile-md {
+    width: 31px !important;
+    height: 44px !important;
+    border-radius: 4px !important;
+    border-bottom-width: 2.5px !important;
+  }
+}
+
+/* 少枚数（1〜5枚）ステージ用の特大牌（Stage 1〜2） */
+.mj-tile-lg {
+  width: 54px !important;
+  height: 75px !important;
+  border-radius: 7px !important;
+  border-bottom-width: 5px !important;
+}
+@media (max-width: 640px) {
+  .mj-tile-lg {
+    width: 42px !important;
+    height: 58px !important;
+    border-radius: 5.5px !important;
+    border-bottom-width: 3.5px !important;
+  }
+}
+
+/* ドラ表示牌（王牌のめくれ牌・スマホでも絵柄がくっきり読めるサイズ） */
+.mj-tile-xs {
+  width: 25px !important;
+  height: 35px !important;
+  border-radius: 3.5px !important;
+  border-bottom-width: 2.5px !important;
+  vertical-align: middle;
+}
+
+/* 3. 鳴き牌（横向き）・アガリ牌スペーサー・王牌伏せ牌 */
+.mj-tile-sideways {
+  transform: rotate(-90deg);
+  margin: 0 3px;
+}
+
+.mj-agari-spacer {
+  width: 14px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+@media (max-width: 640px) {
+  .mj-agari-spacer {
+    width: 6px;
+  }
+}
+
+/* 王牌の伏せ牌（通常バッジ内） */
+.mj-tile-back {
+  display: inline-block;
+  width: 17px;
+  height: 25px;
+  background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+  border: 1px solid #92400e;
+  border-bottom: 2.5px solid #f8fafc;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  flex-shrink: 0;
+}
+
+/* 王牌の伏せ牌（大サイズ・超入門パズル盤面用） */
+.mj-tile-back-lg {
+  display: inline-block;
+  width: 42px;
+  height: 58px;
+  background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%);
+  border: 1.5px solid #92400e;
+  border-bottom: 4px solid #f8fafc;
+  border-radius: 6px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  flex-shrink: 0;
+}
+@media (max-width: 640px) {
+  .mj-tile-back-lg {
+    width: 34px;
+    height: 48px;
+    border-radius: 5px;
+  }
+}
+
+/* 4. インタラクティブ手牌・穴埋めスロット・補助輪ブロック */
+.mj-tile-interactive {
+  cursor: pointer;
+}
+.mj-tile-interactive:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.28);
+}
+.mj-tile-interactive:active {
+  transform: translateY(-2px) scale(0.96);
+}
+
+.mj-slot-empty {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 75px;
+  border-radius: 7px;
+  border: 2.5px dashed #fbbf24;
+  background: rgba(251, 191, 36, 0.15);
+  color: #fde68a;
+  font-weight: 900;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+  animation: slotPulse 1.8s infinite ease-in-out;
+}
+@media (max-width: 640px) {
+  .mj-slot-empty {
+    width: 40px;
+    height: 55px;
+    font-size: 1.1rem;
+  }
+}
+
+.scaffold-block {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  padding: 5px 5px 3px;
+  margin: 2px 3px;
+}
+.scaffold-block-wait {
+  background: rgba(251, 191, 36, 0.18);
+  border: 1.5px solid #fbbf24;
+}
+
+/* 5. ワンタップ麻雀用語ハイライト */
+.mj-term-dark {
+  border-bottom: 2px dotted rgba(251, 191, 36, 0.95);
+  color: #fef3c7;
+  cursor: pointer;
+  padding: 0 2px;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+.mj-term-dark:hover,
+.mj-term-dark:active {
+  background: rgba(251, 191, 36, 0.28);
+}
+
+.mj-term-light {
+  border-bottom: 2px dotted #0d9488;
+  color: #0f766e;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 2px;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+.mj-term-light:hover,
+.mj-term-light:active {
+  background: rgba(20, 184, 166, 0.16);
+}
+
+/* 6. 共通アニメーション＆スクロールバー */
+@keyframes slotPulse {
+  0%, 100% { transform: scale(1); background: rgba(251, 191, 36, 0.14); }
+  50% { transform: scale(1.05); background: rgba(251, 191, 36, 0.28); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0.85) translateY(10px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.animate-pop-in {
+  animation: popIn 0.24s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s infinite ease-in-out;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
