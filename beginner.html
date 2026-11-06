@@ -232,7 +232,7 @@
               ルール暗記ゼロ・パズル感覚
             </span>
             <span id="progressBadge" class="text-xs font-bold text-amber-200 bg-black/25 px-3 py-1 rounded-full border border-amber-300/30">
-              クリア済み: 0 / 5 ステージ
+              クリア済み: 0 / 6 ステージ
             </span>
           </div>
           <h2 class="text-lg sm:text-2xl font-bold font-serif mb-1.5">
@@ -240,20 +240,25 @@
           </h2>
           <p class="text-teal-50 text-xs sm:text-sm leading-relaxed mb-4">
             いきなり14枚の手牌を見るから頭がフリーズしてしまいます。<br class="hidden sm:inline">
-            牌の絵柄 → 3枚ブロック → 8枚ミニ麻雀 → 補助輪つき13枚と、順番に遊ぶだけで自然に手牌が見えるようになります！
+            牌の絵柄 → 3枚ブロック → 8枚ミニ麻雀 → 補助輪つき13枚 → ポン・チー合体パズルまで、順番に遊ぶだけで自然に麻雀用語と手牌が身につきます！
           </p>
-          <button onclick="app.startStage('stage1')" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-6 py-3 rounded-xl shadow-md transition transform active:scale-95 text-sm sm:text-base">
-            <i data-lucide="play" class="w-5 h-5 fill-slate-900"></i>
-            <span>Stage 1 から順番に遊ぶ</span>
-          </button>
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+            <button onclick="app.startStage('stage1')" class="inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-6 py-3 rounded-xl shadow-md transition transform active:scale-95 text-sm sm:text-base">
+              <i data-lucide="play" class="w-5 h-5 fill-slate-900"></i>
+              <span>Stage 1 から順番に遊ぶ</span>
+            </button>
+            <button onclick="app.startStage('random5')" class="inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 border border-white/35 text-white font-bold px-5 py-3 rounded-xl shadow-sm transition transform active:scale-95 text-xs sm:text-sm">
+              <span>🎲 全53問からランダム5問特訓</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- 5ステージ選択リスト -->
+      <!-- 6ステージ選択リスト -->
       <div class="space-y-3">
         <h3 class="text-sm sm:text-base font-bold text-slate-700 flex items-center gap-2 px-1">
           <i data-lucide="layers" class="w-5 h-5 text-teal-700"></i>
-          <span>5つのステップ（どこからでも遊べます）</span>
+          <span>6つのステップ（全53問・どこからでも遊べます）</span>
         </h3>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="stageCardsContainer">
@@ -313,7 +318,7 @@
             <span>ブロックごとに区切って見る「補助輪」機能：</span>
           </span>
           <button id="scaffoldToggleBtn" onclick="app.toggleScaffold()" class="text-xs font-bold px-3 py-1 rounded-full transition shadow-sm">
-            補助輪 ON（区切り表示中）
+            🚲 補助輪 OFF（タップで区切り表示）
           </button>
         </div>
 
@@ -355,14 +360,17 @@
       <!-- 下部選択肢エリア（モードに応じて牌ボタンまたはテキスト選択肢を表示） -->
       <div id="answerArea" class="my-1"></div>
 
-      <!-- フィードバック解説カード -->
+      <!-- フィードバック解説カード（ポップアップを閉じて盤面確認した時にも使えるインライン控えバー） -->
       <div id="feedbackCard" class="hidden rounded-2xl p-4 shadow-lg transition-all animate-pop-in">
         <div class="flex items-start gap-3">
           <div id="fbBadge" class="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0 font-bold"></div>
-          <div class="flex-1">
+          <div class="flex-1 min-w-0">
             <h4 id="fbTitle" class="text-base font-bold mb-1"></h4>
             <p id="fbBody" class="text-xs sm:text-sm leading-relaxed text-slate-700"></p>
-            <div class="mt-3 flex justify-end">
+            <div class="mt-3 flex flex-wrap items-center justify-end gap-2">
+              <button onclick="app.openResultModal()" class="bg-white hover:bg-amber-50 text-teal-800 border border-teal-300 font-bold px-3.5 py-2 rounded-xl text-xs sm:text-sm transition flex items-center gap-1">
+                <span>📖 用語ポップアップを開く</span>
+              </button>
               <button onclick="app.nextQuestion()" class="bg-teal-700 hover:bg-teal-600 text-white font-bold px-5 py-2.5 rounded-xl shadow transition flex items-center gap-1.5 text-sm">
                 <span>次へすすむ</span>
                 <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -406,6 +414,60 @@
 
   </main>
 
+  <!-- 回答結果 ＋ 関連麻雀用語ポップアップモーダル -->
+  <div id="resultTermModal" class="fixed inset-0 bg-black/65 z-50 hidden backdrop-blur-sm flex justify-center items-center p-3.5 sm:p-5">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-pop-in border-2 border-teal-700/30 flex flex-col max-h-[88vh]">
+      <!-- ポップアップ上部ヘッダー（正解/解説ステータス＋発声バッジ） -->
+      <div id="modalHeaderBar" class="px-4 py-3.5 flex items-center justify-between gap-2 bg-emerald-600 text-white">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <span id="modalStatusIcon" class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-lg font-bold flex-shrink-0">⭕</span>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <h4 id="modalStatusTitle" class="font-bold text-sm sm:text-base whitespace-nowrap">大正解！バッチリです！</h4>
+              <span id="modalCallStamp" class="text-[11px] font-black bg-amber-300 text-slate-900 px-2 py-0.5 rounded-full shadow-sm whitespace-nowrap">🀄 ロン！</span>
+            </div>
+          </div>
+        </div>
+        <button onclick="app.closeResultModal()" class="text-[11px] font-bold bg-black/20 hover:bg-black/35 text-white px-2.5 py-1 rounded-lg transition whitespace-nowrap flex-shrink-0">
+          盤面を見る
+        </button>
+      </div>
+
+      <!-- ポップアップ本文（解説＋麻雀ワード図鑑カード） -->
+      <div class="p-4 sm:p-5 space-y-3.5 overflow-y-auto">
+        <!-- 問題の解説 -->
+        <p id="modalExplanation" class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium"></p>
+
+        <!-- 関連する麻雀用語カード -->
+        <div id="modalTermBox" class="bg-gradient-to-br from-amber-50 via-amber-50/70 to-teal-50/60 border-2 border-amber-300/90 rounded-xl p-3.5 shadow-sm">
+          <div class="flex items-center justify-between gap-2 mb-1.5">
+            <span class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-200/80 px-2 py-0.5 rounded-full">
+              <span>📖</span>
+              <span>この問題の麻雀用語</span>
+            </span>
+            <button id="modalReplayVoiceBtn" onclick="app.replayCurrentCall()" class="text-[11px] font-bold text-teal-800 hover:text-teal-600 bg-white/90 border border-teal-200 px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm active:scale-95 transition">
+              <span>🔊 もう1回聞く</span>
+            </button>
+          </div>
+          <div class="flex items-baseline gap-2 flex-wrap mt-1">
+            <span id="modalTermWord" class="text-base sm:text-lg font-black text-slate-900 font-serif">順子</span>
+            <span id="modalTermReading" class="text-xs font-bold text-teal-800 bg-teal-100/90 px-2 py-0.5 rounded-md">シュンツ</span>
+          </div>
+          <div id="modalTermTiles" class="flex items-center gap-1 my-2 empty:hidden"></div>
+          <p id="modalTermDesc" class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1"></p>
+        </div>
+      </div>
+
+      <!-- ポップアップ下部：ワンタップで次の問題へ -->
+      <div class="px-4 pb-4 pt-1 bg-white">
+        <button id="modalNextBtn" onclick="app.nextQuestion()" class="w-full bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-600 hover:to-emerald-600 active:scale-[0.98] text-white font-bold py-3.5 px-5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm sm:text-base">
+          <span id="modalNextBtnText">次の問題へすすむ</span>
+          <i data-lucide="arrow-right" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- 超入門ミニ図鑑（基礎メモ）モーダル -->
   <div id="guideModal" class="fixed inset-0 bg-black/60 z-50 hidden backdrop-blur-sm flex justify-center items-end sm:items-center p-0 sm:p-4">
     <div class="bg-white w-full max-w-2xl max-h-[88vh] sm:rounded-2xl rounded-t-2xl shadow-2xl flex flex-col overflow-hidden">
@@ -423,6 +485,20 @@
       </div>
 
       <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-700">
+        <!-- 0. 麻雀の発声サウンド試聴バー -->
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+          <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-1.5">
+            <span>🔊</span>
+            <span>麻雀の5大発声サウンド（タップで鳴らせます）</span>
+          </h4>
+          <div class="grid grid-cols-5 gap-1.5 text-center">
+            <button onclick="Sound.playCall('pon')" class="bg-white hover:bg-teal-50 active:scale-95 border border-slate-300 rounded-lg py-2 font-bold text-xs text-teal-900 shadow-sm">ポン！</button>
+            <button onclick="Sound.playCall('chi')" class="bg-white hover:bg-teal-50 active:scale-95 border border-slate-300 rounded-lg py-2 font-bold text-xs text-teal-900 shadow-sm">チー！</button>
+            <button onclick="Sound.playCall('kan')" class="bg-white hover:bg-teal-50 active:scale-95 border border-slate-300 rounded-lg py-2 font-bold text-xs text-teal-900 shadow-sm">カン！</button>
+            <button onclick="Sound.playCall('tsumo')" class="bg-white hover:bg-amber-50 active:scale-95 border border-amber-300 rounded-lg py-2 font-bold text-xs text-amber-900 shadow-sm">ツモ！</button>
+            <button onclick="Sound.playCall('ron')" class="bg-white hover:bg-rose-50 active:scale-95 border border-rose-300 rounded-lg py-2 font-bold text-xs text-rose-900 shadow-sm">ロン！</button>
+          </div>
+        </div>
         <!-- 1. 牌の4種類 -->
         <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5">
           <h4 class="font-bold text-amber-900 mb-2">① 牌の種類はたった4つだけ！</h4>
@@ -463,6 +539,14 @@
             <li>⭕ <strong>武器3：タンヤオ</strong>（2〜8の数牌だけで揃えれば鳴いてもアガれる！）</li>
             <li>⚠️ <strong>フリテン注意</strong>：自分が過去に捨てた牌が待ちに含まれていると、相手から「ロン」はできません（自分で引く「ツモ」ならOK！）。</li>
           </ul>
+        </div>
+
+        <!-- 4. 問題で登場する麻雀用語ミニ辞典 -->
+        <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-3.5">
+          <h4 class="font-bold text-indigo-950 mb-2">④ アプリで覚えられる麻雀用語一覧</h4>
+          <div id="guideGlossaryList" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <!-- JSで自動生成 -->
+          </div>
         </div>
       </div>
 
@@ -621,61 +705,167 @@
       }
     };
 
+
     /**
-     * 効果音マネージャー
+     * 本格麻雀サウンド＆発声エンジン（ポン・チー・カン・ツモ・ロン対応）
+     * アクリル牌の打牌物理音（Web Audio API）＋ 日本語発声（Web Speech API）
      */
     const Sound = {
       enabled: true,
       ctx: null,
+      jaVoice: null,
+
       init() {
         if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
           this.ctx = new (window.AudioContext || window.webkitAudioContext)();
         }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+        this.loadVoice();
       },
-      clack() {
+
+      loadVoice() {
+        if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+        const voices = window.speechSynthesis.getVoices();
+        if (voices && voices.length > 0) {
+          this.jaVoice =
+            voices.find(v => v.lang === 'ja-JP' && /Kyoko|Otoya|Google|Siri|Haruka|Ichiro/i.test(v.name)) ||
+            voices.find(v => v.lang && v.lang.startsWith('ja')) ||
+            null;
+        }
+      },
+
+      // 麻雀牌を卓に叩きつけるリアルな「パシッ！」「カチャッ！」合成音
+      tileSlam(intensity = 1.0, delay = 0) {
         if (!this.enabled) return;
         this.init();
         if (!this.ctx) return;
+        const t = this.ctx.currentTime + delay;
+
+        // 高域のアクリル衝突ノイズ
+        const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * 0.045));
+        const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.28));
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = noiseBuffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(2400, t);
+        filter.Q.setValueAtTime(1.4, t);
+
+        const nGain = this.ctx.createGain();
+        nGain.gain.setValueAtTime(0.55 * intensity, t);
+        nGain.gain.exponentialRampToValueAtTime(0.01, t + 0.045);
+
+        noise.connect(filter);
+        filter.connect(nGain);
+        nGain.connect(this.ctx.destination);
+        noise.start(t);
+
+        // 卓マットと牌の厚み共鳴音
         const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
+        const oGain = this.ctx.createGain();
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(680, this.ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(160, this.ctx.currentTime + 0.055);
-        gain.gain.setValueAtTime(0.35, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.055);
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start();
-        osc.stop(this.ctx.currentTime + 0.055);
+        osc.frequency.setValueAtTime(520 * intensity + 220, t);
+        osc.frequency.exponentialRampToValueAtTime(135, t + 0.055);
+        oGain.gain.setValueAtTime(0.4 * intensity, t);
+        oGain.gain.exponentialRampToValueAtTime(0.008, t + 0.055);
+        osc.connect(oGain);
+        oGain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.06);
       },
-      chime() {
+
+      clack() {
+        this.tileSlam(0.75, 0);
+      },
+
+      getCallLabel(type) {
+        const labels = {
+          pon: 'ポン！',
+          chi: 'チー！',
+          kan: 'カン！',
+          tsumo: 'ツモ！',
+          ron: 'ロン！'
+        };
+        return labels[type] || 'ロン！';
+      },
+
+      // 麻雀の5大発声（ポン・チー・カン・ツモ・ロン）＋固有打牌エフェクト
+      playCall(type = 'ron') {
         if (!this.enabled) return;
         this.init();
-        if (!this.ctx) return;
-        [523.25, 659.25, 783.99].forEach((f, i) => {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.value = f;
-          const t = this.ctx.currentTime + i * 0.08;
-          gain.gain.setValueAtTime(0.28, t);
-          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.24);
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(t);
-          osc.stop(t + 0.24);
-        });
+
+        const callMap = {
+          pon:   { text: 'ポン！', rate: 1.32, pitch: 1.15, notes: [587.33, 783.99] },
+          chi:   { text: 'チー！', rate: 1.28, pitch: 1.18, notes: [523.25, 659.25, 783.99] },
+          kan:   { text: 'カン！', rate: 1.28, pitch: 1.04, notes: [392.00, 587.33, 783.99] },
+          tsumo: { text: 'ツモ！', rate: 1.26, pitch: 1.16, notes: [523.25, 659.25, 783.99, 1046.50] },
+          ron:   { text: 'ロン！', rate: 1.24, pitch: 1.10, notes: [440.00, 554.37, 659.25, 880.00] }
+        };
+        const cfg = callMap[type] || callMap.ron;
+
+        if (type === 'chi') {
+          this.tileSlam(0.8, 0);
+          this.tileSlam(1.0, 0.065);
+        } else if (type === 'pon') {
+          this.tileSlam(1.1, 0);
+          this.tileSlam(0.9, 0.055);
+        } else if (type === 'kan') {
+          this.tileSlam(1.25, 0);
+          this.tileSlam(1.05, 0.05);
+          this.tileSlam(1.25, 0.10);
+        } else {
+          this.tileSlam(1.3, 0);
+        }
+
+        if (this.ctx) {
+          cfg.notes.forEach((f, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = (type === 'ron' || type === 'kan') ? 'triangle' : 'sine';
+            osc.frequency.value = f;
+            const t = this.ctx.currentTime + 0.035 + i * 0.06;
+            gain.gain.setValueAtTime(0.16, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.24);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.25);
+          });
+        }
+
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+          try {
+            window.speechSynthesis.cancel();
+            if (!this.jaVoice) this.loadVoice();
+            const utter = new SpeechSynthesisUtterance(cfg.text);
+            utter.lang = 'ja-JP';
+            if (this.jaVoice) utter.voice = this.jaVoice;
+            utter.rate = cfg.rate;
+            utter.pitch = cfg.pitch;
+            utter.volume = 1.0;
+            window.speechSynthesis.speak(utter);
+          } catch (e) {}
+        }
       },
+
       softBuzz() {
         if (!this.enabled) return;
         this.init();
+        this.tileSlam(0.55, 0);
         if (!this.ctx) return;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(210, this.ctx.currentTime);
+        osc.frequency.setValueAtTime(215, this.ctx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(155, this.ctx.currentTime + 0.18);
-        gain.gain.setValueAtTime(0.22, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.18);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
@@ -684,8 +874,12 @@
       }
     };
 
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => Sound.loadVoice();
+    }
+
     /**
-     * ステージ定義と全29問の厳選カリキュラムデータ
+     * ステージ定義と全53問の厳選カリキュラムデータ（全問・麻雀用語カード＆発声つき）
      */
     const STAGES_META = [
       {
@@ -694,7 +888,7 @@
         icon: '🐣',
         title: '牌の絵柄と「端っこ」仕分け',
         badge: 'まずは3秒！',
-        desc: '鳥の牌＝1索？字牌はどれ？後でタンヤオが一瞬で見抜ける目を養います。'
+        desc: '鳥の牌＝1索？赤ドラって何？後でタンヤオが一瞬で見抜ける目を養います。'
       },
       {
         key: 'stage2',
@@ -702,7 +896,7 @@
         icon: '🧩',
         title: '3枚ブロック＆アタマパズル',
         badge: '穴埋めパズル',
-        desc: '空欄［？］に牌をはめて「階段（1-2-3）」と「同じ牌3枚」を完成させよう！'
+        desc: '空欄［？］に牌をはめて「階段（順子）」と「同じ牌3枚（刻子）」を完成させよう！'
       },
       {
         key: 'stage3',
@@ -716,28 +910,37 @@
         key: 'stage4',
         num: 'Stage 4',
         icon: '🚲',
-        title: '補助輪つき「待ち牌」あて',
+        title: '13枚「待ち牌」あて（補助輪つき）',
         badge: '補助輪ON/OFF',
-        desc: 'ブロック分けの補助輪つきで13枚の待ち牌あて！慣れたら補助輪を外してみよう。'
+        desc: 'まずは補助輪OFFの実戦並びで挑戦！迷ったらワンタップで補助輪をONにできます。'
       },
       {
         key: 'stage5',
         num: 'Stage 5',
         icon: '🛡️',
         title: '実戦の約束「3大武器とフリテン」',
-        badge: '卒業ステージ',
-        desc: '「揃ったのにロンが出ない！」をゼロにする2つの約束をマスターして卒業！'
+        badge: 'ルール攻略',
+        desc: '「揃ったのにロンが出ない！」をゼロにする重要ルールを体感でマスター！'
+      },
+      {
+        key: 'stage6',
+        num: 'Stage 6',
+        icon: '⚡',
+        title: '合体！「ポン・チー・カン入門」',
+        badge: '新ステージ！',
+        desc: '相手の捨て牌をもらってブロック完成！鳴きのルールと優先順位を楽しく習得。'
       }
     ];
 
     const STAGE_QUESTIONS = {
       // ==========================================
-      // Stage 1: 牌の絵柄と「端っこ」仕分け（6問）
+      // Stage 1: 牌の絵柄と「端っこ」仕分け（9問）
       // ==========================================
       stage1: [
         {
           id: 's1-1',
           type: 'tile-choice',
+          callSound: 'tsumo',
           modeLabel: '牌えらび',
           question: 'この中で数字の「1（索子の1 / イーソー）」はどれ？',
           subtext: '麻雀で1つだけ「鳥のイラスト」になっている有名な牌です！',
@@ -747,11 +950,18 @@
             { tile: '5z', label: '真っ白な牌', correct: false },
             { tile: '7z', label: '赤い文字', correct: false }
           ],
-          explanation: '大正解！鳥の絵は字牌ではなく「竹（索子）の1」です。これさえ知っていればもう迷いません！'
+          explanation: '大正解！鳥の絵は字牌ではなく「竹（索子）の1」です。これさえ知っていればもう迷いません！',
+          term: {
+            word: '一索',
+            reading: 'イーソー',
+            tiles: ['1s'],
+            desc: '竹の数牌（索子）の「1」のこと。麻雀牌の中でこれ1種類だけ鳥（孔雀・鳳凰）のイラストで描かれています。'
+          }
         },
         {
           id: 's1-2',
           type: 'tile-choice',
+          callSound: 'chi',
           modeLabel: '牌えらび',
           question: '萬子（マンズ）は漢数字で書かれています。「5（五萬）」はどれ？',
           subtext: '上の漢字を読むだけでOK！',
@@ -761,11 +971,60 @@
             { tile: '4m', label: '', correct: false },
             { tile: '7m', label: '', correct: false }
           ],
-          explanation: 'バッチリ！「五」に「萬」で五萬（ウーマン）です。'
+          explanation: 'バッチリ！「五」に「萬」で五萬（ウーマン）です。',
+          term: {
+            word: '萬子',
+            reading: 'マンズ',
+            tiles: ['1m', '5m', '9m'],
+            desc: '漢数字の「一〜九」に「萬」と書かれた数牌グループ。1〜9までの9種類あります。'
+          }
         },
         {
           id: 's1-3',
           type: 'tile-choice',
+          callSound: 'pon',
+          modeLabel: '牌えらび',
+          question: '丸い模様の「筒子（ピンズ）」で、数字の『1（一筒）』はどれ？',
+          subtext: '丸の数に注目！1個だけ特大サイズで描かれています。',
+          boardNote: '「1筒（イーピン）」をタップ！',
+          tileOptions: [
+            { tile: '1p', label: '', correct: true },
+            { tile: '4p', label: '', correct: false },
+            { tile: '8p', label: '', correct: false }
+          ],
+          explanation: '正解！大きな丸がドンと1つ描かれているのが「1筒（イーピン）」です！',
+          term: {
+            word: '筒子',
+            reading: 'ピンズ',
+            tiles: ['1p', '3p', '5p'],
+            desc: '丸い模様の数で「1〜9」を表す数牌グループ。丸の数をそのまま数えれば数字が分かります！'
+          }
+        },
+        {
+          id: 's1-4',
+          type: 'tile-choice',
+          callSound: 'ron',
+          modeLabel: '牌えらび',
+          question: '竹の模様の「索子（ソーズ）」で、一番大きい端っこの『9（九索）』はどれ？',
+          subtext: '3本×3段で竹が9本並んでいるカラフルな牌です！',
+          boardNote: '「9索（キューソー）」をタップ！',
+          tileOptions: [
+            { tile: '9s', label: '', correct: true },
+            { tile: '6s', label: '', correct: false },
+            { tile: '2s', label: '', correct: false }
+          ],
+          explanation: '大正解！緑・赤・青で3本ずつ計9本並んでいるのが「9索（キューソー）」です。',
+          term: {
+            word: '索子',
+            reading: 'ソーズ',
+            tiles: ['1s', '5s', '9s'],
+            desc: '竹の本数で「1〜9」を表す数牌グループ。1索だけは鳥の絵柄、2〜9索は竹の本数で表します。'
+          }
+        },
+        {
+          id: 's1-5',
+          type: 'tile-choice',
+          callSound: 'pon',
           modeLabel: '牌えらび',
           question: '3枚集めるだけで役になるラッキー牌「白・發・中」。この中で『白（ハク）』はどれ？',
           subtext: '日本の麻雀では、文字が何も彫られていない真っ白な牌です！',
@@ -775,11 +1034,18 @@
             { tile: '1p', label: '', correct: false },
             { tile: '2z', label: '', correct: false }
           ],
-          explanation: '正解！真っ白でツヤツヤな牌が「白（ハク）」です。3枚集めればポンしてもアガれます！'
+          explanation: '正解！真っ白でツヤツヤな牌が「白（ハク）」です。3枚集めればポンしてもアガれます！',
+          term: {
+            word: '三元牌',
+            reading: 'サンゲンパイ',
+            tiles: ['5z', '6z', '7z'],
+            desc: '「白（ハク）・發（ハツ）・中（チュン）」の3種類の字牌。どれでも3枚揃えれば無条件で1飜（役牌）がつきます！'
+          }
         },
         {
-          id: 's1-4',
+          id: 's1-6',
           type: 'tile-choice',
+          callSound: 'pon',
           modeLabel: '牌えらび',
           question: '数字ではないので階段（1-2-3）が作れない『字牌（ジハイ）』はどれ？',
           subtext: '方角（東南西北）や白發中が字牌です。',
@@ -789,11 +1055,39 @@
             { tile: '1m', label: '', correct: false },
             { tile: '9p', label: '', correct: false }
           ],
-          explanation: 'ナイス！「東」は字牌です。字牌は同じ牌を2枚（アタマ）か3枚集める使い方しかできません。'
+          explanation: 'ナイス！「東」は字牌です。字牌は同じ牌を2枚（アタマ）か3枚集める使い方しかできません。',
+          term: {
+            word: '字牌',
+            reading: 'ジハイ',
+            tiles: ['1z', '2z', '6z', '7z'],
+            desc: '東南西北と白發中の計7種類。数字ではないため階段（順子）は作れず、同じ牌を重ねて使います。'
+          }
         },
         {
-          id: 's1-5',
+          id: 's1-7',
           type: 'tile-choice',
+          callSound: 'kan',
+          modeLabel: 'ラッキー牌！',
+          question: 'アガったときに持っているだけで点数がアップする特別な『赤ドラ（赤5筒）』はどれ？',
+          subtext: '普通の5筒と形は同じですが、全体が赤く塗られています！',
+          boardNote: '「赤5筒」をタップしよう！',
+          tileOptions: [
+            { tile: '0p', label: '', correct: true },
+            { tile: '5p', label: '', correct: false },
+            { tile: '3p', label: '', correct: false }
+          ],
+          explanation: 'バッチリ！真っ赤な「5」は赤ドラと呼ばれ、通常の5とまったく同じように使えて点数もアップするお得牌です！',
+          term: {
+            word: '赤ドラ',
+            reading: 'アカドラ',
+            tiles: ['0m', '0p', '0s'],
+            desc: '五萬・5筒・5索に1枚ずつ入っている赤い5の牌。持っているだけでアガリ点が1段階アップします！'
+          }
+        },
+        {
+          id: 's1-8',
+          type: 'tile-choice',
+          callSound: 'chi',
           modeLabel: '牌えらび',
           question: '端っこ（1・9）でも字牌でもない、『真ん中の数字（2〜8）』はどれ？',
           subtext: 'ヒント：鳥の絵が「何の数字」だったか思い出して！',
@@ -803,28 +1097,42 @@
             { tile: '1s', label: '', correct: false },
             { tile: '9m', label: '', correct: false }
           ],
-          explanation: '大正解！丸が4つの「4筒」が真ん中の牌です（鳥は1索なので端っこの牌！）。2〜8だけ集めると「タンヤオ」になります！'
+          explanation: '大正解！丸が4つの「4筒」が真ん中の牌です（鳥は1索なので端っこの牌！）。2〜8だけ集めると「タンヤオ」になります！',
+          term: {
+            word: '中張牌',
+            reading: 'チュンチャンパイ',
+            tiles: ['2m', '4p', '7s'],
+            desc: '数牌のうち、端っこの1・9を除いた「2〜8」の真ん中の牌のこと。階段が作りやすく「タンヤオ」にも使えます！'
+          }
         },
         {
-          id: 's1-6',
+          id: 's1-9',
           type: 'tap-hand',
+          callSound: 'ron',
           modeLabel: '手牌をタップ！',
           question: '5枚の中に1枚だけ「端っこの牌（1または9）」が混ざっています。タップして見つけよう！',
           subtext: '上の並んでいる牌を直接指でタップしてください！',
           hand: ['2m', '3m', '6p', '1s', '7s'],
           correctTiles: ['1s'],
           caption: '👆 上の5枚の中から直接タップ！',
-          explanation: 'お見事！！鳥のイラストは「1索」なので端っこの牌ですね。これが見抜ければタンヤオ作りはもう完璧です！'
+          explanation: 'お見事！！鳥のイラストは「1索」なので端っこの牌ですね。これが見抜ければタンヤオ作りはもう完璧です！',
+          term: {
+            word: '么九牌',
+            reading: 'ヤオチューパイ',
+            tiles: ['1m', '9p', '1s', '7z'],
+            desc: '数字の端っこである「1・9」と「字牌」をまとめた総称。タンヤオを作るときはこの牌をすべて手牌から外します。'
+          }
         }
       ],
 
       // ==========================================
-      // Stage 2: 3枚ブロック＆アタマパズル（6問）
+      // Stage 2: 3枚ブロック＆アタマパズル（9問）
       // ==========================================
       stage2: [
         {
           id: 's2-1',
           type: 'slot-fill',
+          callSound: 'chi',
           modeLabel: '穴埋めパズル',
           question: '空欄［ ？ ］に牌をはめて、同じ種類の「数字の階段（3枚組）」を完成させよう！',
           subtext: '丸いボール（筒子）が「2・3」と並んでいます。',
@@ -834,11 +1142,18 @@
             { tile: '4s', correct: false },
             { tile: '8p', correct: false }
           ],
-          explanation: 'カチャッ！同じ筒子で「2・3・4」の階段（シュンツ）が完成しました！'
+          explanation: 'カチャッ！同じ筒子で「2・3・4」の階段ブロックが完成しました！',
+          term: {
+            word: '順子',
+            reading: 'シュンツ',
+            tiles: ['2p', '3p', '4p'],
+            desc: '同じ種類の数牌を「2・3・4」のように連続する数字で3枚並べたブロックのこと。麻雀で一番よく作る基本パーツです！'
+          }
         },
         {
           id: 's2-2',
           type: 'slot-fill',
+          callSound: 'chi',
           modeLabel: '穴埋めパズル',
           question: '真ん中の空欄［ ？ ］に牌をはめて、萬子の階段を完成させよう！',
           subtext: '「五萬」と「七萬」の間に入る牌は？',
@@ -848,11 +1163,18 @@
             { tile: '6p', correct: false },
             { tile: '9m', correct: false }
           ],
-          explanation: 'バッチリ！「五・六・七萬」で綺麗な3枚組ができました！'
+          explanation: 'バッチリ！「五・六・七萬」で綺麗な3枚ブロックができました！',
+          term: {
+            word: '面子',
+            reading: 'メンツ',
+            tiles: ['5m', '6m', '7m'],
+            desc: 'アガリに必要な「3枚1組のブロック」のこと。面子を4つ（12枚）＋アタマ1つ（2枚）＝計14枚でアガリになります！'
+          }
         },
         {
           id: 's2-3',
           type: 'slot-fill',
+          callSound: 'chi',
           modeLabel: '穴埋めパズル',
           question: '竹（索子）の階段を作ろう！［ ？ ］に入るのはどれ？',
           subtext: '「2索・3索」の前に繋がる「1索」を入れよう！',
@@ -862,11 +1184,39 @@
             { tile: '4p', correct: false },
             { tile: '6z', correct: false }
           ],
-          explanation: '完璧です！鳥の牌（1索）＋2索＋3索で「1・2・3」の階段になります！'
+          explanation: '完璧です！鳥の牌（1索）＋2索＋3索で「1・2・3」の階段になります！',
+          term: {
+            word: '一二三の順子',
+            reading: 'イー・リャン・サン',
+            tiles: ['1s', '2s', '3s'],
+            desc: '麻雀では数字の1・2・3を「イー・リャン・サン」と読みます。鳥の1索もちゃんと数字の1として繋がります！'
+          }
         },
         {
           id: 's2-4',
           type: 'slot-fill',
+          callSound: 'chi',
+          modeLabel: '穴埋めパズル',
+          question: '「7筒・8筒」の後ろに繋がる牌を［ ？ ］にはめよう！',
+          subtext: '※注意：「8・9・1」のように9から1へループはしません！',
+          slots: ['7p', '8p', '?'],
+          tileOptions: [
+            { tile: '9p', correct: true },
+            { tile: '1p', correct: false },
+            { tile: '9m', correct: false }
+          ],
+          explanation: '正解！「7・8・9筒」で端っこの階段が完成！なお「8・9・1」とは繋がらないのも大事なポイントです。',
+          term: {
+            word: '数牌の上限（1〜9）',
+            reading: 'ループなしルール',
+            tiles: ['7p', '8p', '9p'],
+            desc: '階段（順子）は「1・2・3」から「7・8・9」まで。「8・9・1」や「9・1・2」のように端をまたいで繋げることはできません。'
+          }
+        },
+        {
+          id: 's2-5',
+          type: 'slot-fill',
+          callSound: 'pon',
           modeLabel: '穴埋めパズル',
           question: '字牌は階段が作れません。［ ？ ］に牌をはめて3枚組を完成させよう！',
           subtext: '赤い「中」が2枚あります。',
@@ -876,11 +1226,39 @@
             { tile: '5z', correct: false },
             { tile: '6z', correct: false }
           ],
-          explanation: '正解！同じ牌を3枚揃えるブロック（コーツ）です。しかも「中」3枚はそれだけで役になります！'
+          explanation: '正解！同じ牌を3枚揃えるブロック（刻子）です。しかも「中」3枚はそれだけで役になります！',
+          term: {
+            word: '刻子',
+            reading: 'コーツ',
+            tiles: ['7z', '7z', '7z'],
+            desc: 'まったく同じ牌を3枚集めたブロックのこと。階段（順子）と並び、3枚ブロックを作る2大パターンの1つです！'
+          }
         },
         {
-          id: 's2-5',
+          id: 's2-6',
+          type: 'slot-fill',
+          callSound: 'pon',
+          modeLabel: '穴埋めパズル',
+          question: '緑の『發（ハツ）』を3枚揃えて、強力な役ブロックを完成させよう！',
+          subtext: '真ん中の［ ？ ］に同じ牌をはめよう！',
+          slots: ['6z', '?', '6z'],
+          tileOptions: [
+            { tile: '6z', correct: true },
+            { tile: '6s', correct: false },
+            { tile: '1z', correct: false }
+          ],
+          explanation: 'バッチリ！「發」が3枚揃って役牌が完成しました！',
+          term: {
+            word: '役牌',
+            reading: 'ヤクハイ',
+            tiles: ['6z', '6z', '6z'],
+            desc: '白・發・中や、場風・自風を3枚（刻子）にした役のこと。相手からポンして集めても確実にアガれます！'
+          }
+        },
+        {
+          id: 's2-7',
           type: 'text-choice',
+          callSound: 'pon',
           modeLabel: 'ひっかけ注意！',
           question: '『東・南・西』と方角を3種類1枚ずつ集めました。これは1組のブロックになる？',
           subtext: '初心者が一番やりがちな疑問です！',
@@ -890,104 +1268,235 @@
             { text: '❌ ならない（字牌は同じ牌3枚じゃないとダメ）', correct: true },
             { text: '⭕ なる（階段と同じ扱いになる）', correct: false }
           ],
-          explanation: '大正解！！「東・南・西」や「白・發・中」を1枚ずつ集めてもブロックにはなりません。字牌は必ず同じ牌を集めましょう！'
+          explanation: '大正解！！「東・南・西」や「白・發・中」を1枚ずつ集めてもブロックにはなりません。字牌は必ず同じ牌を集めましょう！',
+          term: {
+            word: '風牌',
+            reading: 'フォンパイ / カゼハイ',
+            tiles: ['1z', '2z', '3z', '4z'],
+            desc: '「東（トン）・南（ナン）・西（シャー）・北（ペー）」の4種類の方角牌。順番に並べても階段にはなりません！'
+          }
         },
         {
-          id: 's2-6',
+          id: 's2-8',
+          type: 'text-choice',
+          callSound: 'chi',
+          modeLabel: 'ひっかけ注意！',
+          question: '『二萬・四萬・六萬』と偶数を1つ飛ばしで3枚集めました。これはブロックになる？',
+          subtext: '階段のルールを思い出してみよう！',
+          boardTiles: ['2m', '4m', '6m'],
+          caption: '2・4・6 と1つ飛ばしで並べた形',
+          options: [
+            { text: '❌ ならない（2・3・4のように連続していないとダメ）', correct: true },
+            { text: '⭕ なる（規則正しく並んでいるからOK）', correct: false }
+          ],
+          explanation: 'その通り！1つ飛ばしではブロックになりません。三萬や五萬を引いて連続する3枚にする必要があります。',
+          term: {
+            word: '連番の原則',
+            reading: 'シュンツの条件',
+            tiles: ['2m', '3m', '4m'],
+            desc: '階段（順子）として認められるのは、同じ種類で数字が1ずつ連続した3枚（例：2・3・4）だけです。'
+          }
+        },
+        {
+          id: 's2-9',
           type: 'tap-hand',
+          callSound: 'tsumo',
           modeLabel: 'アタマ探し',
           question: '「3枚ブロック1つ ＋ アタマ（2枚ペア）1つ」の計5枚です。アタマになっている牌をタップして！',
           subtext: '麻雀のアガリには、最後に必ず「同じ牌2枚のペア（アタマ）」が1組いります。',
           hand: ['3m', '4m', '5m', '8p', '8p'],
           correctTiles: ['8p'],
           caption: '👆 アタマ（2枚ペア）になっている牌をタップ！',
-          explanation: '素晴らしい！「3・4・5萬（階段3枚）」と「8筒ペア（アタマ2枚）」がハッキリ分かれて見えていますね！'
+          explanation: '素晴らしい！「3・4・5萬（階段3枚）」と「8筒ペア（アタマ2枚）」がハッキリ分かれて見えていますね！',
+          term: {
+            word: '雀頭（アタマ）',
+            reading: 'ジャントウ',
+            tiles: ['8p', '8p'],
+            desc: 'アガリ形に必ず1組必要な「同じ牌2枚のペア」のこと。実戦では親しみやすく「アタマ」と呼ばれます！'
+          }
         }
       ],
 
       // ==========================================
-      // Stage 3: いらない牌をポイッ！「8枚ミニ麻雀」（6問）
+      // Stage 3: いらない牌をポイッ！「8枚ミニ麻雀」（9問）
       // ==========================================
       stage3: [
         {
           id: 's3-1',
           type: 'discard-8',
+          callSound: 'tsumo',
           modeLabel: '8枚ミニ麻雀',
           question: '仲間はずれの不要な牌を1枚タップして捨て、「あと1枚で完成」にしよう！',
           subtext: 'ゴールは「3枚組×2つ ＋ アタマ2枚」です。くっつかない字牌が1枚あります！',
           hand: ['2m', '3m', '4m', '5p', '5p', '3s', '4s', '4z'],
           correctTiles: ['4z'],
           waitDesc: '2索 または 5索 が来れば完成！',
-          explanation: 'ナイス打牌！ポツンと1枚だけ浮いていた「北」を捨てれば、［234萬］［55筒］［34索］の綺麗なテンパイです！'
+          explanation: 'ナイス打牌！ポツンと1枚だけ浮いていた「北」を捨てれば、［234萬］［55筒］［34索］の綺麗なテンパイです！',
+          term: {
+            word: '孤立牌',
+            reading: 'コリツハイ',
+            tiles: ['4z'],
+            desc: '周りに繋がる牌がなく、1枚だけポツンと浮いている牌のこと。まずは孤立している字牌や端牌から捨てるのがセオリーです！'
+          }
         },
         {
           id: 's3-2',
           type: 'discard-8',
+          callSound: 'ron',
           modeLabel: '8枚ミニ麻雀',
           question: 'どの牌を1枚捨てれば「あと1枚で完成」になる？（牌を直接タップ！）',
           subtext: '「發」は2枚ペア（アタマ）になっていますよ！',
           hand: ['1m', '2m', '3m', '9p', '2s', '3s', '6z', '6z'],
           correctTiles: ['9p'],
           waitDesc: '1索 または 4索 が来れば完成！',
-          explanation: '気持ちいい一打！1枚だけ仲間がいない「9筒」を捨てれば、［123萬］［發發］［23索］でテンパイ完成です！'
+          explanation: '気持ちいい一打！1枚だけ仲間がいない「9筒」を捨てれば、［123萬］［發發］［23索］でテンパイ完成です！',
+          term: {
+            word: '聴牌（テンパイ）',
+            reading: 'テンパイ',
+            tiles: ['2s', '3s'],
+            desc: '「あと1枚、必要な牌が来ればアガリ完成！」という王手（リーチ一歩手前）の状態のことです。'
+          }
         },
         {
           id: 's3-3',
           type: 'discard-8',
+          callSound: 'tsumo',
           modeLabel: '8枚ミニ麻雀',
           question: '筒子（丸の牌）が4枚あります。余っている不要な1枚をタップして捨てよう！',
           subtext: '「2・3・4筒」で3枚組ができていますね。',
           hand: ['2m', '2m', '2p', '3p', '4p', '9p', '5s', '6s'],
           correctTiles: ['9p'],
           waitDesc: '4索 または 7索 が来れば完成！',
-          explanation: 'バッチリ！［234筒］から遠く離れた「9筒」が不要牌でした。手牌のブロックがもう見えていますね！'
+          explanation: 'バッチリ！［234筒］から遠く離れた「9筒」が不要牌でした。手牌のブロックがもう見えていますね！',
+          term: {
+            word: '不要牌（余り牌）',
+            reading: 'フヨウハイ',
+            tiles: ['9p'],
+            desc: '完成したブロックやペアから外れて使い道がない牌のこと。これを見つけて順番に捨てていくのが麻雀の基本です！'
+          }
         },
         {
           id: 's3-4',
           type: 'discard-8',
+          callSound: 'ron',
           modeLabel: '8枚ミニ麻雀',
           question: 'いらない端っこの牌を1枚捨てて、綺麗なタンヤオの形にしよう！',
           subtext: '鳥のイラスト（1索）に注目！',
           hand: ['4m', '5m', '6m', '3p', '4p', '1s', '8s', '8s'],
           correctTiles: ['1s'],
           waitDesc: '2筒 または 5筒 が来れば完成！',
-          explanation: '完璧！浮いていた「1索（鳥）」を切ることで、すべて2〜8の牌になり「タンヤオ」も確定しました！'
+          explanation: '完璧！浮いていた「1索（鳥）」を切ることで、すべて2〜8の牌になり「タンヤオ」も確定しました！',
+          term: {
+            word: '断么九（タンヤオ）',
+            reading: 'タンヤオ',
+            tiles: ['4m', '5m', '6m'],
+            desc: '1・9・字牌を1枚も使わず、「2〜8」の数牌だけで揃える超人気役。覚えやすくて鳴いてもアガれる万能役です！'
+          }
         },
         {
           id: 's3-5',
           type: 'discard-8',
+          callSound: 'tsumo',
           modeLabel: '8枚ミニ麻雀',
           question: '萬子が3枚ありますが、階段になっていません。どれを1枚捨てる？',
           subtext: '「三萬・四萬」と「九萬」、どっちを残す？',
           hand: ['3m', '4m', '9m', '5p', '6p', '7p', '7z', '7z'],
           correctTiles: ['9m'],
           waitDesc: '二萬 または 五萬 が来れば完成！',
-          explanation: 'その通り！くっついている「三・四萬」を残し、離れた「九萬」を捨てれば両面待ちのテンパイです！'
+          explanation: 'その通り！くっついている「三・四萬」を残し、離れた「九萬」を捨てれば両面待ちのテンパイです！',
+          term: {
+            word: '塔子（ターツ）',
+            reading: 'ターツ',
+            tiles: ['3m', '4m'],
+            desc: '「3・4」や「6・8」のように、あと1枚くっつけば3枚の階段（順子）になる2枚組パーツのこと。手牌の大事なタネです！'
+          }
         },
         {
           id: 's3-6',
           type: 'discard-8',
-          modeLabel: '8枚ミニ麻雀・仕上げ',
+          callSound: 'ron',
+          modeLabel: '8枚ミニ麻雀',
           question: '索子（緑の牌）が4枚あります。余っている1枚を見抜いて捨てよう！',
           subtext: '「5・6・7索」の階段を壊さないように注意！',
           hand: ['3m', '4m', '8p', '8p', '1s', '5s', '6s', '7s'],
           correctTiles: ['1s'],
           waitDesc: '二萬 または 五萬 が来れば完成！',
-          explanation: 'お見事！！［5・6・7索］の階段から外れている「1索」を切れました。これで実戦の捨て牌選びの基礎はバッチリです！'
+          explanation: 'お見事！！［5・6・7索］の階段から外れている「1索」を切れました！',
+          term: {
+            word: '理牌',
+            reading: 'リーパイ',
+            tiles: ['5s', '6s', '7s'],
+            desc: '手牌を種類・数字順に綺麗に並べ替えること。オンライン麻雀では自動でやってくれるのでブロック探しに集中できます！'
+          }
+        },
+        {
+          id: 's3-7',
+          type: 'discard-8',
+          callSound: 'tsumo',
+          modeLabel: '8枚ミニ麻雀',
+          question: '「二萬・四萬」は間（三萬）が入れば階段になります！不要な1枚をタップして捨てよう！',
+          subtext: '1枚だけどこにも繋がっていない端っこの竹があります。',
+          hand: ['2m', '4m', '3p', '4p', '5p', '9s', '5z', '5z'],
+          correctTiles: ['9s'],
+          waitDesc: '三萬 が来れば完成！',
+          explanation: 'バッチリ！孤立していた「9索」を捨てて、［2・4萬］の間を待つテンパイになりました！',
+          term: {
+            word: '打牌（切る）',
+            reading: 'ダハイ',
+            tiles: ['9s'],
+            desc: '自分の番に手牌から不要な牌を1枚選び、場（河）に捨てることを「打牌」または「牌を切る」と言います。'
+          }
+        },
+        {
+          id: 's3-8',
+          type: 'discard-8',
+          callSound: 'pon',
+          modeLabel: '8枚ミニ麻雀',
+          question: 'ペアが「六萬・六萬」と「6索・6索」の2組あります！いらない字牌を1枚捨てよう！',
+          subtext: 'ペアが2組ある形も立派なテンパイになります！',
+          hand: ['6m', '6m', '2p', '3p', '4p', '6s', '6s', '3z'],
+          correctTiles: ['3z'],
+          waitDesc: '六萬 または 6索 が来れば完成！',
+          explanation: 'ナイス判断！1枚浮いていた「西」を切れば、六萬か6索のどちらかが3枚になった瞬間にアガリです！',
+          term: {
+            word: '対子',
+            reading: 'トイツ',
+            tiles: ['6m', '6m'],
+            desc: '同じ牌が2枚揃った形のこと。アタマにもなるし、もう1枚引けば3枚組（刻子）にもポンにも使える便利な形です！'
+          }
+        },
+        {
+          id: 's3-9',
+          type: 'discard-8',
+          callSound: 'ron',
+          modeLabel: '8枚ミニ麻雀・仕上げ',
+          question: 'ボーナス牌の「赤5筒」があります！赤5筒・6筒のコンビを生かして、不要な1枚を捨てよう！',
+          subtext: '筒子が3枚（赤5・6・9筒）あります。どれがいらない？',
+          hand: ['2m', '3m', '4m', '0p', '6p', '9p', '3s', '3s'],
+          correctTiles: ['9p'],
+          waitDesc: '4筒 または 7筒 が来れば高得点完成！',
+          explanation: '完璧な一打！赤5筒と6筒のコンビを残して「9筒」を切ることで、赤ドラ入りのタンヤオテンパイ完成です！',
+          term: {
+            word: '好形（良形）',
+            reading: 'コウケイ',
+            tiles: ['0p', '6p'],
+            desc: '「5・6」のように隣り合って両側（4と7）を待てる強い形のこと。赤ドラを含む好形は大チャンスです！'
+          }
         }
       ],
 
       // ==========================================
-      // Stage 4: 補助輪つき13枚「待ち牌」あて（6問）
+      // Stage 4: 13枚「待ち牌」あて（デフォルト補助輪OFF・全9問）
       // ==========================================
       stage4: [
         {
           id: 's4-1',
           type: 'scaffold-wait',
-          defaultScaffold: true,
-          modeLabel: '補助輪つき13枚',
-          question: 'いよいよ13枚！でも区切って見れば簡単です。右端の［3索・4索］、あと何が来ればアガリ？',
-          subtext: '左の4ブロックはもう完成しています。右端の黄色い枠だけ見ればOK！',
+          defaultScaffold: false,
+          callSound: 'ron',
+          modeLabel: '13枚の待ちあて',
+          question: 'いよいよ実戦と同じ13枚！索子の［3索・4索］に注目。あと何が来ればアガリ？',
+          subtext: '※見づらければ、上の『🚲 補助輪』ボタンを押すとブロックが分かれて見えます！',
           blocks: [
             { tiles: ['2m','3m','4m'], label: '完成' },
             { tiles: ['5p','6p','7p'], label: '完成' },
@@ -1000,15 +1509,22 @@
             { text: '3索 または 4索', correct: false },
             { text: '8筒', correct: false }
           ],
-          explanation: '大正解！13枚あっても、完成したブロックを無視すれば「3索・4索に何を足すか」だけの簡単なパズルになります！'
+          explanation: '大正解！完成しているブロックを頭の中で消せば、「3索・4索に何を足すか」だけのシンプルなパズルです！',
+          term: {
+            word: '両面待ち',
+            reading: 'リャンメンマチ',
+            tiles: ['3s', '4s'],
+            desc: '「3・4」のように並んだ2枚の両側（2と5）のどちらでもアガれる待ち。待ちの枚数が一番多い王様の待ちです！'
+          }
         },
         {
           id: 's4-2',
           type: 'scaffold-wait',
-          defaultScaffold: true,
-          modeLabel: '補助輪つき13枚',
-          question: '右端の［6筒・8筒］に注目！あと何が来ればアガリ？',
-          subtext: '間の数字が1つ抜けていますね！',
+          defaultScaffold: false,
+          callSound: 'tsumo',
+          modeLabel: '13枚の待ちあて',
+          question: '筒子の［6筒・8筒］の部分がまだ2枚です。あと何が来ればアガリ？',
+          subtext: '間の数字が1つ抜けています！（迷ったら『🚲 補助輪』をONにしてみよう）',
           blocks: [
             { tiles: ['1m','2m','3m'], label: '完成' },
             { tiles: ['6s','7s','8s'], label: '完成' },
@@ -1021,14 +1537,21 @@
             { text: '5筒 または 9筒', correct: false },
             { text: '9萬', correct: false }
           ],
-          explanation: 'バッチリ！6と8の間、「7筒」が入れば［6・7・8筒］になってアガリです（カンチャン待ちと呼びます）。'
+          explanation: 'バッチリ！6と8の間、「7筒」がスポッと入れば［6・7・8筒］になってアガリです！',
+          term: {
+            word: '嵌張待ち',
+            reading: 'カンチャンマチ',
+            tiles: ['6p', '8p'],
+            desc: '「6・8」のように1つ飛んだ数字の間（7）が埋まるのを待つ形。「間（カン）にハマる」からカンチャン待ち！'
+          }
         },
         {
           id: 's4-3',
           type: 'scaffold-wait',
-          defaultScaffold: true,
-          modeLabel: '補助輪つき13枚',
-          question: '3枚ブロックはもう4つ全部できています！残った1枚の［南］、何が来ればアガリ？',
+          defaultScaffold: false,
+          callSound: 'ron',
+          modeLabel: '13枚の待ちあて',
+          question: '3枚ブロックはもう4つ全部できています！ポツンと1枚残った［南］、何が来ればアガリ？',
           subtext: 'まだ「アタマ（2枚ペア）」がありません！',
           blocks: [
             { tiles: ['2m','3m','4m'], label: '完成' },
@@ -1042,15 +1565,78 @@
             { text: '東 または 西', correct: false },
             { text: '發', correct: false }
           ],
-          explanation: '正解！もう1枚「南」が来ればアタマ（2枚ペア）が完成してアガリです（単騎待ちと呼びます）。'
+          explanation: '正解！もう1枚「南」が来ればアタマ（2枚ペア）が完成してアガリです！',
+          term: {
+            word: '単騎待ち',
+            reading: 'タンキマチ',
+            tiles: ['2z'],
+            desc: '3枚組が4つ完成していて、最後のアタマ（雀頭）になる相方1枚だけを待っている形のことです。'
+          }
         },
         {
           id: 's4-4',
           type: 'scaffold-wait',
           defaultScaffold: false,
-          modeLabel: '補助輪なしで挑戦！',
-          question: '実戦と同じ並びです！あと何が来ればアガリ？（※難しければ上の『補助輪』ボタンを押してOK！）',
-          subtext: '左端の萬子（四萬・五萬）に注目してみよう！',
+          callSound: 'tsumo',
+          modeLabel: '13枚の待ちあて',
+          question: '索子の［8索・9索］に注目！あと何が来ればアガリ？',
+          subtext: '9索のさらに外側（10索）は存在しませんよ！',
+          blocks: [
+            { tiles: ['2m','3m','4m'], label: '完成' },
+            { tiles: ['3p','4p','5p'], label: '完成' },
+            { tiles: ['5z','5z','5z'], label: '完成' },
+            { tiles: ['6m','6m'], label: 'アタマ' },
+            { tiles: ['8s','9s'], label: 'あと1枚!', isWait: true }
+          ],
+          options: [
+            { text: '7索 だけ（片側待ち）', correct: true },
+            { text: '7索 または 1索', correct: false },
+            { text: '6萬', correct: false }
+          ],
+          explanation: '大正解！「8・9」と端っこを持っているときは、内側の「7索」だけの片側待ちになります！',
+          term: {
+            word: '辺張待ち',
+            reading: 'ペンチャンマチ',
+            tiles: ['8s', '9s'],
+            desc: '「1・2」で3を待つ形や、「8・9」で7を待つ片側だけの待ち。「端っこ（辺）」で待つからペンチャン待ち！'
+          }
+        },
+        {
+          id: 's4-5',
+          type: 'scaffold-wait',
+          defaultScaffold: false,
+          callSound: 'pon',
+          modeLabel: '13枚の待ちあて',
+          question: '「四萬・四萬」と「發・發」、2枚のペアが2組あります！あと何が来ればアガリ？',
+          subtext: '片方が3枚ブロックになれば、もう片方がアタマになります！',
+          blocks: [
+            { tiles: ['1p','2p','3p'], label: '完成' },
+            { tiles: ['5s','6s','7s'], label: '完成' },
+            { tiles: ['1z','1z','1z'], label: '完成' },
+            { tiles: ['4m','4m'], label: 'ペア①', isWait: true },
+            { tiles: ['6z','6z'], label: 'ペア②', isWait: true }
+          ],
+          options: [
+            { text: '四萬 または 發（どちらが来てもOK！）', correct: true },
+            { text: '發 だけ', correct: false },
+            { text: '三萬 または 五萬', correct: false }
+          ],
+          explanation: 'バッチリ！2組のペアのうち、どちらが3枚になってもアガリになります！',
+          term: {
+            word: '双碰待ち（シャボ待ち）',
+            reading: 'シャボマチ / シャンポンマチ',
+            tiles: ['4m', '4m', '6z', '6z'],
+            desc: '2枚ペア（対子）が2組あり、どちらか片方が3枚組になれば完成する2種類の待ちのことです。'
+          }
+        },
+        {
+          id: 's4-6',
+          type: 'scaffold-wait',
+          defaultScaffold: false,
+          callSound: 'ron',
+          modeLabel: '13枚の待ちあて',
+          question: '左端の萬子［四萬・五萬］に注目！あと何が来ればアガリ？',
+          subtext: '他のブロックが全部完成しているか確認してみよう！',
           blocks: [
             { tiles: ['5p','6p','7p'], label: '完成' },
             { tiles: ['3s','4s','5s'], label: '完成' },
@@ -1061,17 +1647,24 @@
           options: [
             { text: '三萬 または 六萬', correct: true },
             { text: '四萬 または 五萬', correct: false },
-            { text: '九索', correct: false }
+            { text: '9索', correct: false }
           ],
-          explanation: 'すごい！！補助輪なしでも［567筒］［345索］［99索］［白白白］を頭の中で消して、残りの［四・五萬］が見えましたね！'
+          explanation: 'すごい！！補助輪なしでも［567筒］［345索］［99索］［白白白］を消して、残りの［四・五萬］が見えましたね！',
+          term: {
+            word: '5ブロック思考',
+            reading: 'ファイブブロック',
+            tiles: ['4m', '5m'],
+            desc: '13枚の手牌を「3枚組×4つ ＋ アタマ1つ ＝ 計5ブロック」に分けて見る考え方。上級者も全員これで手牌を見ています！'
+          }
         },
         {
-          id: 's4-5',
+          id: 's4-7',
           type: 'scaffold-wait',
           defaultScaffold: false,
-          modeLabel: '補助輪なしで挑戦！',
-          question: '2枚ペアが「九萬・九萬」と「中・中」の2組あります。何が来ればアガリ？',
-          subtext: '片方が3枚ブロックになれば、もう片方がアタマになります！',
+          callSound: 'tsumo',
+          modeLabel: '13枚の待ちあて',
+          question: '「九萬・九萬」と「中・中」の2組ペアがあります。何が来ればアガリ形が完成する？',
+          subtext: 'どちらが3枚になっても形は完成します！',
           blocks: [
             { tiles: ['2m','3m','4m'], label: '完成' },
             { tiles: ['4p','5p','6p'], label: '完成' },
@@ -1080,17 +1673,24 @@
             { tiles: ['7z','7z'], label: 'ペア②', isWait: true }
           ],
           options: [
-            { text: '九萬 または 中（どちらが来てもOK！）', correct: true },
+            { text: '九萬 または 中', correct: true },
             { text: '中 だけ', correct: false },
-            { text: '一萬 または 五萬', correct: false }
+            { text: '八萬 または 中', correct: false }
           ],
-          explanation: '大正解！ペアが2組あるときは、どちらが3枚になってもアガれます（シャボ待ち）。困ったら「補助輪ON」で確認すれば一目瞭然です！'
+          explanation: '大正解！形は九萬と中のシャボ待ちです（※もし鳴いていた場合は、役牌の「中」のほうでしかロンできない点も実戦のコツです！）。',
+          term: {
+            word: '片アガリ（後付け）',
+            reading: 'カタアガリ',
+            tiles: ['9m', '7z'],
+            desc: '2種類の待ちのうち、片方（中）なら役がつくけれど、もう片方（九萬）だと役がつかない状態のこと。鳴いたときによく起きます！'
+          }
         },
         {
-          id: 's4-6',
+          id: 's4-8',
           type: 'scaffold-wait',
           defaultScaffold: false,
-          modeLabel: '補助輪なしで挑戦！',
+          callSound: 'ron',
+          modeLabel: '13枚の待ちあて',
           question: '索子の［鳥（1索）・2索］の部分がまだ2枚です。あと何が来ればアガリ？',
           subtext: '「0索」という牌は麻雀にありませんよ！',
           blocks: [
@@ -1105,18 +1705,52 @@
             { text: '1索 または 3索', correct: false },
             { text: '8萬', correct: false }
           ],
-          explanation: '完璧です！「1・2」と持っているときは「3」だけの片側待ち（ペンチャン待ち）になります。13枚がもう怖くないですね！'
+          explanation: '完璧です！「1・2」と持っているときは「3」だけのペンチャン待ちになります。13枚がもう怖くないですね！',
+          term: {
+            word: 'アガリ牌（当たり牌）',
+            reading: 'アガリハイ',
+            tiles: ['3s'],
+            desc: 'テンパイしている手牌を完成させる最後の1枚のこと。山から自分で引けば「ツモ」、他人の捨て牌なら「ロン」でアガリです！'
+          }
+        },
+        {
+          id: 's4-9',
+          type: 'scaffold-wait',
+          defaultScaffold: false,
+          callSound: 'tsumo',
+          modeLabel: '応用パズル！',
+          question: '左端の萬子が［二・三・四・五萬］と4枚連続で並んでいます！何が来れば「3枚組＋アタマ」になる？',
+          subtext: 'ヒント：二萬が来たら［二二］＋［三四五］、もし五萬が来たら…？',
+          blocks: [
+            { tiles: ['2p','3p','4p'], label: '完成' },
+            { tiles: ['6s','7s','8s'], label: '完成' },
+            { tiles: ['7z','7z','7z'], label: '完成' },
+            { tiles: ['2m','3m','4m','5m'], label: '4枚並び!', isWait: true }
+          ],
+          options: [
+            { text: '二萬 または 五萬（両端のどちらでもアタマになる！）', correct: true },
+            { text: '一萬 または 六萬', correct: false },
+            { text: '三萬 または 四萬', correct: false }
+          ],
+          explanation: 'お見事！！4枚連続で並んでいると、両端の「二萬」と「五萬」どちらが重なっても3枚組＋アタマが完成します！',
+          term: {
+            word: 'ノベタン（延べ単騎）',
+            reading: 'ノベタンマチ',
+            tiles: ['2m', '3m', '4m', '5m'],
+            desc: '「2・3・4・5」のように4枚連続しているとき、両端の2種類（2と5）どちらでもアタマにできるオシャレな待ちです！'
+          }
         }
       ],
 
       // ==========================================
-      // Stage 5: 実戦の約束「3大武器とフリテン」（5問）
+      // Stage 5: 実戦の約束「3大武器とフリテン」（8問）
       // ==========================================
       stage5: [
         {
           id: 's5-1',
           type: 'scaffold-wait',
-          defaultScaffold: true,
+          defaultScaffold: false,
+          callSound: 'ron',
           modeLabel: '約束① リーチ',
           question: '1回もポン・チーせずに「あと1枚」になりました！でも『白發中』も『タンヤオ』もありません。どうすればアガれる？',
           subtext: '麻雀には「形を作っただけではアガれない（役が1つ必要）」というルールがあります。',
@@ -1131,11 +1765,18 @@
             { text: '⭕ 「リーチ！」と宣言する（リーチが役になる）', correct: true },
             { text: '❌ チーして早く揃える', correct: false }
           ],
-          explanation: '大正解！1回も鳴いていなければ、「リーチ！」と宣言するだけで立派な役がつき、どんな手でも堂々とアガれます！'
+          explanation: '大正解！1回も鳴いていなければ、「リーチ！」と宣言するだけで立派な役がつき、どんな手でも堂々とアガれます！',
+          term: {
+            word: '立直（リーチ）',
+            reading: 'リーチ',
+            tiles: ['6m', '8m'],
+            desc: '1回も鳴かずにテンパイしたとき、1000点棒を出して宣言する最強の基本役。裏ドラというボーナスチャンスも増えます！'
+          }
         },
         {
           id: 's5-2',
           type: 'text-choice',
+          callSound: 'pon',
           modeLabel: '約束② 鳴いていい時',
           question: '逆に、相手の牌を「ポン・チー（鳴き）」するとリーチができなくなります。初心者が鳴いていい『2つの安全パターン』は？',
           subtext: 'これ以外のときに鳴くと「揃ったのにアガれない！」という罠にハマります。',
@@ -1145,12 +1786,61 @@
             { text: '⭕ 『白・發・中』を3枚揃える時 か 『2〜8の数牌だけ』で揃える時', correct: true },
             { text: '❌ 『1・2・3』などの端っこをチーして急ぐ時', correct: false }
           ],
-          explanation: 'その通り！最初は「リーチ」「白・發・中」「タンヤオ（2〜8だけ）」の3つの武器だけで麻雀は十分に勝てます！'
+          explanation: 'その通り！最初は「リーチ」「白・發・中」「タンヤオ（2〜8だけ）」の3つの武器だけで麻雀は十分に勝てます！',
+          term: {
+            word: '門前（メンゼン）',
+            reading: 'メンゼン',
+            tiles: ['5z', '6z', '7z'],
+            desc: '1回もポン・チーせずに自分の力だけで手牌を進めている状態のこと。迷ったら鳴かずに門前リーチを目指せば安心です！'
+          }
         },
         {
           id: 's5-3',
+          type: 'text-choice',
+          callSound: 'pon',
+          modeLabel: '風牌のひっかけ！',
+          question: '今は「東場（全員の風が東）」で、あなたの席は「南家」です。他家から出た『西』をポンして3枚にしました。これだけで役になる？',
+          subtext: '「白・發・中」は何でも役になりますが、方角の牌は…？',
+          boardTiles: ['3z', '3z', '3z'],
+          caption: '東場・南家のときに集めた「西」3枚',
+          options: [
+            { text: '❌ ならない（場風でも自風でもない『オタ風』だから）', correct: true },
+            { text: '⭕ なる（字牌はどれでも3枚で役になる）', correct: false }
+          ],
+          explanation: 'よく見抜きました！東場・南家のとき、役になる風牌は「東」と「南」だけ。関係ない「西・北」はポンしても役になりません！',
+          term: {
+            word: 'オタ風（客風牌）',
+            reading: 'オタカゼ',
+            tiles: ['3z', '4z'],
+            desc: '場の風（東場なら東）でも自分の席の風でもない風牌のこと。3枚集めても役にならないので、アタマとして使うのが基本です！'
+          }
+        },
+        {
+          id: 's5-4',
+          type: 'text-choice',
+          callSound: 'kan',
+          modeLabel: 'ドラの落とし穴！',
+          question: '手牌に「ドラ」や「赤ドラ」が合計3枚もあります！でも『リーチ』も『役牌』も『タンヤオ』もありません。アガれる？',
+          subtext: '超重要なルールです！ドラは「役」になるでしょうか？',
+          boardTiles: ['5m', '5m', '0m'],
+          caption: 'ドラがたっぷり3枚ある状態',
+          options: [
+            { text: '❌ アガれない！（ドラはおまけの加点なので『役』にはならない）', correct: true },
+            { text: '⭕ ドラが1枚でもあればアガれる', correct: false }
+          ],
+          explanation: '大正解！！ドラは「アガった後に乗るボーナス点」なので、ドラだけではアガれません。必ずリーチやタンヤオなどの「役」を1つ作りましょう！',
+          term: {
+            word: 'ドラ（懸賞牌）',
+            reading: 'ドラ',
+            tiles: ['0m', '5m'],
+            desc: 'アガったときに1枚につき1飜（ハン）点数を増やしてくれるボーナス牌。ただしドラ自体は「アガるための役」にはなりません！'
+          }
+        },
+        {
+          id: 's5-5',
           type: 'scaffold-wait',
-          defaultScaffold: true,
+          defaultScaffold: false,
+          callSound: 'ron',
           modeLabel: '約束③ フリテンの罠',
           question: 'あなたは［2索・5索］待ちです。でも、自分の捨て牌に『2索』がありました！相手から出た『2索』でロンできる？',
           subtext: 'スマホ麻雀で初心者が一番パニックになるルールです！',
@@ -1166,12 +1856,19 @@
             { text: '❌ ロンできない！（自分で捨てた牌はフリテン）', correct: true },
             { text: '⭕ 役（中）があるからロンできる', correct: false }
           ],
-          explanation: '超重要！自分が過去に捨てた牌では、相手から「ロン」できません（フリテン）。「揃ったのにロンが出ない！」の原因はほぼコレです！'
+          explanation: '超重要！自分が過去に捨てた牌では、相手から「ロン」できません（フリテン）。「揃ったのにロンが出ない！」の原因はほぼコレです！',
+          term: {
+            word: 'フリテン（振聴）',
+            reading: 'フリテン',
+            tiles: ['2s'],
+            desc: '自分のアガリ牌が自分の捨て牌（河）にある状態のこと。相手から「ロン」することは禁止されます（役があっても不可）。'
+          }
         },
         {
-          id: 's5-4',
+          id: 's5-6',
           type: 'scaffold-wait',
-          defaultScaffold: true,
+          defaultScaffold: false,
+          callSound: 'ron',
           modeLabel: 'フリテンの重要ルール',
           question: '同じく［2索・5索］待ちで、捨て牌に『2索』があります。相手から、捨てていない方の『5索』が出ました！ロンできる？',
           subtext: '5索自体は捨てていませんが…？',
@@ -1187,14 +1884,21 @@
             { text: '❌ 5索でもロンできない！（片方でも捨てていたら全部ロン不可）', correct: true },
             { text: '⭕ 5索は捨てていないからロンできる', correct: false }
           ],
-          explanation: 'よくぞ見抜きました！待ち牌のうち1種類でも自分の捨て牌にあると、他の当たり牌でも「ロン」は一切できなくなります。'
+          explanation: 'よくぞ見抜きました！待ち牌のうち1種類でも自分の捨て牌にあると、他の当たり牌でも「ロン」は一切できなくなります。',
+          term: {
+            word: '河（ホー / かわ）',
+            reading: 'ホー',
+            tiles: ['9m', '1z', '2s'],
+            desc: '各プレイヤーの前に並んでいる「捨て牌置き場」のこと。自分の河にある牌が待ちに1つでも混ざるとフリテンになります！'
+          }
         },
         {
-          id: 's5-5',
+          id: 's5-7',
           type: 'scaffold-wait',
-          defaultScaffold: true,
-          modeLabel: '最終問題！',
-          question: 'うっかりフリテンになってしまいました！もうこの局はアガる方法はないでしょうか？',
+          defaultScaffold: false,
+          callSound: 'tsumo',
+          modeLabel: 'フリテン脱出法！',
+          question: 'うっかりフリテンになってしまいました！この手牌のままアガる方法はある？',
           subtext: '「ロン（相手からもらう）」がダメなら…？',
           river: [{ tile: '9m' }, { tile: '1z' }, { tile: '2s', highlight: true }, { tile: '4z' }],
           blocks: [
@@ -1208,7 +1912,226 @@
             { text: '⭕ 自分の番に山から引けば（ツモなら）アガれる！', correct: true },
             { text: '❌ どうやっても絶対にアガれない', correct: false }
           ],
-          explanation: '大正解！！フリテンで禁止されるのは「相手からのロン」だけ。自分で引く「ツモ」ならいつでもアガれます！これで超入門は卒業です🎉'
+          explanation: '大正解！！フリテンで禁止されるのは「相手からのロン」だけ。自分で引く「ツモ」ならいつでも堂々とアガれます！',
+          term: {
+            word: 'ツモアガリ（自摸和了）',
+            reading: 'ツモ',
+            tiles: ['5s'],
+            desc: '自分の番に山から引いた牌でアガること。フリテン中でもアガれるうえ、門前なら「門前清自摸和（メンゼンツモ）」という役もつきます！'
+          }
+        },
+        {
+          id: 's5-8',
+          type: 'text-choice',
+          callSound: 'ron',
+          modeLabel: '実戦の注意点！',
+          question: 'リーチをかけたあと、相手から出た当たり牌をうっかり見逃しました（スルー）。そのあと別の人から出た当たり牌でロンできる？',
+          subtext: 'リーチ後の見逃しルールです！',
+          boardTiles: ['2m', '3m', '4m', '5p', '6p', '7p'],
+          caption: 'リーチ後に当たり牌を1回スルーした状態',
+          options: [
+            { text: '❌ できない！（リーチ後に1回でも見逃すと、ずっとフリテンになる）', correct: true },
+            { text: '⭕ 別の人からならロンできる', correct: false }
+          ],
+          explanation: 'バッチリ！リーチ後に当たり牌をスルーすると「リーチ後フリテン」になり、以降はツモでしかアガれなくなります。リーチ後は迷わずロンしましょう！',
+          term: {
+            word: '見逃しフリテン',
+            reading: 'リーチごフリテン',
+            tiles: ['2m', '3m', '4m'],
+            desc: 'リーチ後に他家の当たり牌を見逃すと、その局が終わるまで永続的にフリテン（ロン不可・ツモのみ可）になるルールです。'
+          }
+        }
+      ],
+
+      // ==========================================
+      // Stage 6: 合体させよう！「ポン・チー・カン入門」（9問・新ステージ）
+      // ==========================================
+      stage6: [
+        {
+          id: 's6-1',
+          type: 'slot-fill',
+          callSound: 'pon',
+          modeLabel: 'ポン合体パズル！',
+          question: '手牌に『發』が2枚あります！誰かが捨てた3枚目の『發』をもらって「ポン！」しよう！',
+          subtext: '空欄［ ？ ］に牌をはめて3枚組を完成させよう！',
+          slots: ['6z', '6z', '?'],
+          tileOptions: [
+            { tile: '6z', correct: true },
+            { tile: '5z', correct: false },
+            { tile: '7z', correct: false }
+          ],
+          explanation: 'ポン！！相手が捨てた3枚目をもらって、あっという間に「發」の役牌ブロックが完成しました！',
+          term: {
+            word: 'ポン（碰）',
+            reading: 'ポン',
+            tiles: ['6z', '6z', '6z'],
+            desc: '手牌に同じ牌が2枚あるとき、他の誰かが捨てた3枚目をもらって「同じ牌3枚組（刻子）」を作る技です！'
+          }
+        },
+        {
+          id: 's6-2',
+          type: 'slot-fill',
+          callSound: 'chi',
+          modeLabel: 'チー合体パズル！',
+          question: '左隣の人（上家）が『6筒』を捨てました！手牌の［4筒・5筒］と合体させて「チー！」しよう！',
+          subtext: '空欄［ ？ ］に6筒をはめよう！',
+          slots: ['4p', '5p', '?'],
+          tileOptions: [
+            { tile: '6p', correct: true },
+            { tile: '6s', correct: false },
+            { tile: '9p', correct: false }
+          ],
+          explanation: 'チー！！左隣の人が捨てた6筒をもらって、［4・5・6筒］の階段が完成しました！',
+          term: {
+            word: 'チー（吃）',
+            reading: 'チー',
+            tiles: ['4p', '5p', '6p'],
+            desc: '自分のすぐ左隣の人（上家）が捨てた牌をもらって、「数字の階段3枚組（順子）」を作る技です！'
+          }
+        },
+        {
+          id: 's6-3',
+          type: 'text-choice',
+          callSound: 'chi',
+          modeLabel: '超重要ルール！',
+          question: 'あなたは［二萬・三萬］を持っています。正面に座っている人（対面）が『四萬』を捨てました！「チー」できる？',
+          subtext: '「誰から」チーできるかの大事なルールです！',
+          boardTiles: ['2m', '3m'],
+          caption: '正面の人（対面）が「四萬」を捨てた場面',
+          options: [
+            { text: '❌ できない！（チーできるのは左隣の『上家』からだけ！）', correct: true },
+            { text: '⭕ 誰からでもチーできる', correct: false }
+          ],
+          explanation: '大正解！！「チー」ができるのは自分のすぐ左隣の人（上家＝カミチャ）が捨てた牌だけです。正面や右の人からはチーできません！',
+          term: {
+            word: '上家（カミチャ）',
+            reading: 'カミチャ',
+            tiles: ['2m', '3m', '4m'],
+            desc: '自分から見て「すぐ左隣」の席の人のこと。麻雀は反時計回りに進むため、直前の番である上家からだけチーができます！'
+          }
+        },
+        {
+          id: 's6-4',
+          type: 'text-choice',
+          callSound: 'pon',
+          modeLabel: 'ポンとチーの違い',
+          question: '今度は［中・中］と2枚持っています。右隣の人（下家）や正面の人（対面）が『中』を捨てました！「ポン」できる？',
+          subtext: 'ポンも左隣の人からだけでしょうか？',
+          boardTiles: ['7z', '7z'],
+          caption: '右隣・正面の人が「中」を捨てた場面',
+          options: [
+            { text: '⭕ できる！（ポンは左・正面・右の誰からでもOK！）', correct: true },
+            { text: '❌ できない（左隣からだけ）', correct: false }
+          ],
+          explanation: 'バッチリ！！「チーは左隣だけ、ポンは3人誰からでもOK！」この違いを押さえれば鳴きの基本は完璧です！',
+          term: {
+            word: '副露（鳴き）',
+            reading: 'フーロ / ナキ',
+            tiles: ['7z', '7z', '7z'],
+            desc: 'ポン・チー・カンをして他人の捨て牌をもらい、自分の手牌の右端に表向きで並べることを「鳴き（副露）」と呼びます。'
+          }
+        },
+        {
+          id: 's6-5',
+          type: 'tap-hand',
+          callSound: 'chi',
+          modeLabel: '手牌をタップ！',
+          question: '左隣の人（上家）が『5筒』を捨てました！手牌の中で、一緒に「チー」して階段を作れる牌をタップしよう！',
+          subtext: '5筒と繋がって［5・6・7筒］になるパーツを探そう！',
+          hand: ['2m', '6p', '7p', '9s', '1z'],
+          correctTiles: ['6p', '7p'],
+          caption: '👆 一緒にチーできる牌（6筒または7筒）をタップ！',
+          explanation: 'ナイス！！手牌の「6筒・7筒」と相手の「5筒」を合わせれば［5・6・7筒］が完成しますね！',
+          term: {
+            word: '晒し（さらし）',
+            reading: 'サラシ',
+            tiles: ['5p', '6p', '7p'],
+            desc: '鳴いて完成させた3枚組は、全員に見えるように卓の右下に表向きで置きます（誰からもらったか分かるよう1枚を横向きにします）。'
+          }
+        },
+        {
+          id: 's6-6',
+          type: 'text-choice',
+          callSound: 'pon',
+          modeLabel: '鳴いた後の動き',
+          question: '「ポン！」や「チー！」をして相手の牌を1枚もらった直後、あなたがやることはどっち？',
+          subtext: '手牌の枚数が増えすぎないようにするルールです！',
+          boardTiles: ['5p', '6p', '7p'],
+          caption: '相手の牌をもらってブロックを作った直後',
+          options: [
+            { text: '⭕ 山からは引かず、そのまま手牌から不要な牌を1枚捨てる', correct: true },
+            { text: '❌ さらに山からも1枚ツモってくる', correct: false }
+          ],
+          explanation: 'その通り！「山から1枚引く代わり」に相手の捨て牌を1枚もらったので、そのまま手牌から不要な牌を1枚捨てて次の人に番が移ります。',
+          term: {
+            word: 'ツモ番スキップ',
+            reading: '鳴きの手順',
+            tiles: ['5p', '6p', '7p'],
+            desc: '誰かがポンすると、間の人の順番を飛ばしてポンした人の番になり、手牌から1枚捨てたらその右隣の人へ順番が進みます。'
+          }
+        },
+        {
+          id: 's6-7',
+          type: 'text-choice',
+          callSound: 'pon',
+          modeLabel: '優先順位クイズ！',
+          question: '捨てられた1枚の牌に対して、Aさんが「チー！」、Bさんが「ポン！」とほぼ同時に言いました。優先されるのはどっち？',
+          subtext: 'オンライン麻雀でも自動でこの優先順になります！',
+          boardTiles: ['3s', '3s', '3s'],
+          caption: '「ポン」と「チー」が重なった場面',
+          options: [
+            { text: '⭕ 「ポン」が優先される！（ロン ＞ ポン ＞ チーの順）', correct: true },
+            { text: '❌ 「チー」が優先される', correct: false }
+          ],
+          explanation: '大正解！優先順位は「①ロン（アガリ） ＞ ②ポン・カン ＞ ③チー」です。だからスマホ麻雀でチーボタンを押したのに他の人にポンされることがあるんですね！',
+          term: {
+            word: '発声の優先順位',
+            reading: 'ロン ＞ ポン ＞ チー',
+            tiles: ['3s', '3s', '3s'],
+            desc: '同じ捨て牌に複数の声がかかった場合、アガリである「ロン」が最優先、次に「ポン・カン」、一番最後が「チー」になります。'
+          }
+        },
+        {
+          id: 's6-8',
+          type: 'slot-fill',
+          callSound: 'kan',
+          modeLabel: '4枚集めてカン！',
+          question: '同じ牌がなんと4枚全部集まりました！［ ？ ］に4枚目の『8筒』をはめて豪快に「カン！」しよう！',
+          subtext: 'カンをすると「新しいドラ」が1枚増える特別な技です！',
+          slots: ['8p', '8p', '8p', '?'],
+          tileOptions: [
+            { tile: '8p', correct: true },
+            { tile: '7p', correct: false },
+            { tile: '9p', correct: false }
+          ],
+          explanation: 'カン！！同じ牌4枚を1つの3枚ブロック扱いにしつつ、ドラ表示牌が1枚新しくめくれて高得点のチャンスが広がります！',
+          term: {
+            word: 'カン（槓）',
+            reading: 'カン',
+            tiles: ['8p', '8p', '8p', '8p'],
+            desc: '同じ牌4枚を1組にする大技（槓子＝カンツ）。4枚使うので手牌が1枚減るぶん山から1枚補充し、全員のドラが1つ増えます！'
+          }
+        },
+        {
+          id: 's6-9',
+          type: 'text-choice',
+          callSound: 'ron',
+          modeLabel: '超入門・最終問題！',
+          question: 'すべて「2〜8の数牌（タンヤオ）」だけでまとまりそうな手牌です！早くアガるためにポン・チーして進めてもOK？',
+          subtext: 'ここまで学んだ知識の総仕上げです！',
+          boardTiles: ['2s', '3s', '4s', '0p', '5p', '5p'],
+          caption: '赤ドラ入りのタンヤオ手牌',
+          options: [
+            { text: '⭕ どんどん鳴いてOK！（喰いタンで素早くアガれる！）', correct: true },
+            { text: '❌ タンヤオは鳴くと消えるからダメ', correct: false }
+          ],
+          explanation: '全ステージ制覇レベルの大正解！！「役牌（白發中など）」と「タンヤオ」が確定している時は、ポン・チーして最速でアガるのが実戦でも最強の戦術です🎉',
+          term: {
+            word: '喰いタン',
+            reading: 'クイタン',
+            tiles: ['2s', '3s', '4s', '0p'],
+            desc: 'ポンやチー（鳴き）を使って素早く完成させるタンヤオのこと。スピード抜群で初心者が実戦で一番勝てる武器になります！'
+          }
         }
       ]
     };
@@ -1228,6 +2151,15 @@
       });
     }
 
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
     /**
      * アプリメインコントローラー
      */
@@ -1237,19 +2169,20 @@
       qIndex: 0,
       score: 0,
       answered: false,
-      scaffoldOn: true,
+      scaffoldOn: false, // ご要望によりデフォルトは補助輪OFF
       clearedStages: {},
+      modalTimer: null,
       gasExecUrl: 'https://script.google.com/macros/s/AKfycbzbNWhOLf_gQiEiOO0QUk0Apt2XFx_8XdWh3qaEiV4qHPg-t4QKvqAtXNOseGaSmn0O/exec',
 
       init() {
         this.loadState();
         this.setupLinks();
         this.renderStageCards();
+        this.populateGuideGlossary();
         lucide.createIcons();
       },
 
       setupLinks() {
-        // GAS環境（iframe内）で動いている場合はトップウィンドウ遷移に対応させる
         if (typeof google !== 'undefined' && google.script && google.script.run) {
           const applyUrl = (url) => {
             this.gasExecUrl = url;
@@ -1266,6 +2199,27 @@
             google.script.run.withSuccessHandler(u => { if (u) applyUrl(u); }).getWebAppUrl();
           }
         }
+      },
+
+      populateGuideGlossary() {
+        const box = document.getElementById('guideGlossaryList');
+        if (!box) return;
+        const seen = new Set();
+        const items = [];
+        Object.values(STAGE_QUESTIONS).forEach(list => {
+          list.forEach(q => {
+            if (q.term && !seen.has(q.term.word)) {
+              seen.add(q.term.word);
+              items.push(q.term);
+            }
+          });
+        });
+        box.innerHTML = items.map(t => `
+          <div class="bg-white p-2.5 rounded-lg border border-indigo-100">
+            <div class="font-bold text-indigo-900">${t.word} <span class="text-[10px] text-teal-700 font-normal">（${t.reading}）</span></div>
+            <div class="text-[11px] text-slate-600 mt-0.5 leading-snug">${t.desc}</div>
+          </div>
+        `).join('');
       },
 
       loadState() {
@@ -1311,7 +2265,7 @@
               <p class="text-xs text-slate-600 leading-relaxed">${st.desc}</p>
             </div>
             <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-teal-700 font-bold">
-              <span>${STAGE_QUESTIONS[st.key].length}問でサクッと遊ぶ</span>
+              <span>全${STAGE_QUESTIONS[st.key].length}問で遊ぶ</span>
               <i data-lucide="chevron-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
             </div>
           `;
@@ -1324,6 +2278,7 @@
       },
 
       showHome() {
+        this.closeResultModal();
         document.getElementById('homeView').classList.remove('hidden');
         document.getElementById('playView').classList.add('hidden');
         document.getElementById('clearView').classList.add('hidden');
@@ -1331,8 +2286,14 @@
       },
 
       startStage(stageKey) {
+        this.closeResultModal();
         this.currentStageKey = stageKey;
-        this.questions = [...(STAGE_QUESTIONS[stageKey] || STAGE_QUESTIONS.stage1)];
+        if (stageKey === 'random5') {
+          const allPool = Object.values(STAGE_QUESTIONS).flat();
+          this.questions = shuffleArray(allPool).slice(0, 5);
+        } else {
+          this.questions = [...(STAGE_QUESTIONS[stageKey] || STAGE_QUESTIONS.stage1)];
+        }
         this.qIndex = 0;
         this.score = 0;
 
@@ -1341,21 +2302,30 @@
         document.getElementById('playView').classList.remove('hidden');
 
         const meta = STAGES_META.find(s => s.key === stageKey);
-        document.getElementById('stageBadge').textContent = meta ? `${meta.num}: ${meta.title}` : stageKey;
+        document.getElementById('stageBadge').textContent = meta
+          ? `${meta.num}: ${meta.title}`
+          : '🎲 ランダム5問特訓';
         document.getElementById('qTotal').textContent = this.questions.length;
 
         this.renderQuestion();
       },
 
       renderQuestion() {
+        if (this.modalTimer) {
+          clearTimeout(this.modalTimer);
+          this.modalTimer = null;
+        }
+        this.closeResultModal();
+
         const q = this.questions[this.qIndex];
         if (!q) {
           this.showStageClear();
           return;
         }
         this.answered = false;
+        // デフォルトは常に補助輪OFF（問題ごとに設定があれば従うが基本false）
         if (q.type === 'scaffold-wait') {
-          this.scaffoldOn = q.defaultScaffold !== false;
+          this.scaffoldOn = Boolean(q.defaultScaffold);
         }
 
         document.getElementById('qCurrent').textContent = this.qIndex + 1;
@@ -1368,7 +2338,6 @@
         document.getElementById('feedbackCard').classList.add('hidden');
         document.getElementById('discardedPreview').classList.add('hidden');
 
-        // 河（捨て牌）表示
         const riverArea = document.getElementById('riverArea');
         const riverTiles = document.getElementById('riverTiles');
         if (q.river && q.river.length > 0) {
@@ -1380,7 +2349,6 @@
           riverArea.classList.add('hidden');
         }
 
-        // 補助輪バーの表示制御
         const scaffoldBar = document.getElementById('scaffoldBar');
         if (q.type === 'scaffold-wait') {
           scaffoldBar.classList.remove('hidden');
@@ -1399,10 +2367,10 @@
         if (!btn) return;
         if (this.scaffoldOn) {
           btn.className = 'text-xs font-bold px-3 py-1 rounded-full bg-amber-400 text-slate-900 transition shadow';
-          btn.textContent = '🚲 補助輪 ON（ブロック区切り中）';
+          btn.textContent = '🚲 補助輪 ON（ブロック区切り中・タップでOFF）';
         } else {
-          btn.className = 'text-xs font-bold px-3 py-1 rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/30 transition';
-          btn.textContent = '🚲 補助輪 OFF（実戦の並び・タップでON）';
+          btn.className = 'text-xs font-bold px-3 py-1 rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/35 transition';
+          btn.textContent = '🚲 補助輪 OFF（タップで区切り表示！）';
         }
       },
 
@@ -1439,7 +2407,7 @@
           q.blocks.forEach(b => flat.push(...b.tiles));
           const sorted = sortTiles(flat);
           row.innerHTML = sorted.map(t => TileRenderer.render(t)).join('');
-          cap.textContent = '実戦と同じ13枚並び（迷ったら上の『補助輪』ボタンを押してみよう！）';
+          cap.textContent = '実戦と同じ13枚並び（迷ったら上の『🚲 補助輪』ボタンを押してみよう！）';
         }
       },
 
@@ -1453,29 +2421,29 @@
 
         // 1) tile-choice: 大きな牌3択
         if (q.type === 'tile-choice') {
-          row.innerHTML = `<div class="text-teal-100 text-sm sm:text-base font-bold py-3 px-4 rounded-xl bg-white/10 border border-white/15">👇 下の大きな牌から正解をタップ！</div>`;
+          row.innerHTML = '<div class="text-teal-100 text-xs sm:text-base font-bold py-3 px-4 rounded-xl bg-white/10 border border-white/15">👇 下の大きな牌から正解をタップ！</div>';
           cap.textContent = q.boardNote || '';
 
           const grid = document.createElement('div');
           grid.className = 'grid grid-cols-3 gap-3 my-2';
           q.tileOptions.forEach(opt => {
             const btn = document.createElement('button');
-            btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-4 shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-2';
+            btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-3.5 sm:p-4 shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-2';
             btn.innerHTML = `
               ${TileRenderer.render(opt.tile, { large: true })}
               ${opt.label ? `<span class="text-xs font-bold text-slate-600">${opt.label}</span>` : ''}
             `;
-            btn.onclick = () => this.submitChoice(opt.correct, btn, q);
+            btn.onclick = () => this.submitChoice(opt.correct, btn, q, 80);
             grid.appendChild(btn);
           });
           ans.appendChild(grid);
           return;
         }
 
-        // 2) slot-fill: [2p] [3p] [ ? ] 穴埋めパズル
+        // 2) slot-fill: [2p] [3p] [ ? ] または [8p][8p][8p][?] 穴埋めパズル
         if (q.type === 'slot-fill') {
           row.innerHTML = q.slots.map(s => {
-            if (s === '?') return `<div id="activeEmptySlot" class="mj-slot-empty">？</div>`;
+            if (s === '?') return '<div id="activeEmptySlot" class="mj-slot-empty">？</div>';
             return TileRenderer.render(s, { large: true });
           }).join('');
           cap.textContent = '［ ？ ］にはまる牌を下の候補からタップ！';
@@ -1497,7 +2465,7 @@
                   slotEl.outerHTML = `<div class="animate-pop-in inline-block">${TileRenderer.render(opt.tile, { large: true, badge: '完成!' })}</div>`;
                 }
               }
-              this.submitChoice(opt.correct, btn, q);
+              this.submitChoice(opt.correct, btn, q, 260);
             };
             grid.appendChild(btn);
           });
@@ -1559,7 +2527,7 @@
             <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs flex items-center justify-center font-mono border border-slate-200 flex-shrink-0">${i + 1}</span>
             <span class="text-sm sm:text-base flex-1 text-left leading-snug">${opt.text}</span>
           `;
-          btn.onclick = () => this.submitChoice(opt.correct, btn, q);
+          btn.onclick = () => this.submitChoice(opt.correct, btn, q, 80);
           grid.appendChild(btn);
         });
         container.appendChild(grid);
@@ -1570,7 +2538,6 @@
         const isCorrect = q.correctTiles.includes(tile);
 
         if (isCorrect && q.type === 'discard-8') {
-          // 捨てた牌を半透明縮小させ、テンパイ完成表示を出す
           tileWrapperEl.classList.add('opacity-25', 'scale-75');
           const prev = document.getElementById('discardedPreview');
           prev.classList.remove('hidden');
@@ -1581,12 +2548,39 @@
           tileWrapperEl.classList.add('ring-4', 'ring-emerald-400', 'rounded-lg');
         }
 
-        this.submitChoice(isCorrect, null, q);
+        this.submitChoice(isCorrect, null, q, 280);
       },
 
-      submitChoice(isCorrect, btnEl, q) {
+      replayCurrentCall() {
+        const q = this.questions[this.qIndex];
+        Sound.playCall((q && q.callSound) ? q.callSound : 'ron');
+      },
+
+      openResultModal() {
+        const modal = document.getElementById('resultTermModal');
+        if (modal) modal.classList.remove('hidden');
+      },
+
+      closeResultModal() {
+        const modal = document.getElementById('resultTermModal');
+        if (modal) modal.classList.add('hidden');
+      },
+
+      submitChoice(isCorrect, btnEl, q, popupDelayMs = 100) {
         if (this.answered) return;
         this.answered = true;
+
+        const callType = q.callSound || 'ron';
+        const callLabel = Sound.getCallLabel(callType);
+
+        // iOS Safari等で確実に音声再生されるよう、タップイベント内で同期的に発声！
+        if (isCorrect) {
+          this.score++;
+          Sound.playCall(callType);
+          confetti({ particleCount: 35, spread: 55, origin: { y: 0.72 } });
+        } else {
+          Sound.softBuzz();
+        }
 
         const ans = document.getElementById('answerArea');
         ans.classList.add('pointer-events-none');
@@ -1600,34 +2594,77 @@
           }
         }
 
+        // 1) 盤面確認用のインラインカードも更新しておく（「盤面を見る」押下時に便利）
         const fb = document.getElementById('feedbackCard');
         const badge = document.getElementById('fbBadge');
         const title = document.getElementById('fbTitle');
         const body = document.getElementById('fbBody');
 
         if (isCorrect) {
-          this.score++;
-          Sound.chime();
-          confetti({ particleCount: 35, spread: 55, origin: { y: 0.72 } });
           fb.className = 'rounded-2xl p-4 shadow-lg border-2 border-emerald-500 bg-emerald-50 text-emerald-950 animate-pop-in';
           badge.className = 'w-10 h-10 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center text-xl flex-shrink-0 font-bold';
           badge.textContent = '⭕';
-          title.textContent = '大正解！バッチリです！';
+          title.textContent = `大正解！（${callLabel}）`;
         } else {
-          Sound.softBuzz();
           fb.className = 'rounded-2xl p-4 shadow-lg border-2 border-amber-400 bg-amber-50 text-amber-950 animate-pop-in';
           badge.className = 'w-10 h-10 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center text-xl flex-shrink-0 font-bold';
           badge.textContent = '💡';
           title.textContent = 'おしい！ここだけ押さえればOK！';
         }
-
         body.textContent = q.explanation;
         fb.classList.remove('hidden');
         ans.classList.remove('pointer-events-none');
+
+        // 2) ポップアップモーダル（解説＋関連麻雀用語カード）の内容をセット
+        const mHeader = document.getElementById('modalHeaderBar');
+        const mIcon = document.getElementById('modalStatusIcon');
+        const mTitle = document.getElementById('modalStatusTitle');
+        const mStamp = document.getElementById('modalCallStamp');
+        const mExp = document.getElementById('modalExplanation');
+        const mWord = document.getElementById('modalTermWord');
+        const mReading = document.getElementById('modalTermReading');
+        const mTiles = document.getElementById('modalTermTiles');
+        const mDesc = document.getElementById('modalTermDesc');
+        const mReplayBtn = document.getElementById('modalReplayVoiceBtn');
+        const mNextText = document.getElementById('modalNextBtnText');
+
+        if (isCorrect) {
+          mHeader.className = 'px-4 py-3.5 flex items-center justify-between gap-2 bg-gradient-to-r from-emerald-600 to-teal-700 text-white';
+          mIcon.textContent = '⭕';
+          mTitle.textContent = '大正解！バッチリです！';
+          mStamp.textContent = `🀄 ${callLabel}`;
+          mStamp.classList.remove('hidden');
+        } else {
+          mHeader.className = 'px-4 py-3.5 flex items-center justify-between gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white';
+          mIcon.textContent = '💡';
+          mTitle.textContent = 'おしい！ここだけ押さえよう！';
+          mStamp.classList.add('hidden');
+        }
+
+        mExp.textContent = q.explanation;
+        if (q.term) {
+          mWord.textContent = q.term.word;
+          mReading.textContent = q.term.reading;
+          mDesc.textContent = q.term.desc;
+          mTiles.innerHTML = (q.term.tiles || []).map(t => TileRenderer.render(t)).join('');
+        }
+        if (mReplayBtn) {
+          mReplayBtn.innerHTML = `<span>🔊 「${callLabel}」を聞く</span>`;
+        }
+        const isLast = (this.qIndex + 1 >= this.questions.length);
+        if (mNextText) {
+          mNextText.textContent = isLast ? 'ステージ結果を見る 🎉' : '次の問題へすすむ';
+        }
+
         lucide.createIcons();
+
+        this.modalTimer = setTimeout(() => {
+          this.openResultModal();
+        }, popupDelayMs);
       },
 
       nextQuestion() {
+        this.closeResultModal();
         this.qIndex++;
         if (this.qIndex >= this.questions.length) {
           this.showStageClear();
@@ -1637,21 +2674,24 @@
       },
 
       showStageClear() {
+        this.closeResultModal();
         document.getElementById('playView').classList.add('hidden');
         document.getElementById('clearView').classList.remove('hidden');
 
-        this.clearedStages[this.currentStageKey] = true;
-        this.saveState();
+        if (this.currentStageKey !== 'random5') {
+          this.clearedStages[this.currentStageKey] = true;
+          this.saveState();
+        }
 
         const total = this.questions.length;
         const acc = Math.round((this.score / total) * 100);
 
         const currentIdx = STAGES_META.findIndex(s => s.key === this.currentStageKey);
-        const currentMeta = STAGES_META[currentIdx];
-        const nextMeta = STAGES_META[currentIdx + 1] || null;
+        const currentMeta = currentIdx >= 0 ? STAGES_META[currentIdx] : null;
+        const nextMeta = (currentIdx >= 0 && STAGES_META[currentIdx + 1]) ? STAGES_META[currentIdx + 1] : null;
 
-        document.getElementById('clearStageLabel').textContent = `${currentMeta.num} クリア！`;
-        document.getElementById('clearTitle').textContent = `${currentMeta.icon} ${currentMeta.title} 完了！`;
+        document.getElementById('clearStageLabel').textContent = currentMeta ? `${currentMeta.num} クリア！` : 'ランダム5問 完了！';
+        document.getElementById('clearTitle').textContent = currentMeta ? `${currentMeta.icon} ${currentMeta.title} 完了！` : '🎲 ランダム5問特訓 完了！';
         document.getElementById('clearScore').textContent = this.score;
         document.getElementById('clearTotal').textContent = total;
         document.getElementById('clearAccuracy').textContent = `${acc}%`;
@@ -1662,7 +2702,17 @@
         const actEl = document.getElementById('clearActions');
         actEl.innerHTML = '';
 
-        if (nextMeta) {
+        if (this.currentStageKey === 'random5') {
+          msgEl.textContent = 'ランダムおさらい完了！何度でも違う組み合わせで麻雀用語と形を復習できます！';
+          actEl.innerHTML = `
+            <button onclick="app.startStage('random5')" class="w-full bg-teal-700 hover:bg-teal-600 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm sm:text-base">
+              <span>🎲 別のランダム5問に挑戦！</span>
+            </button>
+            <button onclick="app.showHome()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-xs sm:text-sm">
+              ステージ一覧にもどる
+            </button>
+          `;
+        } else if (nextMeta) {
           msgEl.textContent = `素晴らしいペースです！次は「${nextMeta.num}：${nextMeta.title}」に進んでみましょう！`;
           actEl.innerHTML = `
             <button onclick="app.startStage('${nextMeta.key}')" class="w-full bg-teal-700 hover:bg-teal-600 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm sm:text-base">
@@ -1677,7 +2727,7 @@
             </button>
           `;
         } else {
-          msgEl.textContent = '全5ステージ制覇おめでとうございます！！これで14枚の手牌も怖くありません。次は『麻雀トレーニングボード』で役と点数にチャレンジしましょう！';
+          msgEl.textContent = '全6ステージ（53問）制覇おめでとうございます！！これで手牌の形・鳴き・麻雀用語はバッチリです。次は『麻雀トレーニングボード』で役と点数にチャレンジしましょう！';
           const isGas = (typeof google !== 'undefined' && google.script && google.script.run);
           const mainHref = isGas ? this.gasExecUrl : './index.html';
           const targetAttr = isGas ? 'target="_top"' : '';
@@ -1686,6 +2736,9 @@
               <span>🎓 『麻雀トレーニングボード』へ進む！</span>
               <i data-lucide="external-link" class="w-4 h-4"></i>
             </a>
+            <button onclick="app.startStage('random5')" class="w-full bg-teal-700 hover:bg-teal-600 text-white font-bold py-3 rounded-xl shadow transition text-xs sm:text-sm">
+              🎲 全53問ランダム特訓で遊ぶ
+            </button>
             <button onclick="app.showHome()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-xs sm:text-sm">
               ステージ一覧にもどる
             </button>
@@ -1703,10 +2756,13 @@
 
       toggleSound() {
         Sound.enabled = !Sound.enabled;
+        if (!Sound.enabled && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
         const btn = document.getElementById('soundToggleBtn');
         btn.innerHTML = Sound.enabled
-          ? `<i data-lucide="volume-2" class="w-5 h-5"></i>`
-          : `<i data-lucide="volume-x" class="w-5 h-5 text-rose-300"></i>`;
+          ? '<i data-lucide="volume-2" class="w-5 h-5"></i>'
+          : '<i data-lucide="volume-x" class="w-5 h-5 text-rose-300"></i>';
         lucide.createIcons();
       }
     };

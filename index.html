@@ -590,6 +590,19 @@
         
         <!-- タブ1: 鳴きOK / NG -->
         <div id="tabNaki" class="space-y-4">
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3">
+            <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-1.5 text-xs sm:text-sm">
+              <span>🔊</span>
+              <span>麻雀の5大発声サウンド（タップで試聴）</span>
+            </h4>
+            <div class="grid grid-cols-5 gap-1.5 text-center">
+              <button onclick="SoundManager.playCall('pon')" class="bg-white hover:bg-emerald-50 active:scale-95 border border-slate-300 rounded-lg py-2 font-bold text-xs text-emerald-900 shadow-sm">ポン！</button>
+              <button onclick="SoundManager.playCall('chi')" class="bg-white hover:bg-emerald-50 active:scale-95 border border-slate-300 rounded-lg py-2 font-bold text-xs text-emerald-900 shadow-sm">チー！</button>
+              <button onclick="SoundManager.playCall('kan')" class="bg-white hover:bg-emerald-50 active:scale-95 border border-slate-300 rounded-lg py-2 font-bold text-xs text-emerald-900 shadow-sm">カン！</button>
+              <button onclick="SoundManager.playCall('tsumo')" class="bg-white hover:bg-amber-50 active:scale-95 border border-amber-300 rounded-lg py-2 font-bold text-xs text-amber-900 shadow-sm">ツモ！</button>
+              <button onclick="SoundManager.playCall('ron')" class="bg-white hover:bg-rose-50 active:scale-95 border border-rose-300 rounded-lg py-2 font-bold text-xs text-rose-900 shadow-sm">ロン！</button>
+            </div>
+          </div>
           <div class="bg-rose-50 border border-rose-200 rounded-xl p-3.5">
             <h4 class="font-bold text-rose-800 flex items-center gap-1.5 mb-2 text-sm">
               <span class="bg-rose-600 text-white text-xs px-1.5 py-0.5 rounded">絶対NG</span>
@@ -1115,76 +1128,171 @@
     };
 
     /**
-     * サウンドマネージャー (Web Audio API)
+     * 本格麻雀サウンド＆発声マネージャー（ポン・チー・カン・ツモ・ロン対応）
      */
     const SoundManager = {
       enabled: true,
       ctx: null,
+      jaVoice: null,
 
       init() {
         if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
           this.ctx = new (window.AudioContext || window.webkitAudioContext)();
         }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume().catch(() => {});
+        }
+        this.loadVoice();
+      },
+
+      loadVoice() {
+        if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+        const voices = window.speechSynthesis.getVoices();
+        if (voices && voices.length > 0) {
+          this.jaVoice =
+            voices.find(v => v.lang === 'ja-JP' && /Kyoko|Otoya|Google|Siri|Haruka|Ichiro/i.test(v.name)) ||
+            voices.find(v => v.lang && v.lang.startsWith('ja')) ||
+            null;
+        }
+      },
+
+      tileSlam(intensity = 1.0, delay = 0) {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const t = this.ctx.currentTime + delay;
+
+        const bufferSize = Math.max(1, Math.floor(this.ctx.sampleRate * 0.045));
+        const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.28));
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = noiseBuffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(2400, t);
+        filter.Q.setValueAtTime(1.4, t);
+
+        const nGain = this.ctx.createGain();
+        nGain.gain.setValueAtTime(0.55 * intensity, t);
+        nGain.gain.exponentialRampToValueAtTime(0.01, t + 0.045);
+
+        noise.connect(filter);
+        filter.connect(nGain);
+        nGain.connect(this.ctx.destination);
+        noise.start(t);
+
+        const osc = this.ctx.createOscillator();
+        const oGain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(520 * intensity + 220, t);
+        osc.frequency.exponentialRampToValueAtTime(135, t + 0.055);
+        oGain.gain.setValueAtTime(0.4 * intensity, t);
+        oGain.gain.exponentialRampToValueAtTime(0.008, t + 0.055);
+        osc.connect(oGain);
+        oGain.connect(this.ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.06);
       },
 
       playTile() {
-        if (!this.enabled) return;
-        this.init();
-        if (!this.ctx) return;
-
-        // 牌の「カチャッ」という軽快なウッド/アクリル打音
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(600, this.ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(150, this.ctx.currentTime + 0.05);
-
-        gain.gain.setValueAtTime(0.4, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.05);
-
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start();
-        osc.stop(this.ctx.currentTime + 0.05);
+        this.tileSlam(0.75, 0);
       },
 
-      playCorrect() {
+      playCall(type = 'ron') {
         if (!this.enabled) return;
         this.init();
-        if (!this.ctx) return;
 
-        // 明るいチャイム (C5 -> E5 -> G5)
-        const notes = [523.25, 659.25, 783.99];
-        notes.forEach((freq, idx) => {
-          const osc = this.ctx.createOscillator();
-          const gain = this.ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.value = freq;
+        const callMap = {
+          pon:   { text: 'ポン！', rate: 1.32, pitch: 1.15, notes: [587.33, 783.99] },
+          chi:   { text: 'チー！', rate: 1.28, pitch: 1.18, notes: [523.25, 659.25, 783.99] },
+          kan:   { text: 'カン！', rate: 1.28, pitch: 1.04, notes: [392.00, 587.33, 783.99] },
+          tsumo: { text: 'ツモ！', rate: 1.26, pitch: 1.16, notes: [523.25, 659.25, 783.99, 1046.50] },
+          ron:   { text: 'ロン！', rate: 1.24, pitch: 1.10, notes: [440.00, 554.37, 659.25, 880.00] }
+        };
+        const cfg = callMap[type] || callMap.ron;
 
-          const start = this.ctx.currentTime + idx * 0.09;
-          gain.gain.setValueAtTime(0.3, start);
-          gain.gain.exponentialRampToValueAtTime(0.001, start + 0.25);
+        if (type === 'chi') {
+          this.tileSlam(0.8, 0);
+          this.tileSlam(1.0, 0.065);
+        } else if (type === 'pon') {
+          this.tileSlam(1.1, 0);
+          this.tileSlam(0.9, 0.055);
+        } else if (type === 'kan') {
+          this.tileSlam(1.25, 0);
+          this.tileSlam(1.05, 0.05);
+          this.tileSlam(1.25, 0.10);
+        } else {
+          this.tileSlam(1.3, 0);
+        }
 
-          osc.connect(gain);
-          gain.connect(this.ctx.destination);
-          osc.start(start);
-          osc.stop(start + 0.25);
-        });
+        if (this.ctx) {
+          cfg.notes.forEach((f, i) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = (type === 'ron' || type === 'kan') ? 'triangle' : 'sine';
+            osc.frequency.value = f;
+            const t = this.ctx.currentTime + 0.035 + i * 0.06;
+            gain.gain.setValueAtTime(0.16, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.24);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(t);
+            osc.stop(t + 0.25);
+          });
+        }
+
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+          try {
+            window.speechSynthesis.cancel();
+            if (!this.jaVoice) this.loadVoice();
+            const utter = new SpeechSynthesisUtterance(cfg.text);
+            utter.lang = 'ja-JP';
+            if (this.jaVoice) utter.voice = this.jaVoice;
+            utter.rate = cfg.rate;
+            utter.pitch = cfg.pitch;
+            utter.volume = 1.0;
+            window.speechSynthesis.speak(utter);
+          } catch (e) {}
+        }
+      },
+
+      playCorrect(q) {
+        if (!q) {
+          this.playCall('ron');
+          return;
+        }
+        if (q.isNakiCheck) {
+          const okOpt = (q.options || []).find(o => o.correct);
+          if (okOpt && okOpt.text.includes('鳴いちゃダメ')) {
+            this.playCall('tsumo');
+          } else {
+            const isChi = q.question && q.question.includes('チー');
+            this.playCall(isChi ? 'chi' : 'pon');
+          }
+        } else if (q.isRon === false) {
+          this.playCall('tsumo');
+        } else {
+          this.playCall('ron');
+        }
       },
 
       playWrong() {
         if (!this.enabled) return;
         this.init();
+        this.tileSlam(0.55, 0);
         if (!this.ctx) return;
 
-        // 優しい低音ポロン (F3)
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
         osc.frequency.setValueAtTime(180, this.ctx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(140, this.ctx.currentTime + 0.2);
 
-        gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0.22, this.ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.2);
 
         osc.connect(gain);
@@ -1193,6 +1301,10 @@
         osc.stop(this.ctx.currentTime + 0.2);
       }
     };
+
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => SoundManager.loadVoice();
+    }
 
     /**
      * クイズデータベース
@@ -1874,8 +1986,8 @@
         const fbExp = document.getElementById('feedbackExplanation');
 
         if (selectedOpt.correct) {
-          // 正解
-          SoundManager.playCorrect();
+          // 正解（状況に応じたポン・チー・ツモ・ロン発声！）
+          SoundManager.playCorrect(q);
           this.score++;
           this.stats.totalCorrect++;
           this.stats.streak++;
@@ -2029,6 +2141,9 @@
       // サウンドトグル
       toggleSound() {
         SoundManager.enabled = !SoundManager.enabled;
+        if (!SoundManager.enabled && typeof window !== 'undefined' && 'speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
         const btn = document.getElementById('soundToggleBtn');
         if (SoundManager.enabled) {
           btn.innerHTML = `<i data-lucide="volume-2" class="w-5 h-5"></i>`;
