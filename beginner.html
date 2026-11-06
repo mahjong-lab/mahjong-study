@@ -65,22 +65,46 @@
 
     @media (max-width: 640px) {
       .mj-tile {
-        width: 25px;
-        height: 36px;
-        border-radius: 3.5px;
-        border-bottom-width: 2.5px;
-      }
-    }
-    @media (max-width: 380px) {
-      .mj-tile {
-        width: 22px;
-        height: 32px;
+        width: 21px;
+        height: 30px;
         border-radius: 3px;
         border-bottom-width: 2px;
       }
     }
+    @media (max-width: 380px) {
+      .mj-tile {
+        width: 19px;
+        height: 27px;
+        border-radius: 2.5px;
+        border-bottom-width: 2px;
+      }
+    }
 
-    /* 少枚数ステージ用の特大牌（Stage 1〜3） */
+    /* 6〜8枚ステージ用の中大牌（Stage 3: 8枚ミニ麻雀など・スマホで見切れず1列に収まるサイズ） */
+    .mj-tile-md {
+      width: 48px !important;
+      height: 67px !important;
+      border-radius: 6px !important;
+      border-bottom-width: 4px !important;
+    }
+    @media (max-width: 640px) {
+      .mj-tile-md {
+        width: 34px !important;
+        height: 48px !important;
+        border-radius: 4.5px !important;
+        border-bottom-width: 3px !important;
+      }
+    }
+    @media (max-width: 380px) {
+      .mj-tile-md {
+        width: 31px !important;
+        height: 44px !important;
+        border-radius: 4px !important;
+        border-bottom-width: 2.5px !important;
+      }
+    }
+
+    /* 少枚数（1〜5枚）ステージ用の特大牌（Stage 1〜2） */
     .mj-tile-lg {
       width: 54px !important;
       height: 75px !important;
@@ -89,9 +113,9 @@
     }
     @media (max-width: 640px) {
       .mj-tile-lg {
-        width: 38px !important;
-        height: 53px !important;
-        border-radius: 5px !important;
+        width: 42px !important;
+        height: 58px !important;
+        border-radius: 5.5px !important;
         border-bottom-width: 3.5px !important;
       }
     }
@@ -167,25 +191,25 @@
 
   <!-- ヘッダー -->
   <header class="bg-gradient-to-r from-teal-800 via-teal-700 to-emerald-800 text-white shadow-md sticky top-0 z-30">
-    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center space-x-2.5 cursor-pointer" onclick="app.showHome()">
-        <span class="text-2xl filter drop-shadow">🧩</span>
-        <div>
-          <h1 class="text-base sm:text-lg font-bold tracking-tight font-serif flex items-center gap-1.5">
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 cursor-pointer min-w-0" onclick="app.showHome()">
+        <span class="text-xl sm:text-2xl filter drop-shadow flex-shrink-0">🧩</span>
+        <div class="min-w-0">
+          <h1 class="text-[15px] sm:text-lg font-bold tracking-tight font-serif flex items-center gap-1.5 whitespace-nowrap">
             <span>麻雀ファーストステップ</span>
-            <span class="text-[11px] bg-amber-400/25 text-amber-200 font-sans px-2 py-0.5 rounded-full border border-amber-300/40 font-normal">超入門パズル</span>
+            <span class="hidden sm:inline-block text-[11px] bg-amber-400/25 text-amber-200 font-sans px-2 py-0.5 rounded-full border border-amber-300/40 font-normal whitespace-nowrap">超入門パズル</span>
           </h1>
-          <p class="text-[11px] text-teal-100/90">14枚見なくて大丈夫！触って覚える基礎パズル</p>
+          <p class="text-[10px] sm:text-[11px] text-teal-100/90 truncate">14枚見なくて大丈夫！触って覚える基礎パズル</p>
         </div>
       </div>
 
-      <div class="flex items-center space-x-2">
-        <button id="soundToggleBtn" onclick="app.toggleSound()" class="p-2 rounded-full hover:bg-white/10 text-teal-100 transition" title="効果音のON/OFF">
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <button id="soundToggleBtn" onclick="app.toggleSound()" class="p-1.5 sm:p-2 rounded-full hover:bg-white/10 text-teal-100 transition" title="効果音のON/OFF">
           <i data-lucide="volume-2" class="w-5 h-5"></i>
         </button>
 
-        <button onclick="app.openGuide()" class="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-3 py-1.5 rounded-lg shadow transition transform active:scale-95 text-xs sm:text-sm">
-          <i data-lucide="help-circle" class="w-4 h-4"></i>
+        <button onclick="app.openGuide()" class="flex items-center gap-1 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-2.5 sm:px-3 py-1.5 rounded-lg shadow transition transform active:scale-95 text-xs sm:text-sm whitespace-nowrap">
+          <i data-lucide="help-circle" class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"></i>
           <span>基礎メモ 📖</span>
         </button>
       </div>
@@ -193,7 +217,7 @@
   </header>
 
   <!-- メイン領域 -->
-  <main class="flex-1 max-w-4xl w-full mx-auto p-3 sm:p-5 flex flex-col">
+  <main class="flex-1 max-w-4xl w-full mx-auto p-2.5 sm:p-5 pb-16 flex flex-col">
 
     <!-- 1. ホーム画面 -->
     <section id="homeView" class="space-y-5">
@@ -280,7 +304,7 @@
       </div>
 
       <!-- メインボード -->
-      <div class="bg-gradient-to-b from-boardMain to-boardDark text-white rounded-2xl p-4 sm:p-6 shadow-xl border-4 border-teal-950 relative overflow-hidden">
+      <div class="bg-gradient-to-b from-boardMain to-boardDark text-white rounded-2xl p-3 sm:p-6 shadow-xl border-4 border-teal-950 relative overflow-hidden">
 
         <!-- 補助輪トグルバー（Stage 4等で表示） -->
         <div id="scaffoldBar" class="hidden mb-3 pb-2.5 border-b border-white/15 flex flex-wrap items-center justify-between gap-2">
@@ -315,9 +339,9 @@
           <div id="riverTiles" class="flex items-center gap-1.5 flex-wrap"></div>
         </div>
 
-        <!-- 牌表示ステージエリア -->
-        <div id="boardStageArea" class="bg-black/25 rounded-xl p-4 sm:p-5 border border-white/10 min-h-[115px] flex flex-col items-center justify-center overflow-x-auto">
-          <div id="boardTilesRow" class="flex items-center justify-center gap-1.5 flex-nowrap py-1"></div>
+        <!-- 牌表示ステージエリア（items-centerを外し、左右見切れを完全防止） -->
+        <div id="boardStageArea" class="bg-black/25 rounded-xl px-2 py-3.5 sm:p-5 border border-white/10 min-h-[110px] flex flex-col justify-center overflow-x-auto">
+          <div id="boardTilesRow" class="flex items-center justify-center gap-1.5 flex-nowrap py-1 w-max mx-auto"></div>
           <div id="boardHelperCaption" class="text-[11px] text-amber-200/90 mt-2.5 text-center font-medium"></div>
         </div>
 
@@ -462,12 +486,14 @@
     const TileRenderer = {
       render(tileCode, options = {}) {
         const isLarge = options.large || false;
+        const isMedium = options.medium || false;
         const interactive = options.interactive || false;
         const badge = options.badge || '';
         const highlight = options.highlight || false;
 
         let cls = 'mj-tile';
         if (isLarge) cls += ' mj-tile-lg';
+        else if (isMedium) cls += ' mj-tile-md';
         if (interactive) cls += ' mj-tile-interactive';
         if (highlight) cls += ' ring-2 ring-rose-500';
 
@@ -1395,7 +1421,7 @@
         row.innerHTML = '';
 
         if (this.scaffoldOn) {
-          row.className = 'flex items-center justify-center flex-wrap gap-1 py-1';
+          row.className = 'flex items-center justify-center flex-wrap gap-1 py-1 w-full';
           q.blocks.forEach(b => {
             const div = document.createElement('div');
             div.className = `scaffold-block ${b.isWait ? 'scaffold-block-wait' : ''}`;
@@ -1408,7 +1434,7 @@
           });
           cap.textContent = '💡 黄色い枠のパーツに注目！';
         } else {
-          row.className = 'flex items-center justify-center flex-nowrap gap-0.5 py-2';
+          row.className = 'flex items-center justify-center flex-nowrap gap-[2px] sm:gap-1 py-2 w-max mx-auto';
           const flat = [];
           q.blocks.forEach(b => flat.push(...b.tiles));
           const sorted = sortTiles(flat);
@@ -1423,7 +1449,7 @@
         const ans = document.getElementById('answerArea');
         row.innerHTML = '';
         ans.innerHTML = '';
-        row.className = 'flex items-center justify-center gap-2 flex-nowrap py-1';
+        row.className = 'flex items-center justify-center gap-1.5 sm:gap-2 flex-nowrap py-1 w-max mx-auto';
 
         // 1) tile-choice: 大きな牌3択
         if (q.type === 'tile-choice') {
@@ -1481,10 +1507,16 @@
 
         // 3) tap-hand / discard-8: 並んでいる手牌そのものを直接タップ
         if (q.type === 'tap-hand' || q.type === 'discard-8') {
+          const useMedium = q.hand.length >= 6;
+          row.className = `flex items-center justify-center ${useMedium ? 'gap-1 sm:gap-2' : 'gap-1.5 sm:gap-2'} flex-nowrap py-1 w-max mx-auto`;
           q.hand.forEach((tile, idx) => {
             const wrap = document.createElement('div');
             wrap.className = 'inline-block';
-            wrap.innerHTML = TileRenderer.render(tile, { large: true, interactive: true });
+            wrap.innerHTML = TileRenderer.render(tile, {
+              large: !useMedium,
+              medium: useMedium,
+              interactive: true
+            });
             wrap.onclick = () => this.handleHandTileTap(tile, idx, wrap, q);
             row.appendChild(wrap);
           });
@@ -1500,7 +1532,10 @@
 
         // 4) text-choice: ボードに参考牌＋下に2〜3択ボタン
         if (q.type === 'text-choice') {
-          row.innerHTML = (q.boardTiles || []).map(t => TileRenderer.render(t, { large: true })).join('');
+          const tiles = q.boardTiles || [];
+          const useMedium = tiles.length >= 6;
+          row.className = `flex items-center justify-center ${useMedium ? 'gap-1 sm:gap-2' : 'gap-1.5 sm:gap-2'} flex-nowrap py-1 w-max mx-auto`;
+          row.innerHTML = tiles.map(t => TileRenderer.render(t, { large: !useMedium, medium: useMedium })).join('');
           cap.textContent = q.caption || '';
           this.renderTextOptions(q, ans);
           return;
@@ -1519,10 +1554,10 @@
         grid.className = `grid grid-cols-1 ${q.options.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-2.5 my-2`;
         q.options.forEach((opt, i) => {
           const btn = document.createElement('button');
-          btn.className = 'w-full p-4 rounded-xl bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 font-bold text-slate-800 shadow-sm transition text-left sm:text-center flex items-center justify-between sm:justify-center gap-2.5';
+          btn.className = 'w-full px-4 py-3.5 rounded-xl bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 font-bold text-slate-800 shadow-sm transition text-left flex items-center justify-start gap-3';
           btn.innerHTML = `
             <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs flex items-center justify-center font-mono border border-slate-200 flex-shrink-0">${i + 1}</span>
-            <span class="text-sm sm:text-base">${opt.text}</span>
+            <span class="text-sm sm:text-base flex-1 text-left leading-snug">${opt.text}</span>
           `;
           btn.onclick = () => this.submitChoice(opt.correct, btn, q);
           grid.appendChild(btn);
