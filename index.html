@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>マシコさん専用 麻雀学習ボード 🀄</title>
+  <title>脱チョンボ！麻雀学習ボード 🀄</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
@@ -127,7 +127,7 @@
         <span class="text-2xl filter drop-shadow">🀄</span>
         <div>
           <h1 class="text-lg font-bold tracking-tight font-serif flex items-center gap-1.5">
-            <span>マシコさん専用 麻雀学習ボード</span>
+            <span>脱チョンボ！麻雀学習ボード</span>
             <span class="text-xs bg-amber-500/30 text-amber-300 font-sans px-2 py-0.5 rounded-full border border-amber-400/40 font-normal">脱チョンボ</span>
           </h1>
           <p class="text-xs text-emerald-200/80">カンペ常備！計算なしでパターンを掴む</p>
@@ -155,7 +155,7 @@
     <!-- 1. ホーム画面 (モード選択 & 進捗) -->
     <section id="homeView" class="space-y-6">
 
-      <!-- マシコさん応援バナー -->
+      <!-- 初心者応援バナー -->
       <div class="bg-gradient-to-br from-emerald-800 to-felt text-white rounded-2xl p-5 shadow-lg border border-emerald-700/50 relative overflow-hidden">
         <div class="absolute -right-6 -bottom-8 opacity-10 text-9xl select-none font-serif">🀄</div>
         <div class="relative z-10">
@@ -336,7 +336,7 @@
           </div>
         </div>
         <div class="text-xs text-slate-400 text-center sm:text-right">
-          マシコさんのペースで大丈夫！<br>1日1回開くだけで花丸です 💮
+          自分のペースで大丈夫！<br>1日1回開くだけで花丸です 💮
         </div>
       </div>
 
@@ -479,7 +479,7 @@
           本日の特訓完了！お見事！
         </h3>
         <p class="text-xs sm:text-sm text-slate-500 mb-5">
-          1セッションクリア！マシコさんの牌感覚が着実に定着しています。
+          1セッションクリア！あなたの牌感覚が着実に定着しています。
         </p>
 
         <!-- スコアカード -->
@@ -528,7 +528,7 @@
           <span class="text-xl">📖</span>
           <div>
             <h3 class="font-bold font-serif text-base sm:text-lg flex items-center gap-1.5">
-              <span>マシコさん専用 カンニングペーパー</span>
+              <span>脱チョンボ専用 カンニングペーパー</span>
             </h3>
             <p class="text-[11px] text-emerald-200">実戦でも見ながら打てばチョンボゼロ！</p>
           </div>
@@ -814,7 +814,7 @@
 
   <!-- フッター -->
   <footer class="bg-slate-200 border-t border-slate-300 py-3 text-center text-xs text-slate-500">
-    マシコさん専用 麻雀学習ボード | GAS Web App
+    脱チョンボ！麻雀学習ボード | Web App
   </footer>
 
   <!-- アプリケーションロジック & 牌SVGジェネレーター -->
@@ -1896,7 +1896,7 @@
 
         const msgBox = document.getElementById('resultMessage');
         if (accuracy === 100) {
-          msgBox.textContent = "全問正解！素晴らしい！マシコさんの牌感覚、完全に呼び戻されています！💮";
+          msgBox.textContent = "全問正解！素晴らしい！牌感覚、完全に呼び戻されています！💮";
         } else if (accuracy >= 60) {
           msgBox.textContent = "ナイスファイト！「見ながら解く」を続ければ、実戦でチョンボすることはもうありません！👍";
         } else {
