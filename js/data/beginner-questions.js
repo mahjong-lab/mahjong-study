@@ -76,7 +76,7 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "tsumo",
       modeLabel: "牌えらび",
-      question: "この中で数字の「1（索子の1 / イーソー）」はどれ？",
+      question: "この中で数字の「イーソー（1索 / 鳥）」はどれ？",
       subtext: "麻雀で1つだけ「鳥のイラスト」になっている有名な牌です！",
       boardNote: "下の3枚の牌からタップして選ぼう！",
       tileOptions: [
@@ -84,9 +84,9 @@ const STAGE_QUESTIONS = {
         { tile: "5z", label: "真っ白な牌", correct: false },
         { tile: "7z", label: "赤い文字", correct: false }
       ],
-      explanation: "大正解！鳥の絵は字牌ではなく「竹（索子）の1」です。これさえ知っていればもう迷いません！",
+      explanation: "大正解！鳥の絵は字牌ではなく「ソーズ（索子）の1」です。これさえ知っていればもう迷いません！",
       term: {
-        word: "一索",
+        word: "イーソー（1索）",
         reading: "イーソー",
         tiles: ["1s"],
         desc: "竹の数牌（索子）の「1」のこと。麻雀牌の中でこれ1種類だけ鳥（孔雀・鳳凰）のイラストで描かれています。"
@@ -97,17 +97,17 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "chi",
       modeLabel: "牌えらび",
-      question: "萬子（マンズ）は漢数字で書かれています。「5（五萬）」はどれ？",
+      question: "マンズ（萬子）は漢数字で書かれています。「ウーマン（五萬）」はどれ？",
       subtext: "上の漢字を読むだけでOK！",
-      boardNote: "下の3枚から「5」を選ぼう！",
+      boardNote: "下の3枚から「ウーマン（五萬）」を選ぼう！",
       tileOptions: [
         { tile: "5m", label: "", correct: true },
         { tile: "4m", label: "", correct: false },
         { tile: "7m", label: "", correct: false }
       ],
-      explanation: "バッチリ！「五」に「萬」で五萬（ウーマン）です。",
+      explanation: "バッチリ！「五」に「萬」でウーマン（五萬）です。",
       term: {
-        word: "萬子",
+        word: "マンズ（萬子）",
         reading: "マンズ",
         tiles: ["1m", "5m", "9m"],
         desc: "漢数字の「一〜九」に「萬」と書かれた数牌グループ。1〜9までの9種類あります。"
@@ -118,17 +118,17 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "pon",
       modeLabel: "牌えらび",
-      question: "丸い模様の「筒子（ピンズ）」で、数字の『1（一筒）』はどれ？",
+      question: "丸い模様の「ピンズ（筒子）」で、数字の『イーピン（1筒）』はどれ？",
       subtext: "丸の数に注目！1個だけ特大サイズで描かれています。",
-      boardNote: "「1筒（イーピン）」をタップ！",
+      boardNote: "「イーピン（1筒）」をタップ！",
       tileOptions: [
         { tile: "1p", label: "", correct: true },
         { tile: "4p", label: "", correct: false },
         { tile: "8p", label: "", correct: false }
       ],
-      explanation: "正解！大きな丸がドンと1つ描かれているのが「1筒（イーピン）」です！",
+      explanation: "正解！大きな丸がドンと1つ描かれているのが「イーピン（1筒）」です！",
       term: {
-        word: "筒子",
+        word: "ピンズ（筒子）",
         reading: "ピンズ",
         tiles: ["1p", "3p", "5p"],
         desc: "丸い模様の数で「1〜9」を表す数牌グループ。丸の数をそのまま数えれば数字が分かります！"
@@ -139,17 +139,17 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "ron",
       modeLabel: "牌えらび",
-      question: "竹の模様の「索子（ソーズ）」で、一番大きい端っこの『9（九索）』はどれ？",
+      question: "竹の模様の「ソーズ（索子）」で、一番大きい端っこの『キューソー（9索）』はどれ？",
       subtext: "3本×3段で竹が9本並んでいるカラフルな牌です！",
-      boardNote: "「9索（キューソー）」をタップ！",
+      boardNote: "「キューソー（9索）」をタップ！",
       tileOptions: [
         { tile: "9s", label: "", correct: true },
         { tile: "6s", label: "", correct: false },
         { tile: "2s", label: "", correct: false }
       ],
-      explanation: "大正解！緑・赤・青で3本ずつ計9本並んでいるのが「9索（キューソー）」です。",
+      explanation: "大正解！緑・赤・青で3本ずつ計9本並んでいるのが「キューソー（9索）」です。",
       term: {
-        word: "索子",
+        word: "ソーズ（索子）",
         reading: "ソーズ",
         tiles: ["1s", "5s", "9s"],
         desc: "竹の本数で「1〜9」を表す数牌グループ。1索だけは鳥の絵柄、2〜9索は竹の本数で表します。"
@@ -202,18 +202,18 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "kan",
       modeLabel: "ラッキー牌！",
-      question: "アガったときに持っているだけで点数がアップする特別な『赤ドラ（赤5筒）』はどれ？",
-      subtext: "普通の5筒と形は同じですが、全体が赤く塗られています！",
-      boardNote: "「赤5筒」をタップしよう！",
+      question: "アガったときに持っているだけで点数がアップする特別な『赤ウーピン（赤5筒）』はどれ？",
+      subtext: "普通のウーピン（5筒）と形は同じですが、全体が赤く塗られています！",
+      boardNote: "「赤ウーピン（赤5筒）」をタップしよう！",
       tileOptions: [
         { tile: "0p", label: "", correct: true },
         { tile: "5p", label: "", correct: false },
         { tile: "3p", label: "", correct: false }
       ],
-      explanation: "バッチリ！真っ赤な「5」は赤ドラと呼ばれ、通常の5とまったく同じように使えて点数もアップするお得牌です！",
+      explanation: "バッチリ！真っ赤な「赤ウーピン（赤5筒）」は赤ドラと呼ばれ、通常の5筒とまったく同じように使えて点数もアップするお得牌です！",
       term: {
-        word: "赤ドラ",
-        reading: "アカドラ",
+        word: "赤ウーピン（赤5筒）",
+        reading: "アカウーピン",
         tiles: ["0m", "0p", "0s"],
         desc: "五萬・5筒・5索に1枚ずつ入っている赤い5の牌。持っているだけでアガリ点が1段階アップします！"
       }
@@ -231,7 +231,7 @@ const STAGE_QUESTIONS = {
         { tile: "1s", label: "", correct: false },
         { tile: "9m", label: "", correct: false }
       ],
-      explanation: "大正解！丸が4つの「4筒」が真ん中の牌です（鳥は1索なので端っこの牌！）。2〜8だけ集めると「タンヤオ」になります！",
+      explanation: "大正解！丸が4つの「スーピン（4筒）」が真ん中の牌です（鳥はイーソー（1索）なので端っこの牌！）。2〜8だけ集めると「タンヤオ」になります！",
       term: {
         word: "中張牌",
         reading: "チュンチャンパイ",
@@ -249,7 +249,7 @@ const STAGE_QUESTIONS = {
       hand: ["2m", "3m", "6p", "1s", "7s"],
       correctTiles: ["1s"],
       caption: "👆 上の5枚の中から直接タップ！",
-      explanation: "お見事！！鳥のイラストは「1索」なので端っこの牌ですね。これが見抜ければタンヤオ作りはもう完璧です！",
+      explanation: "お見事！！鳥のイラストは「イーソー（1索）」なので端っこの牌ですね。これが見抜ければタンヤオ作りはもう完璧です！",
       term: {
         word: "么九牌",
         reading: "ヤオチューパイ",
@@ -346,17 +346,17 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "ron",
       modeLabel: "数字よみとり！",
-      question: "緑の竹がM字のように並んだこの牌、索子の「8（パーソー）」はどれ？",
-      subtext: "7索・8索・9索は本数が多いので形で覚えると一瞬です！",
+      question: "緑の竹がM字のように並んだこの牌、ソーズの「パーソー（8索）」はどれ？",
+      subtext: "チーソー（7索）・パーソー（8索）・キューソー（9索）は本数が多いので形で覚えると一瞬です！",
       boardNote: "上下に4本ずつ（計8本）並んでいる牌！",
       tileOptions: [
         { tile: "8s", correct: true },
         { tile: "6s", correct: false },
         { tile: "9s", correct: false }
       ],
-      explanation: "お見事！斜めの竹が入った8本組が「8索（パーソー）」です。6索（3本×2段）や9索（3本×3列）と見分けられれば完璧！",
+      explanation: "お見事！斜めの竹が入った8本組が「パーソー（8索）」です。ローソー（6索）やキューソー（9索）と見分けられれば完璧！",
       term: {
-        word: "八索（パーソー）",
+        word: "パーソー（8索）",
         reading: "パーソー",
         tiles: ["8s"],
         desc: "竹が8本描かれた数牌。2〜8の内側なのでタンヤオにも使える便利な牌です！"
@@ -367,7 +367,7 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "tsumo",
       modeLabel: "数字よみとり！",
-      question: "赤い竹が上に1本乗っている「7索（チーソー）」はどれ？",
+      question: "赤い竹が上に1本乗っている「チーソー（7索）」はどれ？",
       subtext: "上に1本＋下に6本＝合計7本です！",
       boardNote: "一番上の赤い1本が目印！",
       tileOptions: [
@@ -377,7 +377,7 @@ const STAGE_QUESTIONS = {
       ],
       explanation: "バッチリ！上に赤い竹が1本ちょこんと乗っているのが「7索（チーソー）」です！",
       term: {
-        word: "七索（チーソー）",
+        word: "チーソー（7索）",
         reading: "チーソー",
         tiles: ["7s"],
         desc: "上に赤1本＋下に緑6本で「7」を表す索子の牌。絵柄の特徴を掴めば数えなくても一目で分かります！"
@@ -388,17 +388,17 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "ron",
       modeLabel: "グループ分け！",
-      question: "この中で「萬子（マンズ）」のグループの牌はどれ？",
+      question: "この中で「マンズ（萬子）」のグループの牌はどれ？",
       subtext: "漢数字＋「萬」が書かれたグループです！",
-      boardNote: "丸（筒子）でも竹（索子）でもない数牌！",
+      boardNote: "ピンズ（筒子）でもソーズ（索子）でもない数牌！",
       tileOptions: [
         { tile: "3m", correct: true },
         { tile: "3p", correct: false },
         { tile: "3s", correct: false }
       ],
-      explanation: "大正解！「三萬（サンマン）」が萬子グループです。同じ「3」でも種類が違うと一緒に階段にはできません！",
+      explanation: "大正解！「サンマン（三萬）」がマンズグループです。同じ「3」でも種類が違うと一緒に階段にはできません！",
       term: {
-        word: "萬子（マンズ）",
+        word: "マンズ（萬子）",
         reading: "マンズ",
         tiles: ["1m", "3m", "9m"],
         desc: "漢数字と「萬」で1〜9を表す数牌グループ。一萬（イーマン）〜九萬（キューマン）まであります。"
@@ -409,17 +409,17 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "tsumo",
       modeLabel: "グループ分け！",
-      question: "この中で「筒子（ピンズ）」のグループの牌はどれ？",
+      question: "この中で「ピンズ（筒子）」のグループの牌はどれ？",
       subtext: "丸いボール模様のグループです！",
-      boardNote: "丸が4つ並んだ「4筒（スーピン）」を探そう！",
+      boardNote: "丸が4つ並んだ「スーピン（4筒）」を探そう！",
       tileOptions: [
         { tile: "4p", correct: true },
         { tile: "4m", correct: false },
         { tile: "4s", correct: false }
       ],
-      explanation: "完璧！丸い模様はすべて「筒子（ピンズ）」グループです！",
+      explanation: "完璧！丸い模様はすべて「ピンズ（筒子）」グループです！",
       term: {
-        word: "筒子（ピンズ）",
+        word: "ピンズ（筒子）",
         reading: "ピンズ",
         tiles: ["2p", "4p", "8p"],
         desc: "丸の数で1〜9を表す一番見やすい数牌グループ。1筒（イーピン）〜9筒（キューピン）まであります。"
@@ -430,18 +430,18 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "ron",
       modeLabel: "ボーナス牌！",
-      question: "持っているだけでアガった時の点数がアップする「赤五萬（赤ドラ）」はどれ？",
+      question: "持っているだけでアガった時の点数がアップする「赤ウーマン（赤五萬）」はどれ？",
       subtext: "数字の5全体が赤く、右上にキラリと印がついています！",
-      boardNote: "普通の黒い五萬と見比べてみよう！",
+      boardNote: "普通の黒いウーマン（五萬）と見比べてみよう！",
       tileOptions: [
         { tile: "0m", label: "赤い五萬", correct: true },
         { tile: "5m", label: "通常の五萬", correct: false },
         { tile: "7z", label: "中（字牌）", correct: false }
       ],
-      explanation: "大正解！真っ赤な「赤五萬」は、普通の五萬と同じ数字の「5」として使えて、さらにアガると1飜ボーナスがつくお宝牌です！",
+      explanation: "大正解！真っ赤な「赤ウーマン（赤五萬）」は、普通のウーマンと同じ数字の「5」として使えて、さらにアガると1飜ボーナスがつくお宝牌です！",
       term: {
-        word: "赤五萬（アカウーマン）",
-        reading: "アカドラ",
+        word: "赤ウーマン（赤五萬）",
+        reading: "アカウーマン",
         tiles: ["0m", "0p", "0s"],
         desc: "五萬・5筒・5索に1枚ずつ入っている赤いボーナス牌。見つけたら大事に使いましょう！"
       }
@@ -451,12 +451,12 @@ const STAGE_QUESTIONS = {
       type: "tap-hand",
       callSound: "ron",
       modeLabel: "手牌をタップ！",
-      question: "5枚の中に1枚だけ「タンヤオの邪魔になる端っこ牌（9萬）」があります。タップして見つけよう！",
+      question: "5枚の中に1枚だけ「タンヤオの邪魔になる端っこ牌（キューマン / 九萬）」があります。タップして見つけよう！",
       subtext: "「2〜8」以外の数字が1枚混ざっています！",
       hand: ["3m", "9m", "4p", "6s", "2p"],
       correctTiles: ["9m"],
-      caption: "👆 端っこの「九萬」をタップ！",
-      explanation: "よく見つけました！「九萬」は端っこの9なのでタンヤオには使えません！",
+      caption: "👆 端っこの「キューマン（九萬）」をタップ！",
+      explanation: "よく見つけました！「キューマン（九萬）」は端っこの9なのでタンヤオには使えません！",
       term: {
         word: "老頭牌（1・9の数牌）",
         reading: "ロウトウハイ",
@@ -487,12 +487,12 @@ const STAGE_QUESTIONS = {
       type: "tap-hand",
       callSound: "ron",
       modeLabel: "手牌をタップ！",
-      question: "5枚の中に1枚だけ「1筒（大きな丸1つ）」が混ざっています！タップして見つけよう！",
+      question: "5枚の中に1枚だけ「イーピン（1筒 / 大きな丸1つ）」が混ざっています！タップして見つけよう！",
       subtext: "大きな花丸のような牌は数字の「1」です！",
       hand: ["6m", "1p", "5p", "3s", "8s"],
       correctTiles: ["1p"],
-      caption: "👆 端っこの「1筒（イーピン）」をタップ！",
-      explanation: "正解！大きな丸1つの「1筒」は端っこの1なので、タンヤオを目指すときは最初に捨てる候補になります！",
+      caption: "👆 端っこの「イーピン（1筒）」をタップ！",
+      explanation: "正解！大きな丸1つの「イーピン（1筒）」は端っこの1なので、タンヤオを目指すときは最初に捨てる候補になります！",
       term: {
         word: "タンヤオの条件",
         reading: "2〜8の数牌のみ",
@@ -505,7 +505,7 @@ const STAGE_QUESTIONS = {
       type: "text-choice",
       callSound: "tsumo",
       modeLabel: "数字のクイズ！",
-      question: "麻雀の数牌（萬子・筒子・索子）に存在する数字は「何番から何番まで」？",
+      question: "麻雀の数牌（マンズ・ピンズ・ソーズ）に存在する数字は「何番から何番まで」？",
       subtext: "トランプは1〜13までありますが、麻雀は…？",
       boardTiles: ["1m", "5p", "9s"],
       caption: "一番小さい数字と一番大きい数字",
@@ -533,14 +533,14 @@ const STAGE_QUESTIONS = {
       callSound: "chi",
       modeLabel: "穴埋めパズル",
       question: "空欄［ ？ ］に牌をはめて、同じ種類の「数字の階段（3枚組）」を完成させよう！",
-      subtext: "丸いボール（筒子）が「2・3」と並んでいます。",
+      subtext: "丸いボールのピンズ（筒子）が「2・3」と並んでいます。",
       slots: ["2p", "3p", "?"],
       tileOptions: [
         { tile: "4p", correct: true },
         { tile: "4s", correct: false },
         { tile: "8p", correct: false }
       ],
-      explanation: "カチャッ！同じ筒子で「2・3・4」の階段ブロックが完成しました！",
+      explanation: "カチャッ！同じピンズ（筒子）で「2・3・4」の階段ブロックが完成しました！",
       term: {
         word: "順子",
         reading: "シュンツ",
@@ -553,15 +553,15 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "chi",
       modeLabel: "穴埋めパズル",
-      question: "真ん中の空欄［ ？ ］に牌をはめて、萬子の階段を完成させよう！",
-      subtext: "「五萬」と「七萬」の間に入る牌は？",
+      question: "真ん中の空欄［ ？ ］に牌をはめて、マンズ（萬子）の階段を完成させよう！",
+      subtext: "「ウーマン（五萬）」と「チーマン（七萬）」の間に入る牌は？",
       slots: ["5m", "?", "7m"],
       tileOptions: [
         { tile: "6m", correct: true },
         { tile: "6p", correct: false },
         { tile: "9m", correct: false }
       ],
-      explanation: "バッチリ！「五・六・七萬」で綺麗な3枚ブロックができました！",
+      explanation: "バッチリ！「ウーマン・ローマン・チーマン（五・六・七萬）」で綺麗な3枚ブロックができました！",
       term: {
         word: "面子",
         reading: "メンツ",
@@ -574,15 +574,15 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "chi",
       modeLabel: "穴埋めパズル",
-      question: "竹（索子）の階段を作ろう！［ ？ ］に入るのはどれ？",
-      subtext: "「2索・3索」の前に繋がる「1索」を入れよう！",
+      question: "ソーズ（索子）の階段を作ろう！［ ？ ］に入るのはどれ？",
+      subtext: "「リャンソー・サンソー（2・3索）」の前に繋がる「イーソー（1索）」を入れよう！",
       slots: ["?", "2s", "3s"],
       tileOptions: [
         { tile: "1s", correct: true },
         { tile: "4p", correct: false },
         { tile: "6z", correct: false }
       ],
-      explanation: "完璧です！鳥の牌（1索）＋2索＋3索で「1・2・3」の階段になります！",
+      explanation: "完璧です！鳥の牌（イーソー / 1索）＋リャンソー＋サンソーで「1・2・3」の階段になります！",
       term: {
         word: "一二三の順子",
         reading: "イー・リャン・サン",
@@ -595,7 +595,7 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "chi",
       modeLabel: "穴埋めパズル",
-      question: "「7筒・8筒」の後ろに繋がる牌を［ ？ ］にはめよう！",
+      question: "「チーピン・パーピン（7・8筒）」の後ろに繋がる牌を［ ？ ］にはめよう！",
       subtext: "※注意：「8・9・1」のように9から1へループはしません！",
       slots: ["7p", "8p", "?"],
       tileOptions: [
@@ -603,7 +603,7 @@ const STAGE_QUESTIONS = {
         { tile: "1p", correct: false },
         { tile: "9m", correct: false }
       ],
-      explanation: "正解！「7・8・9筒」で端っこの階段が完成！なお「8・9・1」とは繋がらないのも大事なポイントです。",
+      explanation: "正解！「チーピン・パーピン・キューピン（7・8・9筒）」で端っこの階段が完成！なお「8・9・1」とは繋がらないのも大事なポイントです。",
       term: {
         word: "数牌の上限（1〜9）",
         reading: "ループなしルール",
@@ -679,7 +679,7 @@ const STAGE_QUESTIONS = {
       type: "text-choice",
       callSound: "chi",
       modeLabel: "ひっかけ注意！",
-      question: "『二萬・四萬・六萬』と偶数を1つ飛ばしで3枚集めました。これはブロックになる？",
+      question: "『リャンマン・スーマン・ローマン（2・4・6萬）』と偶数を1つ飛ばしで3枚集めました。これはブロックになる？",
       subtext: "階段のルールを思い出してみよう！",
       boardTiles: ["2m", "4m", "6m"],
       caption: "2・4・6 と1つ飛ばしで並べた形",
@@ -687,7 +687,7 @@ const STAGE_QUESTIONS = {
         { text: "❌ ならない（2・3・4のように連続していないとダメ）", correct: true },
         { text: "⭕ なる（規則正しく並んでいるからOK）", correct: false }
       ],
-      explanation: "その通り！1つ飛ばしではブロックになりません。三萬や五萬を引いて連続する3枚にする必要があります。",
+      explanation: "その通り！1つ飛ばしではブロックになりません。サンマン（三萬）やウーマン（五萬）を引いて連続する3枚にする必要があります。",
       term: {
         word: "連番の原則",
         reading: "シュンツの条件",
@@ -705,7 +705,7 @@ const STAGE_QUESTIONS = {
       hand: ["3m", "4m", "5m", "8p", "8p"],
       correctTiles: ["8p"],
       caption: "👆 アタマ（2枚ペア）になっている牌をタップ！",
-      explanation: "素晴らしい！「3・4・5萬（階段3枚）」と「8筒ペア（アタマ2枚）」がハッキリ分かれて見えていますね！",
+      explanation: "素晴らしい！「3・4・5萬（階段3枚）」と「パーピン（8筒）ペア（アタマ2枚）」がハッキリ分かれて見えていますね！",
       term: {
         word: "雀頭（アタマ）",
         reading: "ジャントウ",
@@ -718,7 +718,7 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "chi",
       modeLabel: "3枚ブロック穴埋め",
-      question: "鳥の牌は「1索」でしたね！［鳥（1索）］［ ？ ］［3索］の間にはまる牌は？",
+      question: "鳥の牌は「イーソー（1索）」でしたね！［鳥（1索）］［ ？ ］［サンソー（3索）］の間にはまる牌は？",
       subtext: "1と3の間の竹の本数を選ぼう！",
       slots: ["1s", "?", "3s"],
       tileOptions: [
@@ -726,7 +726,7 @@ const STAGE_QUESTIONS = {
         { tile: "4s", correct: false },
         { tile: "2p", correct: false }
       ],
-      explanation: "完璧！鳥（1索）・2索・3索で綺麗な1-2-3の階段（順子）が完成しました！",
+      explanation: "完璧！鳥（イーソー / 1索）・リャンソー（2索）・サンソー（3索）で綺麗な1-2-3の階段（順子）が完成しました！",
       term: {
         word: "順子（シュンツ）",
         reading: "シュンツ",
@@ -739,7 +739,7 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "chi",
       modeLabel: "3枚ブロック穴埋め",
-      question: "［ ？ ］［8筒］［9筒］の左にはめて、階段の3枚組を完成させよう！",
+      question: "［ ？ ］［パーピン（8筒）］［キューピン（9筒）］の左にはめて、階段の3枚組を完成させよう！",
       subtext: "8・9の1つ前の丸の牌です！",
       slots: ["?", "8p", "9p"],
       tileOptions: [
@@ -747,7 +747,7 @@ const STAGE_QUESTIONS = {
         { tile: "1p", correct: false },
         { tile: "7s", correct: false }
       ],
-      explanation: "バッチリ！［7・8・9筒］で端っこの階段が完成しました！（※9の右側に1筒は繋がらないので7筒だけです！）",
+      explanation: "バッチリ！［チーピン・パーピン・キューピン（7・8・9筒）］で端っこの階段が完成しました！（※9の右側に1筒は繋がらないので7筒だけです！）",
       term: {
         word: "ペンチャン部分",
         reading: "端の階段",
@@ -760,15 +760,15 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "chi",
       modeLabel: "赤ドラ合体パズル！",
-      question: "ボーナス牌の［赤5筒］と［6筒］があります！［ ？ ］にはめて階段を完成させよう！",
-      subtext: "赤5筒は普通の「5筒」とまったく同じ数字の5として使えます！",
+      question: "ボーナス牌の［赤ウーピン（赤5筒）］と［ローピン（6筒）］があります！［ ？ ］にはめて階段を完成させよう！",
+      subtext: "赤ウーピン（赤5筒）は普通の「ウーピン（5筒）」とまったく同じ数字の5として使えます！",
       slots: ["0p", "6p", "?"],
       tileOptions: [
         { tile: "7p", correct: true },
         { tile: "8p", correct: false },
         { tile: "7m", correct: false }
       ],
-      explanation: "大正解！［赤5・6・7筒］で1飜ボーナスつきの最強ブロックが完成しました！",
+      explanation: "大正解！［赤ウーピン・ローピン・チーピン（赤5・6・7筒）］で1飜ボーナスつきの最強ブロックが完成しました！",
       term: {
         word: "赤ドラ入り順子",
         reading: "アカドラブロック",
@@ -781,15 +781,15 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "pon",
       modeLabel: "赤ドラ合体パズル！",
-      question: "［赤五萬］と普通の［五萬］があります！あと1枚［ ？ ］をはめて「同じ数字3枚組（刻子）」にしよう！",
-      subtext: "赤五萬と普通の五萬は混ぜて3枚組にできるでしょうか？",
+      question: "［赤ウーマン（赤五萬）］と普通の［ウーマン（五萬）］があります！あと1枚［ ？ ］をはめて「同じ数字3枚組（刻子）」にしよう！",
+      subtext: "赤ウーマン（赤五萬）と普通のウーマン（五萬）は混ぜて3枚組にできるでしょうか？",
       slots: ["0m", "5m", "?"],
       tileOptions: [
         { tile: "5m", correct: true },
         { tile: "6m", correct: false },
         { tile: "5p", correct: false }
       ],
-      explanation: "その通り！赤五萬も普通の五萬も同じ「五萬」なので、［赤5・黒5・黒5］でバッチリ3枚組（刻子）になります！",
+      explanation: "その通り！赤ウーマンも普通のウーマンも同じ「ウーマン（五萬）」なので、［赤5・黒5・黒5］でバッチリ3枚組（刻子）になります！",
       term: {
         word: "刻子（コーツ）",
         reading: "コーツ",
@@ -844,7 +844,7 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "chi",
       modeLabel: "3枚ブロック穴埋め",
-      question: "漢数字の階段！［六萬］［七萬］［ ？ ］の右にはまる牌はどれ？",
+      question: "マンズの階段！［ローマン（六萬）］［チーマン（七萬）］［ ？ ］の右にはまる牌はどれ？",
       subtext: "六・七・八と続く漢数字を探そう！",
       slots: ["6m", "7m", "?"],
       tileOptions: [
@@ -852,7 +852,7 @@ const STAGE_QUESTIONS = {
         { tile: "9m", correct: false },
         { tile: "8s", correct: false }
       ],
-      explanation: "正解！［六萬・七萬・八萬］で綺麗な階段ブロック完成です！",
+      explanation: "正解！［ローマン・チーマン・パーマン（六・七・八萬）］で綺麗な階段ブロック完成です！",
       term: {
         word: "面子（メンツ）",
         reading: "メンツ",
@@ -865,15 +865,15 @@ const STAGE_QUESTIONS = {
       type: "text-choice",
       callSound: "ron",
       modeLabel: "超頻出ひっかけ！",
-      question: "『三萬・4筒・5索』と、違う種類で「3・4・5」を集めました。これは階段ブロックになる？",
+      question: "『サンマン（三萬）・スーピン（4筒）・ウーソー（5索）』と、違う種類で「3・4・5」を集めました。これは階段ブロックになる？",
       subtext: "数字は3・4・5と並んでいますが、絵柄の種類に注目！",
       boardTiles: ["3m", "4p", "5s"],
-      caption: "萬子の3・筒子の4・索子の5",
+      caption: "マンズの3・ピンズの4・ソーズの5",
       options: [
         { text: "❌ ならない！（同じ種類の牌で3・4・5じゃないとダメ）", correct: true },
         { text: "⭕ 数字が続いていれば種類が違ってもOK", correct: false }
       ],
-      explanation: "超重要ポイント！階段（順子）は必ず「同じ種類（萬子なら萬子だけ、筒子なら筒子だけ）」で揃える必要があります！",
+      explanation: "超重要ポイント！階段（順子）は必ず「同じ種類（マンズならマンズだけ、ピンズならピンズだけ）」で揃える必要があります！",
       term: {
         word: "色の統一（同種順子）",
         reading: "階段のルール",
@@ -928,7 +928,7 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "chi",
       modeLabel: "真ん中穴埋め！",
-      question: "竹の階段を作ろう！［4索］［ ？ ］［6索］の真ん中にはまる牌は？",
+      question: "ソーズ（索子）の階段を作ろう！［スーソー（4索）］［ ？ ］［ローソー（6索）］の真ん中にはまる牌は？",
       subtext: "4と6の間の数字です（赤ドラでもOK！）",
       slots: ["4s", "?", "6s"],
       tileOptions: [
@@ -936,10 +936,10 @@ const STAGE_QUESTIONS = {
         { tile: "7s", correct: false },
         { tile: "5p", correct: false }
       ],
-      explanation: "ナイス！！「赤5索」が真ん中にスポッと入って、ボーナス1飜つきの［4・5・6索］が完成しました！",
+      explanation: "ナイス！！「赤ウーソー（赤5索）」が真ん中にスポッと入って、ボーナス1飜つきの［4・5・6索］が完成しました！",
       term: {
-        word: "赤五索（アカウーソー）",
-        reading: "アカドラ",
+        word: "赤ウーソー（赤5索）",
+        reading: "アカウーソー",
         tiles: ["4s", "0s", "6s"],
         desc: "赤い5索も普通の5索と同じく4索と6索の間に入れて階段を作れます！"
       }
@@ -959,7 +959,7 @@ const STAGE_QUESTIONS = {
       subtext: "ゴールは「3枚組×2つ ＋ アタマ2枚」です。くっつかない字牌が1枚あります！",
       hand: ["2m", "3m", "4m", "5p", "5p", "3s", "4s", "4z"],
       correctTiles: ["4z"],
-      waitDesc: "2索 または 5索 が来れば完成！",
+      waitDesc: "リャンソー（2索） または ウーソー（5索） が来れば完成！",
       explanation: "ナイス打牌！ポツンと1枚だけ浮いていた「北」を捨てれば、［234萬］［55筒］［34索］の綺麗なテンパイです！",
       term: {
         word: "孤立牌",
@@ -977,7 +977,7 @@ const STAGE_QUESTIONS = {
       subtext: "「發」は2枚ペア（アタマ）になっていますよ！",
       hand: ["1m", "2m", "3m", "9p", "2s", "3s", "6z", "6z"],
       correctTiles: ["9p"],
-      waitDesc: "1索 または 4索 が来れば完成！",
+      waitDesc: "イーソー（1索） または スーソー（4索） が来れば完成！",
       explanation: "気持ちいい一打！1枚だけ仲間がいない「9筒」を捨てれば、［123萬］［發發］［23索］でテンパイ完成です！",
       term: {
         word: "聴牌（テンパイ）",
@@ -995,7 +995,7 @@ const STAGE_QUESTIONS = {
       subtext: "「2・3・4筒」で3枚組ができていますね。",
       hand: ["2m", "2m", "2p", "3p", "4p", "9p", "5s", "6s"],
       correctTiles: ["9p"],
-      waitDesc: "4索 または 7索 が来れば完成！",
+      waitDesc: "スーソー（4索） または チーソー（7索） が来れば完成！",
       explanation: "バッチリ！［234筒］から遠く離れた「9筒」が不要牌でした。手牌のブロックがもう見えていますね！",
       term: {
         word: "不要牌（余り牌）",
@@ -1013,7 +1013,7 @@ const STAGE_QUESTIONS = {
       subtext: "鳥のイラスト（1索）に注目！",
       hand: ["4m", "5m", "6m", "3p", "4p", "1s", "8s", "8s"],
       correctTiles: ["1s"],
-      waitDesc: "2筒 または 5筒 が来れば完成！",
+      waitDesc: "リャンピン（2筒） または ウーピン（5筒） が来れば完成！",
       explanation: "完璧！浮いていた「1索（鳥）」を切ることで、すべて2〜8の牌になり「タンヤオ」も確定しました！",
       term: {
         word: "断么九（タンヤオ）",
@@ -1031,7 +1031,7 @@ const STAGE_QUESTIONS = {
       subtext: "「三萬・四萬」と「九萬」、どっちを残す？",
       hand: ["3m", "4m", "9m", "5p", "6p", "7p", "7z", "7z"],
       correctTiles: ["9m"],
-      waitDesc: "二萬 または 五萬 が来れば完成！",
+      waitDesc: "リャンマン（二萬） または ウーマン（五萬） が来れば完成！",
       explanation: "その通り！くっついている「三・四萬」を残し、離れた「九萬」を捨てれば両面待ちのテンパイです！",
       term: {
         word: "塔子（ターツ）",
@@ -1067,7 +1067,7 @@ const STAGE_QUESTIONS = {
       subtext: "1枚だけどこにも繋がっていない端っこの竹があります。",
       hand: ["2m", "4m", "3p", "4p", "5p", "9s", "5z", "5z"],
       correctTiles: ["9s"],
-      waitDesc: "三萬 が来れば完成！",
+      waitDesc: "サンマン（三萬） が来れば完成！",
       explanation: "バッチリ！孤立していた「9索」を捨てて、［2・4萬］の間を待つテンパイになりました！",
       term: {
         word: "打牌（切る）",
@@ -1085,7 +1085,7 @@ const STAGE_QUESTIONS = {
       subtext: "ペアが2組ある形も立派なテンパイになります！",
       hand: ["6m", "6m", "2p", "3p", "4p", "6s", "6s", "3z"],
       correctTiles: ["3z"],
-      waitDesc: "六萬 または 6索 が来れば完成！",
+      waitDesc: "ローマン（六萬） または ローソー（6索） が来れば完成！",
       explanation: "ナイス判断！1枚浮いていた「西」を切れば、六萬か6索のどちらかが3枚になった瞬間にアガリです！",
       term: {
         word: "対子",
@@ -1103,7 +1103,7 @@ const STAGE_QUESTIONS = {
       subtext: "筒子が3枚（赤5・6・9筒）あります。どれがいらない？",
       hand: ["2m", "3m", "4m", "0p", "6p", "9p", "3s", "3s"],
       correctTiles: ["9p"],
-      waitDesc: "4筒 または 7筒 が来れば高得点完成！",
+      waitDesc: "スーピン（4筒） または チーピン（7筒） が来れば高得点完成！",
       explanation: "完璧な一打！赤5筒と6筒のコンビを残して「9筒」を切ることで、赤ドラ入りのタンヤオテンパイ完成です！",
       term: {
         word: "好形（良形）",
@@ -1121,7 +1121,7 @@ const STAGE_QUESTIONS = {
       subtext: "［一二三萬］と［44筒］と［67索］が見えています！",
       hand: ["1m", "2m", "3m", "4p", "4p", "6s", "7s", "2z"],
       correctTiles: ["2z"],
-      waitDesc: "5索 または 8索 が来れば完成！",
+      waitDesc: "ウーソー（5索） または パーソー（8索） が来れば完成！",
       explanation: "スッキリ！1枚浮いていた「南」を切れば、5索・8索待ちの両面テンパイ完成です！",
       term: {
         word: "孤立牌（浮き牌）",
@@ -1139,7 +1139,7 @@ const STAGE_QUESTIONS = {
       subtext: "［2・3筒］は隣同士でくっついていますね！",
       hand: ["5m", "6m", "7m", "2p", "3p", "9p", "6z", "6z"],
       correctTiles: ["9p"],
-      waitDesc: "1筒 または 4筒 が来れば完成！",
+      waitDesc: "イーピン（1筒） または スーピン（4筒） が来れば完成！",
       explanation: "バッチリ！遠く離れた「9筒」を捨てれば、［2・3筒］の両面待ちになります！",
       term: {
         word: "両面ターツ",
@@ -1157,7 +1157,7 @@ const STAGE_QUESTIONS = {
       subtext: "真っ白な牌2枚［白・白］は大事なアタマです！",
       hand: ["2m", "3m", "9m", "3p", "4p", "5p", "5z", "5z"],
       correctTiles: ["9m"],
-      waitDesc: "一萬 または 四萬 が来れば完成！",
+      waitDesc: "イーマン（一萬） または スーマン（四萬） が来れば完成！",
       explanation: "大正解！［白・白］をアタマにして、離れた「九萬」を切れば一・四萬待ちの完成です！",
       term: {
         word: "雀頭固定",
@@ -1175,7 +1175,7 @@ const STAGE_QUESTIONS = {
       subtext: "くっついている2枚を残そう！",
       hand: ["7m", "8m", "9m", "1p", "5p", "6p", "3s", "3s"],
       correctTiles: ["1p"],
-      waitDesc: "4筒 または 7筒 が来れば完成！",
+      waitDesc: "スーピン（4筒） または チーピン（7筒） が来れば完成！",
       explanation: "お見事！端っこで浮いていた「1筒」を切って、4・7筒待ちのテンパイになりました！",
       term: {
         word: "牌効率（ハイコウリツ）",
@@ -1193,7 +1193,7 @@ const STAGE_QUESTIONS = {
       subtext: "1枚だけの字牌が混ざっています！",
       hand: ["2m", "2m", "4p", "5p", "6p", "3s", "5s", "4z"],
       correctTiles: ["4z"],
-      waitDesc: "4索 が来れば完成！",
+      waitDesc: "スーソー（4索） が来れば完成！",
       explanation: "正解！1枚浮いた「北」を切れば、［3・5索］の間を待つカンチャン待ちテンパイです！",
       term: {
         word: "カンチャンターツ",
@@ -1211,7 +1211,7 @@ const STAGE_QUESTIONS = {
       subtext: "全部2〜8の牌になればタンヤオも確定します！",
       hand: ["3m", "3m", "7p", "7p", "2s", "3s", "4s", "1z"],
       correctTiles: ["1z"],
-      waitDesc: "三萬 または 7筒 が来れば完成！",
+      waitDesc: "サンマン（三萬） または チーピン（7筒） が来れば完成！",
       explanation: "完璧！浮いていた「東」を切ることで、タンヤオ確定のシャボ待ちテンパイになりました！",
       term: {
         word: "シャボ（双碰）の形",
@@ -1229,7 +1229,7 @@ const STAGE_QUESTIONS = {
       subtext: "鳥のイラスト（1索）と［7索・8索］を見比べてみよう！",
       hand: ["0m", "6m", "7m", "2p", "2p", "1s", "7s", "8s"],
       correctTiles: ["1s"],
-      waitDesc: "6索 または 9索 が来れば完成！",
+      waitDesc: "ローソー（6索） または キューソー（9索） が来れば完成！",
       explanation: "すごい！！赤五萬が「5」だと瞬時に見抜き、離れた「1索（鳥）」を切れましたね！",
       term: {
         word: "赤ドラの組み込み",
@@ -1247,7 +1247,7 @@ const STAGE_QUESTIONS = {
       subtext: "右のほうにポツンと浮いた端っこの竹があります。",
       hand: ["2m", "3m", "4m", "1p", "2p", "9s", "7z", "7z"],
       correctTiles: ["9s"],
-      waitDesc: "3筒 が来れば完成！",
+      waitDesc: "サンピン（3筒） が来れば完成！",
       explanation: "バッチリ！孤立していた「9索」を捨てて、3筒待ちのテンパイ完成です！",
       term: {
         word: "ペンチャンターツ",
@@ -1265,7 +1265,7 @@ const STAGE_QUESTIONS = {
       subtext: "切れば2〜8だけのタンヤオ＋赤ドラ1になります！",
       hand: ["4m", "0m", "9m", "6p", "7p", "8p", "2s", "2s"],
       correctTiles: ["9m"],
-      waitDesc: "三萬 または 六萬 が来れば完成！",
+      waitDesc: "サンマン（三萬） または ローマン（六萬） が来れば完成！",
       explanation: "お見事！！離れた「九萬」を切って、タンヤオ＋赤ドラの両面テンパイ完成です！",
       term: {
         word: "タンヤオ移行",
@@ -1296,9 +1296,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["3s", "4s"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "2索 または 5索（両面待ち）", correct: true },
-        { text: "3索 または 4索", correct: false },
-        { text: "8筒", correct: false }
+        { text: "リャンソー（2索） または ウーソー（5索）（両面待ち）", correct: true },
+        { text: "サンソー（3索） または スーソー（4索）", correct: false },
+        { text: "パーピン（8筒）", correct: false }
       ],
       explanation: "大正解！完成しているブロックを頭の中で消せば、「3索・4索に何を足すか」だけのシンプルなパズルです！",
       term: {
@@ -1324,9 +1324,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["6p", "8p"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "7筒 だけ（間を埋める待ち）", correct: true },
-        { text: "5筒 または 9筒", correct: false },
-        { text: "9萬", correct: false }
+        { text: "チーピン（7筒） だけ（間を埋める待ち）", correct: true },
+        { text: "ウーピン（5筒） または キューピン（9筒）", correct: false },
+        { text: "キューマン（九萬）", correct: false }
       ],
       explanation: "バッチリ！6と8の間、「7筒」がスポッと入れば［6・7・8筒］になってアガリです！",
       term: {
@@ -1380,9 +1380,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["8s", "9s"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "7索 だけ（片側待ち）", correct: true },
-        { text: "7索 または 1索", correct: false },
-        { text: "6萬", correct: false }
+        { text: "チーソー（7索） だけ（片側待ち）", correct: true },
+        { text: "チーソー（7索） または イーソー（1索）", correct: false },
+        { text: "ローマン（六萬）", correct: false }
       ],
       explanation: "大正解！「8・9」と端っこを持っているときは、内側の「7索」だけの片側待ちになります！",
       term: {
@@ -1408,9 +1408,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["6z", "6z"], label: "ペア②", isWait: true }
       ],
       options: [
-        { text: "四萬 または 發（どちらが来てもOK！）", correct: true },
+        { text: "スーマン（四萬） または 發（どちらが来てもOK！）", correct: true },
         { text: "發 だけ", correct: false },
-        { text: "三萬 または 五萬", correct: false }
+        { text: "サンマン（三萬） または ウーマン（五萬）", correct: false }
       ],
       explanation: "バッチリ！2組のペアのうち、どちらが3枚になってもアガリになります！",
       term: {
@@ -1436,9 +1436,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["4m", "5m"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "三萬 または 六萬", correct: true },
-        { text: "四萬 または 五萬", correct: false },
-        { text: "9索", correct: false }
+        { text: "サンマン（三萬） または ローマン（六萬）", correct: true },
+        { text: "スーマン（四萬） または ウーマン（五萬）", correct: false },
+        { text: "キューソー（9索）", correct: false }
       ],
       explanation: "すごい！！補助輪なしでも［567筒］［345索］［99索］［白白白］を消して、残りの［四・五萬］が見えましたね！",
       term: {
@@ -1464,9 +1464,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["7z", "7z"], label: "ペア②", isWait: true }
       ],
       options: [
-        { text: "九萬 または 中", correct: true },
+        { text: "キューマン（九萬） または 中", correct: true },
         { text: "中 だけ", correct: false },
-        { text: "八萬 または 中", correct: false }
+        { text: "パーマン（八萬） または 中", correct: false }
       ],
       explanation: "大正解！形は九萬と中のシャボ待ちです（※もし鳴いていた場合は、役牌の「中」のほうでしかロンできない点も実戦のコツです！）。",
       term: {
@@ -1492,9 +1492,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["1s", "2s"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "3索 だけ（片側待ち）", correct: true },
-        { text: "1索 または 3索", correct: false },
-        { text: "8萬", correct: false }
+        { text: "サンソー（3索） だけ（片側待ち）", correct: true },
+        { text: "イーソー（1索） または サンソー（3索）", correct: false },
+        { text: "パーマン（八萬）", correct: false }
       ],
       explanation: "完璧です！「1・2」と持っているときは「3」だけのペンチャン待ちになります。13枚がもう怖くないですね！",
       term: {
@@ -1519,9 +1519,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["2m", "3m", "4m", "5m"], label: "4枚並び!", isWait: true }
       ],
       options: [
-        { text: "二萬 または 五萬（両端のどちらでもアタマになる！）", correct: true },
-        { text: "一萬 または 六萬", correct: false },
-        { text: "三萬 または 四萬", correct: false }
+        { text: "リャンマン（二萬） または ウーマン（五萬）（両端のどちらでもアタマになる！）", correct: true },
+        { text: "イーマン（一萬） または ローマン（六萬）", correct: false },
+        { text: "サンマン（三萬） または スーマン（四萬）", correct: false }
       ],
       explanation: "お見事！！4枚連続で並んでいると、両端の「二萬」と「五萬」どちらが重なっても3枚組＋アタマが完成します！",
       term: {
@@ -1547,9 +1547,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["4p", "5p"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "3筒 または 6筒（両面待ち）", correct: true },
-        { text: "4筒 または 5筒", correct: false },
-        { text: "2索", correct: false }
+        { text: "サンピン（3筒） または ローピン（6筒）（両面待ち）", correct: true },
+        { text: "スーピン（4筒） または ウーピン（5筒）", correct: false },
+        { text: "リャンソー（2索）", correct: false }
       ],
       explanation: "大正解！［4筒・5筒］の両側、「3筒」か「6筒」が来れば完成です！",
       term: {
@@ -1575,9 +1575,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["6m", "7m"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "五萬 または 八萬（両面待ち）", correct: true },
-        { text: "六萬 または 七萬", correct: false },
-        { text: "九萬 だけ", correct: false }
+        { text: "ウーマン（五萬） または パーマン（八萬）（両面待ち）", correct: true },
+        { text: "ローマン（六萬） または チーマン（七萬）", correct: false },
+        { text: "キューマン（九萬） だけ", correct: false }
       ],
       explanation: "バッチリ！［六・七萬］の両側である「五萬」または「八萬（ウー・パーマン）」待ちです！",
       term: {
@@ -1603,9 +1603,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["2s", "4s"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "3索 だけ（カンチャン待ち）", correct: true },
-        { text: "1索 または 5索", correct: false },
-        { text: "9萬", correct: false }
+        { text: "サンソー（3索） だけ（カンチャン待ち）", correct: true },
+        { text: "イーソー（1索） または ウーソー（5索）", correct: false },
+        { text: "キューマン（九萬）", correct: false }
       ],
       explanation: "正解！2索と4索の間の「3索」がハマれば［2・3・4索］になって完成です！",
       term: {
@@ -1631,9 +1631,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["1m", "2m"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "三萬 だけ（ペンチャン待ち）", correct: true },
-        { text: "一萬 または 三萬", correct: false },
-        { text: "2筒", correct: false }
+        { text: "サンマン（三萬） だけ（ペンチャン待ち）", correct: true },
+        { text: "イーマン（一萬） または サンマン（三萬）", correct: false },
+        { text: "リャンピン（2筒）", correct: false }
       ],
       explanation: "完璧！端っこの［一・二萬］なので、「三萬」1種類だけのペンチャン待ちです！",
       term: {
@@ -1661,7 +1661,7 @@ const STAGE_QUESTIONS = {
       options: [
         { text: "白（単騎待ち）", correct: true },
         { text: "發 または 中", correct: false },
-        { text: "八萬", correct: false }
+        { text: "パーマン（八萬）", correct: false }
       ],
       explanation: "お見事！字牌の単騎待ちは、相手が「1枚だけ浮いた字牌だから安全かな？」とポロッと捨ててくれやすい人気の待ちです！",
       term: {
@@ -1687,8 +1687,8 @@ const STAGE_QUESTIONS = {
         { tiles: ["1z", "1z"], label: "ペア②", isWait: true }
       ],
       options: [
-        { text: "6筒 または 東（シャボ待ち）", correct: true },
-        { text: "5筒 または 7筒", correct: false },
+        { text: "ローピン（6筒） または 東（シャボ待ち）", correct: true },
+        { text: "ウーピン（5筒） または チーピン（7筒）", correct: false },
         { text: "東 だけ", correct: false }
       ],
       explanation: "大正解！6筒と東のどちらが3枚目になっても、もう片方がアタマになってアガリ完成です！",
@@ -1715,9 +1715,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["0p", "6p"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "4筒 または 7筒（両面待ち）", correct: true },
-        { text: "5筒 または 6筒", correct: false },
-        { text: "7索", correct: false }
+        { text: "スーピン（4筒） または チーピン（7筒）（両面待ち）", correct: true },
+        { text: "ウーピン（5筒） または ローピン（6筒）", correct: false },
+        { text: "チーソー（7索）", correct: false }
       ],
       explanation: "バッチリ！［5筒・6筒］と同じなので「4筒」または「7筒（スー・チーピン）」の両面待ちです！",
       term: {
@@ -1742,9 +1742,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["4p", "5p", "6p", "7p"], label: "4枚並び!", isWait: true }
       ],
       options: [
-        { text: "4筒 または 7筒（両端のどちらでもOK！）", correct: true },
-        { text: "3筒 または 8筒", correct: false },
-        { text: "5筒 または 6筒", correct: false }
+        { text: "スーピン（4筒） または チーピン（7筒）（両端のどちらでもOK！）", correct: true },
+        { text: "サンピン（3筒） または パーピン（8筒）", correct: false },
+        { text: "ウーピン（5筒） または ローピン（6筒）", correct: false }
       ],
       explanation: "すごい！！4筒が来れば［44］＋［567］、7筒が来れば［456］＋［77］で見事に完成します！",
       term: {
@@ -1770,9 +1770,9 @@ const STAGE_QUESTIONS = {
         { tiles: ["7m", "9m"], label: "あと1枚!", isWait: true }
       ],
       options: [
-        { text: "八萬 だけ（カンチャン待ち）", correct: true },
-        { text: "六萬 または 八萬", correct: false },
-        { text: "5筒", correct: false }
+        { text: "パーマン（八萬） だけ（カンチャン待ち）", correct: true },
+        { text: "ローマン（六萬） または パーマン（八萬）", correct: false },
+        { text: "ウーピン（5筒）", correct: false }
       ],
       explanation: "完璧！7と9の間、「八萬」が入れば［七・八・九萬］が完成してアガリです！",
       term: {
@@ -1862,7 +1862,7 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "tsumo",
       modeLabel: "本番のドラ表示！",
-      question: "場の山に『四萬』が1枚めくれています（ドラ表示牌）。この局でボーナスがつく『ドラ』はどの牌？",
+      question: "場の山に『スーマン（四萬）』が1枚めくれています（ドラ表示牌）。この局でボーナスがつく『ドラ』はどの牌？",
       subtext: "本番では「めくれている表示牌の『次』の牌」がドラになります！",
       doraIndicator: "4m",
       boardNote: "▲ 本番の王牌（めくれている牌の「次」がドラ！）",
@@ -1871,7 +1871,7 @@ const STAGE_QUESTIONS = {
         { tile: "4m", label: "同じ牌", correct: false },
         { tile: "3m", label: "前の数字", correct: false }
       ],
-      explanation: "大正解！！本番ではめくれている「ドラ表示牌」そのものではなく、その1つ次の『五萬』がドラになります！（※9の次は1、風牌は東→南→西→北→東、三元牌は白→發→中→白の順）",
+      explanation: "大正解！！本番ではめくれている「ドラ表示牌」そのものではなく、その1つ次の『ウーマン（五萬）』がドラになります！（※9の次は1、風牌は東→南→西→北→東、三元牌は白→發→中→白の順）",
       term: {
         word: "ドラ表示牌",
         reading: "ドラヒョウジハイ",
@@ -1906,7 +1906,7 @@ const STAGE_QUESTIONS = {
       defaultScaffold: false,
       callSound: "ron",
       modeLabel: "約束③ フリテンの罠",
-      question: "あなたは［2索・5索］待ちです。でも、自分の捨て牌に『2索』がありました！相手から出た『2索』でロンできる？",
+      question: "あなたは［リャンソー・ウーソー（2・5索）］待ちです。でも、自分の捨て牌に『リャンソー（2索）』がありました！相手から出た『リャンソー（2索）』でロンできる？",
       subtext: "スマホ麻雀で初心者が一番パニックになるルールです！",
       river: [
         { tile: "9m" },
@@ -1939,8 +1939,8 @@ const STAGE_QUESTIONS = {
       defaultScaffold: false,
       callSound: "ron",
       modeLabel: "フリテンの重要ルール",
-      question: "同じく［2索・5索］待ちで、捨て牌に『2索』があります。相手から、捨てていない方の『5索』が出ました！ロンできる？",
-      subtext: "5索自体は捨てていませんが…？",
+      question: "同じく［リャンソー・ウーソー（2・5索）］待ちで、捨て牌に『リャンソー（2索）』があります。相手から、捨てていない方の『ウーソー（5索）』が出ました！ロンできる？",
+      subtext: "ウーソー（5索）自体は捨てていませんが…？",
       river: [
         { tile: "9m" },
         { tile: "1z" },
@@ -1955,8 +1955,8 @@ const STAGE_QUESTIONS = {
         { tiles: ["3s", "4s"], label: "2・5索待ち", isWait: true }
       ],
       options: [
-        { text: "❌ 5索でもロンできない！（片方でも捨てていたら全部ロン不可）", correct: true },
-        { text: "⭕ 5索は捨てていないからロンできる", correct: false }
+        { text: "❌ ウーソー（5索）でもロンできない！（片方でも捨てていたら全部ロン不可）", correct: true },
+        { text: "⭕ ウーソー（5索）は捨てていないからロンできる", correct: false }
       ],
       explanation: "よくぞ見抜きました！待ち牌のうち1種類でも自分の捨て牌にあると、他の当たり牌でも「ロン」は一切できなくなります。",
       term: {
@@ -2025,7 +2025,7 @@ const STAGE_QUESTIONS = {
       type: "tile-choice",
       callSound: "tsumo",
       modeLabel: "本番のドラ表示②",
-      question: "王牌のドラ表示牌に端っこの『9筒』がめくれています！このとき『ドラ』になる牌はどれ？",
+      question: "王牌のドラ表示牌に端っこの『キューピン（9筒）』がめくれています！このとき『ドラ』になる牌はどれ？",
       subtext: "10筒は存在しません！「9」の次は何に戻るでしょう？",
       doraIndicator: "9p",
       boardNote: "▲ 9がめくれた時は最初の数字にループします！",
@@ -2034,7 +2034,7 @@ const STAGE_QUESTIONS = {
         { tile: "9p", label: "9のまま", correct: false },
         { tile: "8p", label: "1つ前の8", correct: false }
       ],
-      explanation: "大正解！！表示牌が「9」のときは、同じ種類の「1（今回は1筒）」にぐるっと戻ってドラになります！",
+      explanation: "大正解！！表示牌が「9」のときは、同じ種類の「1（今回はイーピン / 1筒）」にぐるっと戻ってドラになります！",
       term: {
         word: "数牌ドラのループ（9→1）",
         reading: "ドラの順番",
@@ -2219,7 +2219,7 @@ const STAGE_QUESTIONS = {
       type: "text-choice",
       callSound: "ron",
       modeLabel: "フリテン確認クイズ",
-      question: "他の人が捨てた『3索』はフリテンになりません。では、フリテンかどうかチェックするときに見るのは「誰の」捨て牌（河）？",
+      question: "他の人が捨てた『サンソー（3索）』はフリテンになりません。では、フリテンかどうかチェックするときに見るのは「誰の」捨て牌（河）？",
       subtext: "他人の捨て牌に自分の待ち牌があることはよくありますが…？",
       boardTiles: ["3s", "4s"],
       caption: "誰の捨て牌を見るとフリテンがわかる？",
@@ -2288,15 +2288,15 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "chi",
       modeLabel: "チー合体パズル！",
-      question: "左隣の人（上家）が『6筒』を捨てました！手牌の［4筒・5筒］と合体させて「チー！」しよう！",
-      subtext: "空欄［ ？ ］に6筒をはめよう！",
+      question: "左隣の人（上家）が『ローピン（6筒）』を捨てました！手牌の［スーピン・ウーピン（4・5筒）］と合体させて「チー！」しよう！",
+      subtext: "空欄［ ？ ］にローピン（6筒）をはめよう！",
       slots: ["4p", "5p", "?"],
       tileOptions: [
         { tile: "6p", correct: true },
         { tile: "6s", correct: false },
         { tile: "9p", correct: false }
       ],
-      explanation: "チー！！左隣の人が捨てた6筒をもらって、［4・5・6筒］の階段が完成しました！",
+      explanation: "チー！！左隣の人が捨てたローピン（6筒）をもらって、［4・5・6筒］の階段が完成しました！",
       term: {
         word: "チー（吃）",
         reading: "チー",
@@ -2309,7 +2309,7 @@ const STAGE_QUESTIONS = {
       type: "text-choice",
       callSound: "chi",
       modeLabel: "超重要ルール！",
-      question: "あなたは［二萬・三萬］を持っています。正面に座っている人（対面）が『四萬』を捨てました！「チー」できる？",
+      question: "あなたは［リャンマン・サンマン（二・三萬）］を持っています。正面に座っている人（対面）が『スーマン（四萬）』を捨てました！「チー」できる？",
       subtext: "「誰から」チーできるかの大事なルールです！",
       boardTiles: ["2m", "3m"],
       caption: "正面の人（対面）が「四萬」を捨てた場面",
@@ -2351,12 +2351,12 @@ const STAGE_QUESTIONS = {
       type: "tap-hand",
       callSound: "chi",
       modeLabel: "手牌をタップ！",
-      question: "左隣の人（上家）が『5筒』を捨てました！手牌の中で、一緒に「チー」して階段を作れる牌をタップしよう！",
-      subtext: "5筒と繋がって［5・6・7筒］になるパーツを探そう！",
+      question: "左隣の人（上家）が『ウーピン（5筒）』を捨てました！手牌の中で、一緒に「チー」して階段を作れる牌をタップしよう！",
+      subtext: "ウーピン（5筒）と繋がって［5・6・7筒］になるパーツを探そう！",
       hand: ["2m", "6p", "7p", "9s", "1z"],
       correctTiles: ["6p", "7p"],
-      caption: "👆 一緒にチーできる牌（6筒または7筒）をタップ！",
-      explanation: "ナイス！！手牌の「6筒・7筒」と相手の「5筒」を合わせれば［5・6・7筒］が完成しますね！",
+      caption: "👆 一緒にチーできる牌（ローピン または チーピン）をタップ！",
+      explanation: "ナイス！！手牌の「ローピン・チーピン（6・7筒）」と相手の「ウーピン（5筒）」を合わせれば［5・6・7筒］が完成しますね！",
       term: {
         word: "晒し（さらし）",
         reading: "サラシ",
@@ -2411,7 +2411,7 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "kan",
       modeLabel: "4枚集めてカン！",
-      question: "同じ牌がなんと4枚全部集まりました！［ ？ ］に4枚目の『8筒』をはめて豪快に「カン！」しよう！",
+      question: "同じ牌がなんと4枚全部集まりました！［ ？ ］に4枚目の『パーピン（8筒）』をはめて豪快に「カン！」しよう！",
       subtext: "カンをすると「新しいドラ」が1枚増える特別な技です！",
       slots: ["8p", "8p", "8p", "?"],
       tileOptions: [
@@ -2474,7 +2474,7 @@ const STAGE_QUESTIONS = {
       type: "slot-fill",
       callSound: "chi",
       modeLabel: "チー合体パズル！",
-      question: "手牌に［5索・7索］のカンチャンがあり、なかなか引けません！左隣（上家）が捨てた『6索』を「チー！」しよう！",
+      question: "手牌に［ウーソー・チーソー（5・7索）］のカンチャンがあり、なかなか引けません！左隣（上家）が捨てた『ローソー（6索）』を「チー！」しよう！",
       subtext: "引きにくい間の牌を上家からもらう超有効ワザです！",
       slots: ["5s", "?", "7s"],
       tileOptions: [
@@ -2482,7 +2482,7 @@ const STAGE_QUESTIONS = {
         { tile: "8s", correct: false },
         { tile: "6p", correct: false }
       ],
-      explanation: "チー！！引きにくい真ん中の「6索」を左隣からもらって、一気に［5・6・7索］が完成しました！（※役牌やタンヤオがある時に使いましょう！）",
+      explanation: "チー！！引きにくい真ん中の「ローソー（6索）」を左隣からもらって、一気に［5・6・7索］が完成しました！（※役牌やタンヤオがある時に使いましょう！）",
       term: {
         word: "急所のチー",
         reading: "カンチャン解消",
@@ -2495,10 +2495,10 @@ const STAGE_QUESTIONS = {
       type: "text-choice",
       callSound: "chi",
       modeLabel: "チーできる席クイズ！",
-      question: "あなたは［4筒・5筒］を持っています。すぐ右隣の人（下家）が『6筒』を捨てました！「チー」できる？",
+      question: "あなたは［スーピン・ウーピン（4・5筒）］を持っています。すぐ右隣の人（下家）が『ローピン（6筒）』を捨てました！「チー」できる？",
       subtext: "チーできるのは左右どっちの隣だったでしょう？",
       boardTiles: ["4p", "5p"],
-      caption: "右隣の人（下家）が6筒を捨てた場面",
+      caption: "右隣の人（下家）がローピン（6筒）を捨てた場面",
       options: [
         { text: "❌ できない！（チーは『左隣（上家）』からだけ！）", correct: true },
         { text: "⭕ 隣の人なら右からでもチーできる", correct: false }
@@ -2516,7 +2516,7 @@ const STAGE_QUESTIONS = {
       type: "text-choice",
       callSound: "ron",
       modeLabel: "鳴き判断実践！",
-      question: "手牌に『1萬・2萬・3萬』や『9索』があり、白・發・中などの役牌は1枚もありません。上家から出た牌をうっかり「チー！」するとどうなる？",
+      question: "手牌に『1・2・3萬』や『キューソー（9索）』があり、白・發・中などの役牌は1枚もありません。上家から出た牌をうっかり「チー！」するとどうなる？",
       subtext: "初心者が実戦で一番やってしまいがちなミスです！",
       boardTiles: ["1m", "2m", "3m", "9s", "9s"],
       caption: "端牌があり、役牌がない手牌",

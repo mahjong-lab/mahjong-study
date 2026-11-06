@@ -164,15 +164,60 @@ const TileRenderer = {
 
   getTileNameJa(code) {
     if (!code) return '';
-    const kanjiNums = { '1': '一', '2': '二', '3': '三', '4': '四', '5': '五', '6': '六', '7': '七', '8': '八', '9': '九', '0': '赤五' };
-    const isRed = code.endsWith('r') || code.charAt(0) === '0';
-    const n = code.charAt(0) === '0' ? '5' : code.charAt(0);
-    const s = code.charAt(1);
-    if (s === 'm') return (isRed ? '赤五' : (kanjiNums[n] || n)) + '萬';
-    if (s === 'p') return (isRed ? '赤5' : n) + '筒';
-    if (s === 's') return (isRed ? '赤5' : n) + '索';
-    if (s === 'z') {
-      const zMap = { '1': '東', '2': '南', '3': '西', '4': '北', '5': '白', '6': '發', '7': '中' };
+    const num = code.charAt(0);
+    const suit = code.charAt(1);
+    const isRed = code.endsWith('r') || num === '0';
+    const n = num === '0' ? '5' : num;
+
+    const numKana = {
+      '1': 'イー',
+      '2': 'リャン',
+      '3': 'サン',
+      '4': 'スー',
+      '5': 'ウー',
+      '6': 'ロー',
+      '7': 'チー',
+      '8': 'パー',
+      '9': 'キュー'
+    };
+
+    const kanjiNums = {
+      '1': '一',
+      '2': '二',
+      '3': '三',
+      '4': '四',
+      '5': '五',
+      '6': '六',
+      '7': '七',
+      '8': '八',
+      '9': '九'
+    };
+
+    if (suit === 'm') {
+      const kana = isRed ? '赤ウーマン' : (numKana[n] || n) + 'マン';
+      const paren = isRed ? '赤五萬' : (kanjiNums[n] || n) + '萬';
+      return `${kana}（${paren}）`;
+    }
+    if (suit === 'p') {
+      const kana = isRed ? '赤ウーピン' : (numKana[n] || n) + 'ピン';
+      const paren = isRed ? '赤5筒' : `${n}筒`;
+      return `${kana}（${paren}）`;
+    }
+    if (suit === 's') {
+      const kana = isRed ? '赤ウーソー' : (numKana[n] || n) + 'ソー';
+      const paren = isRed ? '赤5索' : `${n}索`;
+      return `${kana}（${paren}）`;
+    }
+    if (suit === 'z') {
+      const zMap = {
+        '1': '東（トン）',
+        '2': '南（ナン）',
+        '3': '西（シャー）',
+        '4': '北（ペー）',
+        '5': '白（ハク）',
+        '6': '發（ハツ）',
+        '7': '中（チュン）'
+      };
       return zMap[n] || code;
     }
     return code;
