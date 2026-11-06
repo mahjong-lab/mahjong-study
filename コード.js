@@ -1,5 +1,5 @@
 /**
- * 脱チョンボ！麻雀学習ボード - Google Apps Script
+ * 麻雀トレーニングボード - Google Apps Script
  *
  * 特徴:
  * 1. 挫折知らずのスモールステップ学習（1セッション3〜5問）
@@ -15,7 +15,7 @@ function doGet(e) {
   template.mode = (e && e.parameter && e.parameter.mode) ? e.parameter.mode : 'all';
 
   return template.evaluate()
-    .setTitle('脱チョンボ！麻雀学習ボード 🀄')
+    .setTitle('麻雀トレーニングボード 🀄')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
