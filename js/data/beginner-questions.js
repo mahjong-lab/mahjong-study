@@ -6,7 +6,7 @@
  * 画面上の問題数表示やランダム出題プールに自動反映されます！
  *
  * 利用可能な問題タイプ (type):
- *  - "tile-choice"   : 大きな牌ボタンから選ぶ（tileOptions: [{ tile: '1s', label: '', correct: true }, ...]）
+ *  - "tile-choice"   : 大きな牌ボタンから選ぶ（tileOptions: [{ tile: '1s', correct: true }, ...]）
  *                      ※ doraIndicator: '4m' を付けると王牌5枚めくり表示になります
  *  - "slot-fill"     : 穴埋めパズル（slots: ['2p', '3p', '?'], tileOptions: [...]）
  *  - "tap-hand"      : 並んだ牌を直接タップ（hand: [...], correctTiles: ['9m']）
@@ -80,9 +80,9 @@ const STAGE_QUESTIONS = {
       subtext: "麻雀で1つだけ「鳥のイラスト」になっている有名な牌です！",
       boardNote: "下の3枚の牌からタップして選ぼう！",
       tileOptions: [
-        { tile: "1s", label: "イーソー（1索 / 鳥）", correct: true },
-        { tile: "5z", label: "白（ハク）", correct: false },
-        { tile: "7z", label: "中（チュン）", correct: false }
+        { tile: "1s", correct: true },
+        { tile: "5z", correct: false },
+        { tile: "7z", correct: false }
       ],
       explanation: "大正解！鳥の絵は字牌ではなく「ソーズ（索子）の1」です。これさえ知っていればもう迷いません！",
       term: {
@@ -101,9 +101,9 @@ const STAGE_QUESTIONS = {
       subtext: "上の漢字を読むだけでOK！",
       boardNote: "下の3枚から「ウーマン（五萬）」を選ぼう！",
       tileOptions: [
-        { tile: "5m", label: "ウーマン（五萬）", correct: true },
-        { tile: "4m", label: "スーマン（四萬）", correct: false },
-        { tile: "7m", label: "チーマン（七萬）", correct: false }
+        { tile: "5m", correct: true },
+        { tile: "4m", correct: false },
+        { tile: "7m", correct: false }
       ],
       explanation: "バッチリ！「五」に「萬」でウーマン（五萬）です。",
       term: {
@@ -122,9 +122,9 @@ const STAGE_QUESTIONS = {
       subtext: "丸の数に注目！1個だけ特大サイズで描かれています。",
       boardNote: "「イーピン（1筒）」をタップ！",
       tileOptions: [
-        { tile: "1p", label: "イーピン（1筒）", correct: true },
-        { tile: "4p", label: "スーピン（4筒）", correct: false },
-        { tile: "8p", label: "パーピン（8筒）", correct: false }
+        { tile: "1p", correct: true },
+        { tile: "4p", correct: false },
+        { tile: "8p", correct: false }
       ],
       explanation: "正解！大きな丸がドンと1つ描かれているのが「イーピン（1筒）」です！",
       term: {
@@ -143,9 +143,9 @@ const STAGE_QUESTIONS = {
       subtext: "3本×3段で竹が9本並んでいるカラフルな牌です！",
       boardNote: "「キューソー（9索）」をタップ！",
       tileOptions: [
-        { tile: "9s", label: "キューソー（9索）", correct: true },
-        { tile: "6s", label: "ローソー（6索）", correct: false },
-        { tile: "2s", label: "リャンソー（2索）", correct: false }
+        { tile: "9s", correct: true },
+        { tile: "6s", correct: false },
+        { tile: "2s", correct: false }
       ],
       explanation: "大正解！緑・赤・青で3本ずつ計9本並んでいるのが「キューソー（9索）」です。",
       term: {
@@ -164,9 +164,9 @@ const STAGE_QUESTIONS = {
       subtext: "日本の麻雀では、文字が何も彫られていない真っ白な牌です！",
       boardNote: "「白（ハク）」をタップしよう！",
       tileOptions: [
-        { tile: "5z", label: "白（ハク）", correct: true },
-        { tile: "1p", label: "イーピン（1筒）", correct: false },
-        { tile: "2z", label: "南（ナン）", correct: false }
+        { tile: "5z", correct: true },
+        { tile: "1p", correct: false },
+        { tile: "2z", correct: false }
       ],
       explanation: "正解！真っ白でツヤツヤな牌が「白（ハク）」です。3枚集めればポンしてもアガれます！",
       term: {
@@ -185,9 +185,9 @@ const STAGE_QUESTIONS = {
       subtext: "方角（東南西北）や白發中がジハイ（字牌）です。",
       boardNote: "「ジハイ（字牌）」を1枚選ぼう！",
       tileOptions: [
-        { tile: "1z", label: "東（トン）", correct: true },
-        { tile: "1m", label: "イーマン（一萬）", correct: false },
-        { tile: "9p", label: "キューピン（9筒）", correct: false }
+        { tile: "1z", correct: true },
+        { tile: "1m", correct: false },
+        { tile: "9p", correct: false }
       ],
       explanation: "ナイス！「東（トン）」はジハイです。ジハイは同じ牌を2枚（アタマ）か3枚集める使い方しかできません。",
       term: {
@@ -206,9 +206,9 @@ const STAGE_QUESTIONS = {
       subtext: "普通のウーピン（5筒）と形は同じですが、全体が赤く塗られています！",
       boardNote: "「赤ウーピン（赤5筒）」をタップしよう！",
       tileOptions: [
-        { tile: "0p", label: "赤ウーピン（赤5筒）", correct: true },
-        { tile: "5p", label: "ウーピン（5筒）", correct: false },
-        { tile: "3p", label: "サンピン（3筒）", correct: false }
+        { tile: "0p", correct: true },
+        { tile: "5p", correct: false },
+        { tile: "3p", correct: false }
       ],
       explanation: "バッチリ！真っ赤な「赤ウーピン（赤5筒）」は赤ドラと呼ばれ、通常の5筒とまったく同じように使えて点数もアップするお得牌です！",
       term: {
@@ -227,9 +227,9 @@ const STAGE_QUESTIONS = {
       subtext: "ヒント：鳥の絵が「何の数字」だったか思い出して！",
       boardNote: "2〜8の牌をタップ！",
       tileOptions: [
-        { tile: "4p", label: "スーピン（4筒）", correct: true },
-        { tile: "1s", label: "イーソー（1索）", correct: false },
-        { tile: "9m", label: "キューマン（九萬）", correct: false }
+        { tile: "4p", correct: true },
+        { tile: "1s", correct: false },
+        { tile: "9m", correct: false }
       ],
       explanation: "大正解！丸が4つの「スーピン（4筒）」が真ん中の牌です（鳥はイーソー（1索）なので端っこの牌！）。2〜8だけ集めると「タンヤオ」になります！",
       term: {
@@ -266,9 +266,9 @@ const STAGE_QUESTIONS = {
       subtext: "3枚集めるだけで役がつく、緑色の頼もしい字牌です！",
       boardNote: "緑色の漢字に注目！",
       tileOptions: [
-        { tile: "6z", label: "發（ハツ）", correct: true },
-        { tile: "8s", label: "パーソー（8索）", correct: false },
-        { tile: "7z", label: "中（チュン）", correct: false }
+        { tile: "6z", correct: true },
+        { tile: "8s", correct: false },
+        { tile: "7z", correct: false }
       ],
       explanation: "大正解！緑色の漢字は「發（ハツ）」です。白・發・中の3兄弟は、ポンしても1飜つく初心者の強い味方です！",
       term: {
@@ -287,9 +287,9 @@ const STAGE_QUESTIONS = {
       subtext: "「ちゅん」と読みます！マンズ（萬子）の漢数字と間違えないように注意！",
       boardNote: "真ん中に線が入った赤い一文字！",
       tileOptions: [
-        { tile: "7z", label: "中（チュン）", correct: true },
-        { tile: "1m", label: "イーマン（一萬）", correct: false },
-        { tile: "0p", label: "赤ウーピン（赤5筒）", correct: false }
+        { tile: "7z", correct: true },
+        { tile: "1m", correct: false },
+        { tile: "0p", correct: false }
       ],
       explanation: "バッチリ！真っ赤な「中」はチュンと読みます。3枚集めればいつでも役牌（1飜）になります！",
       term: {
@@ -329,9 +329,9 @@ const STAGE_QUESTIONS = {
       subtext: "東（トン）・南（ナン）・西（シャー）・北（ペー）の最後の4番目です！",
       boardNote: "漢字の「北」を探そう！",
       tileOptions: [
-        { tile: "4z", label: "北（ペー）", correct: true },
-        { tile: "2z", label: "南（ナン）", correct: false },
-        { tile: "3z", label: "西（シャー）", correct: false }
+        { tile: "4z", correct: true },
+        { tile: "2z", correct: false },
+        { tile: "3z", correct: false }
       ],
       explanation: "ナイス！「北」はペーと読みます。ドラ表示牌で「北」がめくれたときは、最初に戻って「東」がドラになります！",
       term: {
@@ -350,9 +350,9 @@ const STAGE_QUESTIONS = {
       subtext: "チーソー（7索）・パーソー（8索）・キューソー（9索）は本数が多いので形で覚えると一瞬です！",
       boardNote: "上下に4本ずつ（計8本）並んでいる牌！",
       tileOptions: [
-        { tile: "8s", label: "パーソー（8索）", correct: true },
-        { tile: "6s", label: "ローソー（6索）", correct: false },
-        { tile: "9s", label: "キューソー（9索）", correct: false }
+        { tile: "8s", correct: true },
+        { tile: "6s", correct: false },
+        { tile: "9s", correct: false }
       ],
       explanation: "お見事！斜めの竹が入った8本組が「パーソー（8索）」です。ローソー（6索）やキューソー（9索）と見分けられれば完璧！",
       term: {
@@ -371,9 +371,9 @@ const STAGE_QUESTIONS = {
       subtext: "上に1本＋下に6本＝合計7本です！",
       boardNote: "一番上の赤い1本が目印！",
       tileOptions: [
-        { tile: "7s", label: "チーソー（7索）", correct: true },
-        { tile: "5s", label: "ウーソー（5索）", correct: false },
-        { tile: "3s", label: "サンソー（3索）", correct: false }
+        { tile: "7s", correct: true },
+        { tile: "5s", correct: false },
+        { tile: "3s", correct: false }
       ],
       explanation: "バッチリ！上に赤い竹が1本ちょこんと乗っているのが「7索（チーソー）」です！",
       term: {
@@ -392,9 +392,9 @@ const STAGE_QUESTIONS = {
       subtext: "漢数字＋「萬」が書かれたグループです！",
       boardNote: "ピンズ（筒子）でもソーズ（索子）でもない数牌！",
       tileOptions: [
-        { tile: "3m", label: "サンマン（三萬）", correct: true },
-        { tile: "3p", label: "サンピン（3筒）", correct: false },
-        { tile: "3s", label: "サンソー（3索）", correct: false }
+        { tile: "3m", correct: true },
+        { tile: "3p", correct: false },
+        { tile: "3s", correct: false }
       ],
       explanation: "大正解！「サンマン（三萬）」がマンズグループです。同じ「3」でも種類が違うと一緒に階段にはできません！",
       term: {
@@ -413,9 +413,9 @@ const STAGE_QUESTIONS = {
       subtext: "丸いボール模様のグループです！",
       boardNote: "丸が4つ並んだ「スーピン（4筒）」を探そう！",
       tileOptions: [
-        { tile: "4p", label: "スーピン（4筒）", correct: true },
-        { tile: "4m", label: "スーマン（四萬）", correct: false },
-        { tile: "4s", label: "スーソー（4索）", correct: false }
+        { tile: "4p", correct: true },
+        { tile: "4m", correct: false },
+        { tile: "4s", correct: false }
       ],
       explanation: "完璧！丸い模様はすべて「ピンズ（筒子）」グループです！",
       term: {
@@ -434,9 +434,9 @@ const STAGE_QUESTIONS = {
       subtext: "数字の5全体が赤く、右上にキラリと印がついています！",
       boardNote: "普通の黒いウーマン（五萬）と見比べてみよう！",
       tileOptions: [
-        { tile: "0m", label: "赤ウーマン（赤五萬）", correct: true },
-        { tile: "5m", label: "ウーマン（五萬）", correct: false },
-        { tile: "7z", label: "中（チュン）", correct: false }
+        { tile: "0m", correct: true },
+        { tile: "5m", correct: false },
+        { tile: "7z", correct: false }
       ],
       explanation: "大正解！真っ赤な「赤ウーマン（赤五萬）」は、普通のウーマンと同じ数字の「5」として使えて、さらにアガると1飜ボーナスがつくお宝牌です！",
       term: {
@@ -1867,9 +1867,9 @@ const STAGE_QUESTIONS = {
       doraIndicator: "4m",
       boardNote: "▲ 本番の王牌（めくれている牌の「次」がドラ！）",
       tileOptions: [
-        { tile: "5m", label: "ウーマン（五萬 / 次の数字！）", correct: true },
-        { tile: "4m", label: "スーマン（四萬 / 同じ牌）", correct: false },
-        { tile: "3m", label: "サンマン（三萬 / 前の数字）", correct: false }
+        { tile: "5m", correct: true },
+        { tile: "4m", correct: false },
+        { tile: "3m", correct: false }
       ],
       explanation: "大正解！！本番ではめくれている「ドラ表示牌」そのものではなく、その1つ次の『ウーマン（五萬）』がドラになります！（※9の次は1、風牌は東→南→西→北→東、三元牌は白→發→中→白の順）",
       term: {
@@ -2030,9 +2030,9 @@ const STAGE_QUESTIONS = {
       doraIndicator: "9p",
       boardNote: "▲ 9がめくれた時は最初の数字にループします！",
       tileOptions: [
-        { tile: "1p", label: "イーピン（1筒 / 1に戻る！）", correct: true },
-        { tile: "9p", label: "キューピン（9筒 / 9のまま）", correct: false },
-        { tile: "8p", label: "パーピン（8筒 / 1つ前の8）", correct: false }
+        { tile: "1p", correct: true },
+        { tile: "9p", correct: false },
+        { tile: "8p", correct: false }
       ],
       explanation: "大正解！！表示牌が「9」のときは、同じ種類の「1（今回はイーピン / 1筒）」にぐるっと戻ってドラになります！",
       term: {
@@ -2052,9 +2052,9 @@ const STAGE_QUESTIONS = {
       doraIndicator: "1z",
       boardNote: "▲ 東・南・西・北の順番を思い出そう！",
       tileOptions: [
-        { tile: "2z", label: "南（ナン）", correct: true },
-        { tile: "1z", label: "東（トン）", correct: false },
-        { tile: "3z", label: "西（シャー）", correct: false }
+        { tile: "2z", correct: true },
+        { tile: "1z", correct: false },
+        { tile: "3z", correct: false }
       ],
       explanation: "バッチリ！！風牌は「東→南→西→北→東」の順番なので、東がめくれていたら次の『南』がドラになります！",
       term: {
@@ -2074,9 +2074,9 @@ const STAGE_QUESTIONS = {
       doraIndicator: "4z",
       boardNote: "▲ 風牌4つの中だけでループします！",
       tileOptions: [
-        { tile: "1z", label: "東（トン / 東に戻る！）", correct: true },
-        { tile: "5z", label: "白（ハク / 白に行く）", correct: false },
-        { tile: "3z", label: "西（シャー / 西に戻る）", correct: false }
+        { tile: "1z", correct: true },
+        { tile: "5z", correct: false },
+        { tile: "3z", correct: false }
       ],
       explanation: "お見事！！風牌は風牌4種類の中でループするため、「北」の次は最初に戻って『東』がドラになります！",
       term: {
@@ -2096,9 +2096,9 @@ const STAGE_QUESTIONS = {
       doraIndicator: "5z",
       boardNote: "▲ 白 → 發 → 中 の順番！",
       tileOptions: [
-        { tile: "6z", label: "發（ハツ）", correct: true },
-        { tile: "7z", label: "中（チュン）", correct: false },
-        { tile: "5z", label: "白（ハク）", correct: false }
+        { tile: "6z", correct: true },
+        { tile: "7z", correct: false },
+        { tile: "5z", correct: false }
       ],
       explanation: "大正解！！三元牌は「白 → 發 → 中 → 白」の順番なので、白がめくれていたら次の『發』がドラです！",
       term: {
@@ -2118,9 +2118,9 @@ const STAGE_QUESTIONS = {
       doraIndicator: "7z",
       boardNote: "▲ 三元牌3つの中でループします！",
       tileOptions: [
-        { tile: "5z", label: "白（ハク / 白に戻る！）", correct: true },
-        { tile: "1z", label: "東（トン / 東に行く）", correct: false },
-        { tile: "6z", label: "發（ハツ / 發に戻る）", correct: false }
+        { tile: "5z", correct: true },
+        { tile: "1z", correct: false },
+        { tile: "6z", correct: false }
       ],
       explanation: "完璧です！！「白→發→中」の次は先頭の『白（真っ白な牌）』がドラになります。これで本番のドラ読みは完全マスターです！",
       term: {
