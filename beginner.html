@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>麻雀ファーストステップ 🧩 ゼロからパズル入門</title>
+  <meta name="description" content="14枚見なくて大丈夫！3枚パズルと8枚ミニ麻雀で、触りながら自然に麻雀の基礎が身につく超入門アプリ。">
+  <!-- OGP (LINE・SNS共有リンクプレビュー設定) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="麻雀ファーストステップ 🧩 ゼロからパズル入門">
+  <meta property="og:description" content="14枚見なくて大丈夫！3枚パズルと8枚ミニ麻雀で、触りながら自然に麻雀の基礎が身につく超入門アプリ。">
+  <meta property="og:site_name" content="麻雀ファーストステップ">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="麻雀ファーストステップ 🧩 ゼロからパズル入門">
+  <meta name="twitter:description" content="14枚見なくて大丈夫！3枚パズルと8枚ミニ麻雀で、触りながら自然に麻雀の基礎が身につく超入門アプリ。">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'sans-serif'],
+            serif: ['"Kaisei Decol"', 'serif'],
+          },
+          colors: {
+            boardDark: '#134e4a',
+            boardMain: '#0f766e',
+            boardLight: '#115e59',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* 通常サイズ牌（13枚表示用） */
+    .mj-tile {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 62px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 85%, #f1f5f9 100%);
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      border-bottom: 4px solid #d97706;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.9);
+      user-select: none;
+      position: relative;
+      flex-shrink: 0;
+      transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.16s ease, opacity 0.2s ease;
+    }
+
+    @media (max-width: 640px) {
+      .mj-tile {
+        width: 25px;
+        height: 36px;
+        border-radius: 3.5px;
+        border-bottom-width: 2.5px;
+      }
+    }
+    @media (max-width: 380px) {
+      .mj-tile {
+        width: 22px;
+        height: 32px;
+        border-radius: 3px;
+        border-bottom-width: 2px;
+      }
+    }
+
+    /* 少枚数ステージ用の特大牌（Stage 1〜3） */
+    .mj-tile-lg {
+      width: 54px !important;
+      height: 75px !important;
+      border-radius: 7px !important;
+      border-bottom-width: 5px !important;
+    }
+    @media (max-width: 640px) {
+      .mj-tile-lg {
+        width: 38px !important;
+        height: 53px !important;
+        border-radius: 5px !important;
+        border-bottom-width: 3.5px !important;
+      }
+    }
+
+    /* タップ可能な手牌のホバー・浮き上がり演出 */
+    .mj-tile-interactive {
+      cursor: pointer;
+    }
+    .mj-tile-interactive:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 16px rgba(0,0,0,0.28);
+    }
+    .mj-tile-interactive:active {
+      transform: translateY(-2px) scale(0.96);
+    }
+
+    /* 空きスロット [ ？ ] */
+    .mj-slot-empty {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 75px;
+      border-radius: 7px;
+      border: 2.5px dashed #fbbf24;
+      background: rgba(251, 191, 36, 0.15);
+      color: #fde68a;
+      font-weight: 900;
+      font-size: 1.35rem;
+      flex-shrink: 0;
+      animation: slotPulse 1.8s infinite ease-in-out;
+    }
+    @media (max-width: 640px) {
+      .mj-slot-empty {
+        width: 40px;
+        height: 55px;
+        font-size: 1.1rem;
+      }
+    }
+
+    @keyframes slotPulse {
+      0%, 100% { transform: scale(1); background: rgba(251, 191, 36, 0.14); }
+      50% { transform: scale(1.05); background: rgba(251, 191, 36, 0.28); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5) translateY(12px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    .animate-pop-in {
+      animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    /* 補助輪ブロック枠 */
+    .scaffold-block {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.09);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 8px;
+      padding: 5px 5px 3px;
+      margin: 2px 3px;
+    }
+    .scaffold-block-wait {
+      background: rgba(251, 191, 36, 0.18);
+      border: 1.5px solid #fbbf24;
+    }
+  </style>
+</head>
+<body class="bg-amber-50/40 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-teal-200">
+
+  <!-- ヘッダー -->
+  <header class="bg-gradient-to-r from-teal-800 via-teal-700 to-emerald-800 text-white shadow-md sticky top-0 z-30">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2.5 cursor-pointer" onclick="app.showHome()">
+        <span class="text-2xl filter drop-shadow">🧩</span>
+        <div>
+          <h1 class="text-base sm:text-lg font-bold tracking-tight font-serif flex items-center gap-1.5">
+            <span>麻雀ファーストステップ</span>
+            <span class="text-[11px] bg-amber-400/25 text-amber-200 font-sans px-2 py-0.5 rounded-full border border-amber-300/40 font-normal">超入門パズル</span>
+          </h1>
+          <p class="text-[11px] text-teal-100/90">14枚見なくて大丈夫！触って覚える基礎パズル</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <button id="soundToggleBtn" onclick="app.toggleSound()" class="p-2 rounded-full hover:bg-white/10 text-teal-100 transition" title="効果音のON/OFF">
+          <i data-lucide="volume-2" class="w-5 h-5"></i>
+        </button>
+
+        <button onclick="app.openGuide()" class="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-3 py-1.5 rounded-lg shadow transition transform active:scale-95 text-xs sm:text-sm">
+          <i data-lucide="help-circle" class="w-4 h-4"></i>
+          <span>基礎メモ 📖</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- メイン領域 -->
+  <main class="flex-1 max-w-4xl w-full mx-auto p-3 sm:p-5 flex flex-col">
+
+    <!-- 1. ホーム画面 -->
+    <section id="homeView" class="space-y-5">
+
+      <!-- ヒーローバナー -->
+      <div class="bg-gradient-to-br from-teal-700 to-emerald-800 text-white rounded-2xl p-5 shadow-lg border border-teal-600/50 relative overflow-hidden">
+        <div class="absolute -right-4 -bottom-6 opacity-10 text-8xl select-none">🧩</div>
+        <div class="relative z-10">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="inline-flex items-center gap-1 bg-white/20 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+              <i data-lucide="smile" class="w-3.5 h-3.5 text-amber-300"></i>
+              ルール暗記ゼロ・パズル感覚
+            </span>
+            <span id="progressBadge" class="text-xs font-bold text-amber-200 bg-black/25 px-3 py-1 rounded-full border border-amber-300/30">
+              クリア済み: 0 / 5 ステージ
+            </span>
+          </div>
+          <h2 class="text-lg sm:text-2xl font-bold font-serif mb-1.5">
+            まずは「2枚〜3枚のパズル」から始めよう！
+          </h2>
+          <p class="text-teal-50 text-xs sm:text-sm leading-relaxed mb-4">
+            いきなり14枚の手牌を見るから頭がフリーズしてしまいます。<br class="hidden sm:inline">
+            牌の絵柄 → 3枚ブロック → 8枚ミニ麻雀 → 補助輪つき13枚と、順番に遊ぶだけで自然に手牌が見えるようになります！
+          </p>
+          <button onclick="app.startStage('stage1')" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-6 py-3 rounded-xl shadow-md transition transform active:scale-95 text-sm sm:text-base">
+            <i data-lucide="play" class="w-5 h-5 fill-slate-900"></i>
+            <span>Stage 1 から順番に遊ぶ</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 5ステージ選択リスト -->
+      <div class="space-y-3">
+        <h3 class="text-sm sm:text-base font-bold text-slate-700 flex items-center gap-2 px-1">
+          <i data-lucide="layers" class="w-5 h-5 text-teal-700"></i>
+          <span>5つのステップ（どこからでも遊べます）</span>
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="stageCardsContainer">
+          <!-- JSでステージカードを描画 -->
+        </div>
+      </div>
+
+      <!-- 次のステップ（役・点数トレーニングボード）への相互リンクカード -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 border-2 border-emerald-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div class="flex items-start gap-3">
+          <div class="w-11 h-11 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl flex-shrink-0">
+            🀄
+          </div>
+          <div>
+            <div class="text-xs font-bold text-emerald-700 mb-0.5">ステップアップ先</div>
+            <h4 class="font-bold text-slate-800 text-sm sm:text-base">手牌の形に慣れたら『麻雀トレーニングボード』へ！</h4>
+            <p class="text-xs text-slate-500 mt-0.5">「鳴いていい手？ダメな手？」「役の判定」「頻出点数」を練習できます。</p>
+          </div>
+        </div>
+        <a id="linkToMainBoard" href="./index.html" class="w-full sm:w-auto text-center whitespace-nowrap bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-sm transition flex items-center justify-center gap-1.5">
+          <span>役・点数ボードへ</span>
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+    </section>
+
+    <!-- 2. パズル・クイズ実行画面 -->
+    <section id="playView" class="hidden space-y-4 flex-1 flex flex-col">
+
+      <!-- 上部ナビ -->
+      <div class="flex items-center justify-between text-xs text-slate-600 px-1">
+        <div class="flex items-center gap-2">
+          <button onclick="app.showHome()" class="p-1.5 rounded-lg hover:bg-slate-200/70 text-slate-700 transition flex items-center gap-1 font-medium">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            <span>ステージ一覧</span>
+          </button>
+          <span id="stageBadge" class="bg-teal-100 text-teal-900 font-bold px-2.5 py-0.5 rounded-full">Stage 1</span>
+        </div>
+        <div class="font-bold text-slate-700">
+          <span id="qCurrent" class="text-teal-700 text-sm">1</span> / <span id="qTotal">6</span>
+        </div>
+      </div>
+
+      <!-- 進捗バー -->
+      <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+        <div id="playProgressBar" class="bg-gradient-to-r from-teal-500 to-amber-400 h-full w-0 transition-all duration-300"></div>
+      </div>
+
+      <!-- メインボード -->
+      <div class="bg-gradient-to-b from-boardMain to-boardDark text-white rounded-2xl p-4 sm:p-6 shadow-xl border-4 border-teal-950 relative overflow-hidden">
+
+        <!-- 補助輪トグルバー（Stage 4等で表示） -->
+        <div id="scaffoldBar" class="hidden mb-3 pb-2.5 border-b border-white/15 flex flex-wrap items-center justify-between gap-2">
+          <span class="text-xs text-teal-100 flex items-center gap-1.5">
+            <span>🚲</span>
+            <span>ブロックごとに区切って見る「補助輪」機能：</span>
+          </span>
+          <button id="scaffoldToggleBtn" onclick="app.toggleScaffold()" class="text-xs font-bold px-3 py-1 rounded-full transition shadow-sm">
+            補助輪 ON（区切り表示中）
+          </button>
+        </div>
+
+        <!-- 問題文 -->
+        <div class="mb-4">
+          <div id="modeInstructionBadge" class="inline-block text-[11px] font-bold bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full mb-1.5">
+            パズル
+          </div>
+          <h3 id="playQuestion" class="text-base sm:text-xl font-bold leading-snug">
+            質問テキスト
+          </h3>
+          <p id="playSubtext" class="text-xs sm:text-sm text-teal-100/90 mt-1">
+            補足テキスト
+          </p>
+        </div>
+
+        <!-- 自分の捨て牌（河）エリア（フリテン問題等で表示） -->
+        <div id="riverArea" class="hidden mb-3 bg-black/25 rounded-xl p-3 border border-white/15">
+          <div class="text-[11px] text-amber-200 font-bold mb-1.5 flex items-center gap-1">
+            <i data-lucide="corner-down-right" class="w-3.5 h-3.5"></i>
+            <span>あなたがさっき捨てた牌（河）：</span>
+          </div>
+          <div id="riverTiles" class="flex items-center gap-1.5 flex-wrap"></div>
+        </div>
+
+        <!-- 牌表示ステージエリア -->
+        <div id="boardStageArea" class="bg-black/25 rounded-xl p-4 sm:p-5 border border-white/10 min-h-[115px] flex flex-col items-center justify-center overflow-x-auto">
+          <div id="boardTilesRow" class="flex items-center justify-center gap-1.5 flex-nowrap py-1"></div>
+          <div id="boardHelperCaption" class="text-[11px] text-amber-200/90 mt-2.5 text-center font-medium"></div>
+        </div>
+
+        <!-- 捨てた後の演出表示（Stage 3用） -->
+        <div id="discardedPreview" class="hidden mt-3 bg-emerald-950/70 rounded-xl p-2.5 border border-emerald-400/30 text-center text-xs text-emerald-200">
+          <!-- JSで挿入 -->
+        </div>
+
+      </div>
+
+      <!-- 下部選択肢エリア（モードに応じて牌ボタンまたはテキスト選択肢を表示） -->
+      <div id="answerArea" class="my-1"></div>
+
+      <!-- フィードバック解説カード -->
+      <div id="feedbackCard" class="hidden rounded-2xl p-4 shadow-lg transition-all animate-pop-in">
+        <div class="flex items-start gap-3">
+          <div id="fbBadge" class="w-10 h-10 rounded-full flex items-center justify-center text-xl flex-shrink-0 font-bold"></div>
+          <div class="flex-1">
+            <h4 id="fbTitle" class="text-base font-bold mb-1"></h4>
+            <p id="fbBody" class="text-xs sm:text-sm leading-relaxed text-slate-700"></p>
+            <div class="mt-3 flex justify-end">
+              <button onclick="app.nextQuestion()" class="bg-teal-700 hover:bg-teal-600 text-white font-bold px-5 py-2.5 rounded-xl shadow transition flex items-center gap-1.5 text-sm">
+                <span>次へすすむ</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 3. ステージクリア画面 -->
+    <section id="clearView" class="hidden flex-1 flex flex-col justify-center items-center py-6 text-center">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-xl border border-slate-200 max-w-md w-full">
+        <div class="w-20 h-20 rounded-full bg-amber-100 mx-auto flex items-center justify-center text-4xl mb-3">
+          🎉
+        </div>
+        <div id="clearStageLabel" class="text-xs font-bold text-teal-700 bg-teal-50 inline-block px-3 py-1 rounded-full mb-2">Stage Clear!</div>
+        <h3 id="clearTitle" class="text-2xl font-bold font-serif text-slate-800 mb-2">
+          ステージクリア！
+        </h3>
+        <p id="clearMessage" class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-5"></p>
+
+        <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 mb-5 flex justify-around text-center">
+          <div>
+            <div class="text-xs text-slate-400">正解数</div>
+            <div class="text-lg font-bold text-teal-700"><span id="clearScore">6</span> / <span id="clearTotal">6</span></div>
+          </div>
+          <div class="border-l border-slate-200"></div>
+          <div>
+            <div class="text-xs text-slate-400">達成度</div>
+            <div id="clearAccuracy" class="text-lg font-bold text-amber-600">100%</div>
+          </div>
+        </div>
+
+        <div id="clearActions" class="space-y-2.5">
+          <!-- 次のステージボタン等を動的挿入 -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 超入門ミニ図鑑（基礎メモ）モーダル -->
+  <div id="guideModal" class="fixed inset-0 bg-black/60 z-50 hidden backdrop-blur-sm flex justify-center items-end sm:items-center p-0 sm:p-4">
+    <div class="bg-white w-full max-w-2xl max-h-[88vh] sm:rounded-2xl rounded-t-2xl shadow-2xl flex flex-col overflow-hidden">
+      <div class="bg-teal-800 text-white px-5 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">📖</span>
+          <div>
+            <h3 class="font-bold text-base">超入門！麻雀の基礎ミニ図鑑</h3>
+            <p class="text-[11px] text-teal-200">迷ったらここを見ればすぐ分かります</p>
+          </div>
+        </div>
+        <button onclick="app.closeGuide()" class="p-1.5 rounded-full hover:bg-white/10">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-700">
+        <!-- 1. 牌の4種類 -->
+        <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5">
+          <h4 class="font-bold text-amber-900 mb-2">① 牌の種類はたった4つだけ！</h4>
+          <ul class="space-y-1.5 text-xs">
+            <li>・<strong>萬子（マンズ）</strong>：漢数字の「一〜九」＋「萬」（例：五萬＝5）</li>
+            <li>・<strong>筒子（ピンズ）</strong>：丸いボールの数で「1〜9」を表す</li>
+            <li>・<strong>索子（ソーズ）</strong>：緑の竹の本数で「1〜9」。<strong>※「1索」だけは鳥のイラスト！</strong></li>
+            <li>・<strong>字牌（ジハイ）</strong>：東南西北・白發中の7種類。<strong>※数字じゃないので階段（1-2-3）は作れません！</strong></li>
+          </ul>
+        </div>
+
+        <!-- 2. アガリのパズル公式 -->
+        <div class="bg-teal-50 border border-teal-200 rounded-xl p-3.5">
+          <h4 class="font-bold text-teal-900 mb-2">② アガりの形 ＝「3枚組×4つ ＋ ペア1つ」（14枚）</h4>
+          <p class="text-xs text-slate-600 mb-2">以下の部品を集めるだけのパズルです：</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div class="bg-white p-2.5 rounded-lg border border-teal-100">
+              <strong class="text-teal-800 block">階段の3枚組（シュンツ）</strong>
+              同じ種類で連続する数字3枚（例：2・3・4筒）
+            </div>
+            <div class="bg-white p-2.5 rounded-lg border border-teal-100">
+              <strong class="text-teal-800 block">同じ牌の3枚組（コーツ）</strong>
+              まったく同じ牌3枚（例：中・中・中）
+            </div>
+          </div>
+          <div class="bg-white p-2.5 rounded-lg border border-teal-100 mt-2 text-xs">
+            <strong class="text-teal-800 block">アタマ（2枚ペア）</strong>
+            最後に同じ牌を2枚1組（例：8索・8索）作れば完成！
+          </div>
+        </div>
+
+        <!-- 3. 最初の3つの役とフリテン -->
+        <div class="bg-rose-50 border border-rose-200 rounded-xl p-3.5">
+          <h4 class="font-bold text-rose-900 mb-2">③ 最初は「3つの武器」と「フリテン注意」だけ！</h4>
+          <ul class="space-y-1.5 text-xs">
+            <li>⭕ <strong>武器1：リーチ</strong>（1回もポン・チーせずにあと1枚になったら宣言！）</li>
+            <li>⭕ <strong>武器2：白・發・中</strong>（どれか3枚集めればポンしてもアガれる！）</li>
+            <li>⭕ <strong>武器3：タンヤオ</strong>（2〜8の数牌だけで揃えれば鳴いてもアガれる！）</li>
+            <li>⚠️ <strong>フリテン注意</strong>：自分が過去に捨てた牌が待ちに含まれていると、相手から「ロン」はできません（自分で引く「ツモ」ならOK！）。</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-100 border-t border-slate-200 text-center">
+        <button onclick="app.closeGuide()" class="bg-teal-700 hover:bg-teal-800 text-white font-bold px-6 py-2 rounded-lg text-xs sm:text-sm">
+          とじる
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <footer class="bg-slate-100 border-t border-slate-200 py-3 text-center text-xs text-slate-500">
+    麻雀ファーストステップ 🧩 | <a id="footerLinkMain" href="./index.html" class="underline hover:text-teal-700">麻雀トレーニングボードへ</a>
+  </footer>
+
+  <script>
+    /**
+     * 美麗SVG麻雀牌レンダラー（日本式・視認性強化版）
+     */
+    const TileRenderer = {
+      render(tileCode, options = {}) {
+        const isLarge = options.large || false;
+        const interactive = options.interactive || false;
+        const badge = options.badge || '';
+        const highlight = options.highlight || false;
+
+        let cls = 'mj-tile';
+        if (isLarge) cls += ' mj-tile-lg';
+        if (interactive) cls += ' mj-tile-interactive';
+        if (highlight) cls += ' ring-2 ring-rose-500';
+
+        const graphic = this.getTileGraphic(tileCode);
+        return `
+          <div class="${cls}" ${options.onClickAttr ? `onclick="${options.onClickAttr}"` : ''}>
+            <svg viewBox="0 0 44 62" class="w-full h-full block pointer-events-none">
+              <rect x="1" y="1" width="42" height="57" rx="4" fill="#ffffff" />
+              ${graphic}
+            </svg>
+            ${badge ? `<span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-rose-600 text-white font-bold text-[10px] px-1.5 py-0.2 rounded-full shadow border border-white whitespace-nowrap">${badge}</span>` : ''}
+          </div>
+        `;
+      },
+
+      getTileGraphic(code) {
+        if (!code) return '';
+        const num = code.charAt(0);
+        const suit = code.charAt(1);
+        const isRed = code.endsWith('r') || num === '0';
+
+        if (suit === 'z') return this.getHonorGraphic(num);
+        if (suit === 'm') return this.getManzuGraphic(num, isRed);
+        if (suit === 'p') return this.getPinzuGraphic(num, isRed);
+        if (suit === 's') return this.getSouzuGraphic(num, isRed);
+        return '';
+      },
+
+      getManzuGraphic(num, isRed) {
+        const kanjiMap = { '1':'一','2':'二','3':'三','4':'四','5':'五','6':'六','7':'七','8':'八','9':'九','0':'五' };
+        const k = kanjiMap[num] || num;
+        const color = isRed ? '#dc2626' : '#1e293b';
+        return `
+          <g>
+            <text x="22" y="23" font-family="'Noto Sans JP', serif" font-weight="900" font-size="21" fill="${color}" text-anchor="middle" dominant-baseline="central">${k}</text>
+            <text x="22" y="44" font-family="'Noto Sans JP', serif" font-weight="900" font-size="18" fill="#dc2626" text-anchor="middle" dominant-baseline="central">萬</text>
+            ${isRed ? `<circle cx="36" cy="10" r="3" fill="#f59e0b" />` : ''}
+          </g>
+        `;
+      },
+
+      getPinzuGraphic(num, isRed) {
+        const blue = '#1d4ed8', red = '#dc2626', green = '#15803d';
+        if (num === '1') {
+          return `
+            <g transform="translate(22, 29.5)">
+              <circle cx="0" cy="0" r="15.5" fill="${green}" />
+              <circle cx="0" cy="0" r="11.5" fill="#ffffff" />
+              <circle cx="0" cy="0" r="7.5" fill="${red}" />
+              <circle cx="0" cy="0" r="3.2" fill="#ffffff" />
+            </g>
+          `;
+        }
+        const c = (cx, cy, col) => `
+          <circle cx="${cx}" cy="${cy}" r="4.3" fill="${col}" />
+          <circle cx="${cx}" cy="${cy}" r="1.9" fill="#ffffff" />
+          <circle cx="${cx}" cy="${cy}" r="0.9" fill="${col}" />
+        `;
+        if (num === '2') return `<g>${c(22, 17, blue)}${c(22, 42, blue)}</g>`;
+        if (num === '3') return `<g>${c(14, 15, blue)}${c(22, 29.5, red)}${c(30, 44, green)}</g>`;
+        if (num === '4') return `<g>${c(14, 18, blue)}${c(30, 18, green)}${c(14, 41, green)}${c(30, 41, blue)}</g>`;
+        if (num === '5' || num === '0') {
+          const col = isRed ? red : blue;
+          return `<g>${c(14, 16, col)}${c(30, 16, green)}${c(22, 29.5, red)}${c(14, 43, green)}${c(30, 43, col)}</g>`;
+        }
+        if (num === '6') return `<g>${c(14, 15, green)}${c(30, 15, green)}${c(14, 30, red)}${c(30, 30, red)}${c(14, 44, red)}${c(30, 44, red)}</g>`;
+        if (num === '7') return `<g>${c(12, 14, green)}${c(22, 18, green)}${c(32, 22, green)}${c(14, 34, red)}${c(30, 34, red)}${c(14, 46, red)}${c(30, 46, red)}</g>`;
+        if (num === '8') return `<g>${c(14, 13, blue)}${c(30, 13, blue)}${c(14, 24, blue)}${c(30, 24, blue)}${c(14, 35, blue)}${c(30, 35, blue)}${c(14, 46, blue)}${c(30, 46, blue)}</g>`;
+        if (num === '9') return `<g>${c(13, 15, blue)}${c(22, 15, blue)}${c(31, 15, blue)}${c(13, 29.5, red)}${c(22, 29.5, red)}${c(31, 29.5, red)}${c(13, 44, green)}${c(22, 44, green)}${c(31, 44, green)}</g>`;
+        return '';
+      },
+
+      getSouzuGraphic(num, isRed) {
+        const green = '#15803d', red = '#dc2626', blue = '#1d4ed8';
+        if (num === '1') {
+          // 鳥のイラストをより分かりやすく描画（くちばし・羽・尾）
+          return `
+            <g>
+              <circle cx="22" cy="17" r="5" fill="${green}" />
+              <polygon points="14,17 18,15 18,19" fill="#f59e0b" />
+              <circle cx="21" cy="16" r="1.3" fill="#ffffff" />
+              <path d="M 22 22 C 13 24, 12 36, 17 44 L 27 44 C 32 36, 31 24, 22 22 Z" fill="${green}" />
+              <path d="M 19 27 C 17 32, 18 38, 22 41 C 26 38, 27 32, 25 27 Z" fill="${red}" />
+              <rect x="16" y="45" width="12" height="4" rx="1.5" fill="${green}" />
+            </g>
+          `;
+        }
+        const b = (x, y, h, col) => `
+          <g transform="translate(${x}, ${y})">
+            <rect x="-2.2" y="0" width="4.4" height="${h}" rx="1.5" fill="${col}" />
+            <circle cx="0" cy="${h/2}" r="1.4" fill="#ffffff" />
+          </g>
+        `;
+        if (num === '2') return `<g>${b(22, 13, 14, green)}${b(22, 33, 14, green)}</g>`;
+        if (num === '3') return `<g>${b(22, 13, 12, green)}${b(14, 34, 13, green)}${b(30, 34, 13, green)}</g>`;
+        if (num === '4') return `<g>${b(14, 14, 13, green)}${b(30, 14, 13, green)}${b(14, 33, 13, green)}${b(30, 33, 13, green)}</g>`;
+        if (num === '5' || num === '0') {
+          const col = isRed ? red : green;
+          return `<g>${b(13, 14, 12, col)}${b(31, 14, 12, col)}${b(22, 24, 12, red)}${b(13, 34, 12, col)}${b(31, 34, 12, col)}</g>`;
+        }
+        if (num === '6') return `<g>${b(13, 14, 12, green)}${b(22, 14, 12, green)}${b(31, 14, 12, green)}${b(13, 34, 12, green)}${b(22, 34, 12, green)}${b(31, 34, 12, green)}</g>`;
+        if (num === '7') return `<g>${b(22, 11, 11, red)}${b(13, 25, 11, green)}${b(31, 25, 11, green)}${b(13, 39, 11, green)}${b(22, 39, 11, green)}${b(31, 39, 11, green)}</g>`;
+        if (num === '8') return `<g>${b(14, 12, 10, green)}${b(30, 12, 10, green)}${b(18, 24, 10, green)}${b(26, 24, 10, green)}${b(18, 35, 10, green)}${b(26, 35, 10, green)}${b(14, 46, 10, green)}${b(30, 46, 10, green)}</g>`;
+        if (num === '9') return `<g>${b(13, 13, 10, green)}${b(22, 13, 10, red)}${b(31, 13, 10, blue)}${b(13, 26, 10, green)}${b(22, 26, 10, red)}${b(31, 26, 10, blue)}${b(13, 39, 10, green)}${b(22, 39, 10, red)}${b(31, 39, 10, blue)}</g>`;
+        return '';
+      },
+
+      getHonorGraphic(num) {
+        const honorData = {
+          '1': { text: '東', color: '#1e293b' },
+          '2': { text: '南', color: '#1e293b' },
+          '3': { text: '西', color: '#1e293b' },
+          '4': { text: '北', color: '#1e293b' },
+          '5': { isHaku: true },
+          '6': { text: '發', color: '#15803d' },
+          '7': { text: '中', color: '#dc2626' }
+        };
+        const h = honorData[num];
+        if (!h) return '';
+        if (h.isHaku) {
+          // 日本式の真っ白な「白」牌（立体感がわかる上品な薄枠のみ）
+          return `<rect x="7" y="9" width="30" height="41" rx="3" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />`;
+        }
+        return `<text x="22" y="31" font-family="'Noto Sans JP', serif" font-weight="900" font-size="27" fill="${h.color}" text-anchor="middle" dominant-baseline="central">${h.text}</text>`;
+      }
+    };
+
+    /**
+     * 効果音マネージャー
+     */
+    const Sound = {
+      enabled: true,
+      ctx: null,
+      init() {
+        if (!this.ctx && (window.AudioContext || window.webkitAudioContext)) {
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+      },
+      clack() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(680, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(160, this.ctx.currentTime + 0.055);
+        gain.gain.setValueAtTime(0.35, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.055);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.055);
+      },
+      chime() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        [523.25, 659.25, 783.99].forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = f;
+          const t = this.ctx.currentTime + i * 0.08;
+          gain.gain.setValueAtTime(0.28, t);
+          gain.gain.exponentialRampToValueAtTime(0.001, t + 0.24);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(t);
+          osc.stop(t + 0.24);
+        });
+      },
+      softBuzz() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(210, this.ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(155, this.ctx.currentTime + 0.18);
+        gain.gain.setValueAtTime(0.22, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.18);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.18);
+      }
+    };
+
+    /**
+     * ステージ定義と全29問の厳選カリキュラムデータ
+     */
+    const STAGES_META = [
+      {
+        key: 'stage1',
+        num: 'Stage 1',
+        icon: '🐣',
+        title: '牌の絵柄と「端っこ」仕分け',
+        badge: 'まずは3秒！',
+        desc: '鳥の牌＝1索？字牌はどれ？後でタンヤオが一瞬で見抜ける目を養います。'
+      },
+      {
+        key: 'stage2',
+        num: 'Stage 2',
+        icon: '🧩',
+        title: '3枚ブロック＆アタマパズル',
+        badge: '穴埋めパズル',
+        desc: '空欄［？］に牌をはめて「階段（1-2-3）」と「同じ牌3枚」を完成させよう！'
+      },
+      {
+        key: 'stage3',
+        num: 'Stage 3',
+        icon: '🗑️',
+        title: '1枚ポイッ！「8枚ミニ麻雀」',
+        badge: '手牌をタップ！',
+        desc: '14枚ではなく半分の8枚だけ！仲間はずれの不要牌を1枚タップして捨てよう。'
+      },
+      {
+        key: 'stage4',
+        num: 'Stage 4',
+        icon: '🚲',
+        title: '補助輪つき「待ち牌」あて',
+        badge: '補助輪ON/OFF',
+        desc: 'ブロック分けの補助輪つきで13枚の待ち牌あて！慣れたら補助輪を外してみよう。'
+      },
+      {
+        key: 'stage5',
+        num: 'Stage 5',
+        icon: '🛡️',
+        title: '実戦の約束「3大武器とフリテン」',
+        badge: '卒業ステージ',
+        desc: '「揃ったのにロンが出ない！」をゼロにする2つの約束をマスターして卒業！'
+      }
+    ];
+
+    const STAGE_QUESTIONS = {
+      // ==========================================
+      // Stage 1: 牌の絵柄と「端っこ」仕分け（6問）
+      // ==========================================
+      stage1: [
+        {
+          id: 's1-1',
+          type: 'tile-choice',
+          modeLabel: '牌えらび',
+          question: 'この中で数字の「1（索子の1 / イーソー）」はどれ？',
+          subtext: '麻雀で1つだけ「鳥のイラスト」になっている有名な牌です！',
+          boardNote: '下の3枚の牌からタップして選ぼう！',
+          tileOptions: [
+            { tile: '1s', label: '鳥の牌', correct: true },
+            { tile: '5z', label: '真っ白な牌', correct: false },
+            { tile: '7z', label: '赤い文字', correct: false }
+          ],
+          explanation: '大正解！鳥の絵は字牌ではなく「竹（索子）の1」です。これさえ知っていればもう迷いません！'
+        },
+        {
+          id: 's1-2',
+          type: 'tile-choice',
+          modeLabel: '牌えらび',
+          question: '萬子（マンズ）は漢数字で書かれています。「5（五萬）」はどれ？',
+          subtext: '上の漢字を読むだけでOK！',
+          boardNote: '下の3枚から「5」を選ぼう！',
+          tileOptions: [
+            { tile: '5m', label: '', correct: true },
+            { tile: '4m', label: '', correct: false },
+            { tile: '7m', label: '', correct: false }
+          ],
+          explanation: 'バッチリ！「五」に「萬」で五萬（ウーマン）です。'
+        },
+        {
+          id: 's1-3',
+          type: 'tile-choice',
+          modeLabel: '牌えらび',
+          question: '3枚集めるだけで役になるラッキー牌「白・發・中」。この中で『白（ハク）』はどれ？',
+          subtext: '日本の麻雀では、文字が何も彫られていない真っ白な牌です！',
+          boardNote: '「白（ハク）」をタップしよう！',
+          tileOptions: [
+            { tile: '5z', label: '', correct: true },
+            { tile: '1p', label: '', correct: false },
+            { tile: '2z', label: '', correct: false }
+          ],
+          explanation: '正解！真っ白でツヤツヤな牌が「白（ハク）」です。3枚集めればポンしてもアガれます！'
+        },
+        {
+          id: 's1-4',
+          type: 'tile-choice',
+          modeLabel: '牌えらび',
+          question: '数字ではないので階段（1-2-3）が作れない『字牌（ジハイ）』はどれ？',
+          subtext: '方角（東南西北）や白發中が字牌です。',
+          boardNote: '「字牌」を1枚選ぼう！',
+          tileOptions: [
+            { tile: '1z', label: '', correct: true },
+            { tile: '1m', label: '', correct: false },
+            { tile: '9p', label: '', correct: false }
+          ],
+          explanation: 'ナイス！「東」は字牌です。字牌は同じ牌を2枚（アタマ）か3枚集める使い方しかできません。'
+        },
+        {
+          id: 's1-5',
+          type: 'tile-choice',
+          modeLabel: '牌えらび',
+          question: '端っこ（1・9）でも字牌でもない、『真ん中の数字（2〜8）』はどれ？',
+          subtext: 'ヒント：鳥の絵が「何の数字」だったか思い出して！',
+          boardNote: '2〜8の牌をタップ！',
+          tileOptions: [
+            { tile: '4p', label: '', correct: true },
+            { tile: '1s', label: '', correct: false },
+            { tile: '9m', label: '', correct: false }
+          ],
+          explanation: '大正解！丸が4つの「4筒」が真ん中の牌です（鳥は1索なので端っこの牌！）。2〜8だけ集めると「タンヤオ」になります！'
+        },
+        {
+          id: 's1-6',
+          type: 'tap-hand',
+          modeLabel: '手牌をタップ！',
+          question: '5枚の中に1枚だけ「端っこの牌（1または9）」が混ざっています。タップして見つけよう！',
+          subtext: '上の並んでいる牌を直接指でタップしてください！',
+          hand: ['2m', '3m', '6p', '1s', '7s'],
+          correctTiles: ['1s'],
+          caption: '👆 上の5枚の中から直接タップ！',
+          explanation: 'お見事！！鳥のイラストは「1索」なので端っこの牌ですね。これが見抜ければタンヤオ作りはもう完璧です！'
+        }
+      ],
+
+      // ==========================================
+      // Stage 2: 3枚ブロック＆アタマパズル（6問）
+      // ==========================================
+      stage2: [
+        {
+          id: 's2-1',
+          type: 'slot-fill',
+          modeLabel: '穴埋めパズル',
+          question: '空欄［ ？ ］に牌をはめて、同じ種類の「数字の階段（3枚組）」を完成させよう！',
+          subtext: '丸いボール（筒子）が「2・3」と並んでいます。',
+          slots: ['2p', '3p', '?'],
+          tileOptions: [
+            { tile: '4p', correct: true },
+            { tile: '4s', correct: false },
+            { tile: '8p', correct: false }
+          ],
+          explanation: 'カチャッ！同じ筒子で「2・3・4」の階段（シュンツ）が完成しました！'
+        },
+        {
+          id: 's2-2',
+          type: 'slot-fill',
+          modeLabel: '穴埋めパズル',
+          question: '真ん中の空欄［ ？ ］に牌をはめて、萬子の階段を完成させよう！',
+          subtext: '「五萬」と「七萬」の間に入る牌は？',
+          slots: ['5m', '?', '7m'],
+          tileOptions: [
+            { tile: '6m', correct: true },
+            { tile: '6p', correct: false },
+            { tile: '9m', correct: false }
+          ],
+          explanation: 'バッチリ！「五・六・七萬」で綺麗な3枚組ができました！'
+        },
+        {
+          id: 's2-3',
+          type: 'slot-fill',
+          modeLabel: '穴埋めパズル',
+          question: '竹（索子）の階段を作ろう！［ ？ ］に入るのはどれ？',
+          subtext: '「2索・3索」の前に繋がる「1索」を入れよう！',
+          slots: ['?', '2s', '3s'],
+          tileOptions: [
+            { tile: '1s', correct: true },
+            { tile: '4p', correct: false },
+            { tile: '6z', correct: false }
+          ],
+          explanation: '完璧です！鳥の牌（1索）＋2索＋3索で「1・2・3」の階段になります！'
+        },
+        {
+          id: 's2-4',
+          type: 'slot-fill',
+          modeLabel: '穴埋めパズル',
+          question: '字牌は階段が作れません。［ ？ ］に牌をはめて3枚組を完成させよう！',
+          subtext: '赤い「中」が2枚あります。',
+          slots: ['7z', '7z', '?'],
+          tileOptions: [
+            { tile: '7z', correct: true },
+            { tile: '5z', correct: false },
+            { tile: '6z', correct: false }
+          ],
+          explanation: '正解！同じ牌を3枚揃えるブロック（コーツ）です。しかも「中」3枚はそれだけで役になります！'
+        },
+        {
+          id: 's2-5',
+          type: 'text-choice',
+          modeLabel: 'ひっかけ注意！',
+          question: '『東・南・西』と方角を3種類1枚ずつ集めました。これは1組のブロックになる？',
+          subtext: '初心者が一番やりがちな疑問です！',
+          boardTiles: ['1z', '2z', '3z'],
+          caption: '東・南・西 を1枚ずつ並べた形',
+          options: [
+            { text: '❌ ならない（字牌は同じ牌3枚じゃないとダメ）', correct: true },
+            { text: '⭕ なる（階段と同じ扱いになる）', correct: false }
+          ],
+          explanation: '大正解！！「東・南・西」や「白・發・中」を1枚ずつ集めてもブロックにはなりません。字牌は必ず同じ牌を集めましょう！'
+        },
+        {
+          id: 's2-6',
+          type: 'tap-hand',
+          modeLabel: 'アタマ探し',
+          question: '「3枚ブロック1つ ＋ アタマ（2枚ペア）1つ」の計5枚です。アタマになっている牌をタップして！',
+          subtext: '麻雀のアガリには、最後に必ず「同じ牌2枚のペア（アタマ）」が1組いります。',
+          hand: ['3m', '4m', '5m', '8p', '8p'],
+          correctTiles: ['8p'],
+          caption: '👆 アタマ（2枚ペア）になっている牌をタップ！',
+          explanation: '素晴らしい！「3・4・5萬（階段3枚）」と「8筒ペア（アタマ2枚）」がハッキリ分かれて見えていますね！'
+        }
+      ],
+
+      // ==========================================
+      // Stage 3: いらない牌をポイッ！「8枚ミニ麻雀」（6問）
+      // ==========================================
+      stage3: [
+        {
+          id: 's3-1',
+          type: 'discard-8',
+          modeLabel: '8枚ミニ麻雀',
+          question: '仲間はずれの不要な牌を1枚タップして捨て、「あと1枚で完成」にしよう！',
+          subtext: 'ゴールは「3枚組×2つ ＋ アタマ2枚」です。くっつかない字牌が1枚あります！',
+          hand: ['2m', '3m', '4m', '5p', '5p', '3s', '4s', '4z'],
+          correctTiles: ['4z'],
+          waitDesc: '2索 または 5索 が来れば完成！',
+          explanation: 'ナイス打牌！ポツンと1枚だけ浮いていた「北」を捨てれば、［234萬］［55筒］［34索］の綺麗なテンパイです！'
+        },
+        {
+          id: 's3-2',
+          type: 'discard-8',
+          modeLabel: '8枚ミニ麻雀',
+          question: 'どの牌を1枚捨てれば「あと1枚で完成」になる？（牌を直接タップ！）',
+          subtext: '「發」は2枚ペア（アタマ）になっていますよ！',
+          hand: ['1m', '2m', '3m', '9p', '2s', '3s', '6z', '6z'],
+          correctTiles: ['9p'],
+          waitDesc: '1索 または 4索 が来れば完成！',
+          explanation: '気持ちいい一打！1枚だけ仲間がいない「9筒」を捨てれば、［123萬］［發發］［23索］でテンパイ完成です！'
+        },
+        {
+          id: 's3-3',
+          type: 'discard-8',
+          modeLabel: '8枚ミニ麻雀',
+          question: '筒子（丸の牌）が4枚あります。余っている不要な1枚をタップして捨てよう！',
+          subtext: '「2・3・4筒」で3枚組ができていますね。',
+          hand: ['2m', '2m', '2p', '3p', '4p', '9p', '5s', '6s'],
+          correctTiles: ['9p'],
+          waitDesc: '4索 または 7索 が来れば完成！',
+          explanation: 'バッチリ！［234筒］から遠く離れた「9筒」が不要牌でした。手牌のブロックがもう見えていますね！'
+        },
+        {
+          id: 's3-4',
+          type: 'discard-8',
+          modeLabel: '8枚ミニ麻雀',
+          question: 'いらない端っこの牌を1枚捨てて、綺麗なタンヤオの形にしよう！',
+          subtext: '鳥のイラスト（1索）に注目！',
+          hand: ['4m', '5m', '6m', '3p', '4p', '1s', '8s', '8s'],
+          correctTiles: ['1s'],
+          waitDesc: '2筒 または 5筒 が来れば完成！',
+          explanation: '完璧！浮いていた「1索（鳥）」を切ることで、すべて2〜8の牌になり「タンヤオ」も確定しました！'
+        },
+        {
+          id: 's3-5',
+          type: 'discard-8',
+          modeLabel: '8枚ミニ麻雀',
+          question: '萬子が3枚ありますが、階段になっていません。どれを1枚捨てる？',
+          subtext: '「三萬・四萬」と「九萬」、どっちを残す？',
+          hand: ['3m', '4m', '9m', '5p', '6p', '7p', '7z', '7z'],
+          correctTiles: ['9m'],
+          waitDesc: '二萬 または 五萬 が来れば完成！',
+          explanation: 'その通り！くっついている「三・四萬」を残し、離れた「九萬」を捨てれば両面待ちのテンパイです！'
+        },
+        {
+          id: 's3-6',
+          type: 'discard-8',
+          modeLabel: '8枚ミニ麻雀・仕上げ',
+          question: '索子（緑の牌）が4枚あります。余っている1枚を見抜いて捨てよう！',
+          subtext: '「5・6・7索」の階段を壊さないように注意！',
+          hand: ['3m', '4m', '8p', '8p', '1s', '5s', '6s', '7s'],
+          correctTiles: ['1s'],
+          waitDesc: '二萬 または 五萬 が来れば完成！',
+          explanation: 'お見事！！［5・6・7索］の階段から外れている「1索」を切れました。これで実戦の捨て牌選びの基礎はバッチリです！'
+        }
+      ],
+
+      // ==========================================
+      // Stage 4: 補助輪つき13枚「待ち牌」あて（6問）
+      // ==========================================
+      stage4: [
+        {
+          id: 's4-1',
+          type: 'scaffold-wait',
+          defaultScaffold: true,
+          modeLabel: '補助輪つき13枚',
+          question: 'いよいよ13枚！でも区切って見れば簡単です。右端の［3索・4索］、あと何が来ればアガリ？',
+          subtext: '左の4ブロックはもう完成しています。右端の黄色い枠だけ見ればOK！',
+          blocks: [
+            { tiles: ['2m','3m','4m'], label: '完成' },
+            { tiles: ['5p','6p','7p'], label: '完成' },
+            { tiles: ['5z','5z','5z'], label: '完成' },
+            { tiles: ['8p','8p'], label: 'アタマ' },
+            { tiles: ['3s','4s'], label: 'あと1枚!', isWait: true }
+          ],
+          options: [
+            { text: '2索 または 5索（両面待ち）', correct: true },
+            { text: '3索 または 4索', correct: false },
+            { text: '8筒', correct: false }
+          ],
+          explanation: '大正解！13枚あっても、完成したブロックを無視すれば「3索・4索に何を足すか」だけの簡単なパズルになります！'
+        },
+        {
+          id: 's4-2',
+          type: 'scaffold-wait',
+          defaultScaffold: true,
+          modeLabel: '補助輪つき13枚',
+          question: '右端の［6筒・8筒］に注目！あと何が来ればアガリ？',
+          subtext: '間の数字が1つ抜けていますね！',
+          blocks: [
+            { tiles: ['1m','2m','3m'], label: '完成' },
+            { tiles: ['6s','7s','8s'], label: '完成' },
+            { tiles: ['7z','7z','7z'], label: '完成' },
+            { tiles: ['9m','9m'], label: 'アタマ' },
+            { tiles: ['6p','8p'], label: 'あと1枚!', isWait: true }
+          ],
+          options: [
+            { text: '7筒 だけ（間を埋める待ち）', correct: true },
+            { text: '5筒 または 9筒', correct: false },
+            { text: '9萬', correct: false }
+          ],
+          explanation: 'バッチリ！6と8の間、「7筒」が入れば［6・7・8筒］になってアガリです（カンチャン待ちと呼びます）。'
+        },
+        {
+          id: 's4-3',
+          type: 'scaffold-wait',
+          defaultScaffold: true,
+          modeLabel: '補助輪つき13枚',
+          question: '3枚ブロックはもう4つ全部できています！残った1枚の［南］、何が来ればアガリ？',
+          subtext: 'まだ「アタマ（2枚ペア）」がありません！',
+          blocks: [
+            { tiles: ['2m','3m','4m'], label: '完成' },
+            { tiles: ['4p','5p','6p'], label: '完成' },
+            { tiles: ['6s','7s','8s'], label: '完成' },
+            { tiles: ['6z','6z','6z'], label: '完成' },
+            { tiles: ['2z'], label: 'アタマ待ち!', isWait: true }
+          ],
+          options: [
+            { text: '南（もう1枚重ねてアタマにする）', correct: true },
+            { text: '東 または 西', correct: false },
+            { text: '發', correct: false }
+          ],
+          explanation: '正解！もう1枚「南」が来ればアタマ（2枚ペア）が完成してアガリです（単騎待ちと呼びます）。'
+        },
+        {
+          id: 's4-4',
+          type: 'scaffold-wait',
+          defaultScaffold: false,
+          modeLabel: '補助輪なしで挑戦！',
+          question: '実戦と同じ並びです！あと何が来ればアガリ？（※難しければ上の『補助輪』ボタンを押してOK！）',
+          subtext: '左端の萬子（四萬・五萬）に注目してみよう！',
+          blocks: [
+            { tiles: ['5p','6p','7p'], label: '完成' },
+            { tiles: ['3s','4s','5s'], label: '完成' },
+            { tiles: ['5z','5z','5z'], label: '完成' },
+            { tiles: ['9s','9s'], label: 'アタマ' },
+            { tiles: ['4m','5m'], label: 'あと1枚!', isWait: true }
+          ],
+          options: [
+            { text: '三萬 または 六萬', correct: true },
+            { text: '四萬 または 五萬', correct: false },
+            { text: '九索', correct: false }
+          ],
+          explanation: 'すごい！！補助輪なしでも［567筒］［345索］［99索］［白白白］を頭の中で消して、残りの［四・五萬］が見えましたね！'
+        },
+        {
+          id: 's4-5',
+          type: 'scaffold-wait',
+          defaultScaffold: false,
+          modeLabel: '補助輪なしで挑戦！',
+          question: '2枚ペアが「九萬・九萬」と「中・中」の2組あります。何が来ればアガリ？',
+          subtext: '片方が3枚ブロックになれば、もう片方がアタマになります！',
+          blocks: [
+            { tiles: ['2m','3m','4m'], label: '完成' },
+            { tiles: ['4p','5p','6p'], label: '完成' },
+            { tiles: ['6s','7s','8s'], label: '完成' },
+            { tiles: ['9m','9m'], label: 'ペア①', isWait: true },
+            { tiles: ['7z','7z'], label: 'ペア②', isWait: true }
+          ],
+          options: [
+            { text: '九萬 または 中（どちらが来てもOK！）', correct: true },
+            { text: '中 だけ', correct: false },
+            { text: '一萬 または 五萬', correct: false }
+          ],
+          explanation: '大正解！ペアが2組あるときは、どちらが3枚になってもアガれます（シャボ待ち）。困ったら「補助輪ON」で確認すれば一目瞭然です！'
+        },
+        {
+          id: 's4-6',
+          type: 'scaffold-wait',
+          defaultScaffold: false,
+          modeLabel: '補助輪なしで挑戦！',
+          question: '索子の［鳥（1索）・2索］の部分がまだ2枚です。あと何が来ればアガリ？',
+          subtext: '「0索」という牌は麻雀にありませんよ！',
+          blocks: [
+            { tiles: ['3m','4m','5m'], label: '完成' },
+            { tiles: ['5p','6p','7p'], label: '完成' },
+            { tiles: ['6z','6z','6z'], label: '完成' },
+            { tiles: ['8m','8m'], label: 'アタマ' },
+            { tiles: ['1s','2s'], label: 'あと1枚!', isWait: true }
+          ],
+          options: [
+            { text: '3索 だけ（片側待ち）', correct: true },
+            { text: '1索 または 3索', correct: false },
+            { text: '8萬', correct: false }
+          ],
+          explanation: '完璧です！「1・2」と持っているときは「3」だけの片側待ち（ペンチャン待ち）になります。13枚がもう怖くないですね！'
+        }
+      ],
+
+      // ==========================================
+      // Stage 5: 実戦の約束「3大武器とフリテン」（5問）
+      // ==========================================
+      stage5: [
+        {
+          id: 's5-1',
+          type: 'scaffold-wait',
+          defaultScaffold: true,
+          modeLabel: '約束① リーチ',
+          question: '1回もポン・チーせずに「あと1枚」になりました！でも『白發中』も『タンヤオ』もありません。どうすればアガれる？',
+          subtext: '麻雀には「形を作っただけではアガれない（役が1つ必要）」というルールがあります。',
+          blocks: [
+            { tiles: ['1m','2m','3m'], label: '完成' },
+            { tiles: ['5p','6p','7p'], label: '完成' },
+            { tiles: ['7s','8s','9s'], label: '完成' },
+            { tiles: ['2p','2p'], label: 'アタマ' },
+            { tiles: ['6m','8m'], label: 'あと1枚!', isWait: true }
+          ],
+          options: [
+            { text: '⭕ 「リーチ！」と宣言する（リーチが役になる）', correct: true },
+            { text: '❌ チーして早く揃える', correct: false }
+          ],
+          explanation: '大正解！1回も鳴いていなければ、「リーチ！」と宣言するだけで立派な役がつき、どんな手でも堂々とアガれます！'
+        },
+        {
+          id: 's5-2',
+          type: 'text-choice',
+          modeLabel: '約束② 鳴いていい時',
+          question: '逆に、相手の牌を「ポン・チー（鳴き）」するとリーチができなくなります。初心者が鳴いていい『2つの安全パターン』は？',
+          subtext: 'これ以外のときに鳴くと「揃ったのにアガれない！」という罠にハマります。',
+          boardTiles: ['5z', '6z', '7z', '2m', '5p', '8s'],
+          caption: '鳴いても消えない頼もしい味方たち',
+          options: [
+            { text: '⭕ 『白・發・中』を3枚揃える時 か 『2〜8の数牌だけ』で揃える時', correct: true },
+            { text: '❌ 『1・2・3』などの端っこをチーして急ぐ時', correct: false }
+          ],
+          explanation: 'その通り！最初は「リーチ」「白・發・中」「タンヤオ（2〜8だけ）」の3つの武器だけで麻雀は十分に勝てます！'
+        },
+        {
+          id: 's5-3',
+          type: 'scaffold-wait',
+          defaultScaffold: true,
+          modeLabel: '約束③ フリテンの罠',
+          question: 'あなたは［2索・5索］待ちです。でも、自分の捨て牌に『2索』がありました！相手から出た『2索』でロンできる？',
+          subtext: 'スマホ麻雀で初心者が一番パニックになるルールです！',
+          river: [{ tile: '9m' }, { tile: '1z' }, { tile: '2s', highlight: true }, { tile: '4z' }],
+          blocks: [
+            { tiles: ['2m','3m','4m'], label: '完成' },
+            { tiles: ['5p','6p','7p'], label: '完成' },
+            { tiles: ['7z','7z','7z'], label: '中3枚' },
+            { tiles: ['8p','8p'], label: 'アタマ' },
+            { tiles: ['3s','4s'], label: '2・5索待ち', isWait: true }
+          ],
+          options: [
+            { text: '❌ ロンできない！（自分で捨てた牌はフリテン）', correct: true },
+            { text: '⭕ 役（中）があるからロンできる', correct: false }
+          ],
+          explanation: '超重要！自分が過去に捨てた牌では、相手から「ロン」できません（フリテン）。「揃ったのにロンが出ない！」の原因はほぼコレです！'
+        },
+        {
+          id: 's5-4',
+          type: 'scaffold-wait',
+          defaultScaffold: true,
+          modeLabel: 'フリテンの重要ルール',
+          question: '同じく［2索・5索］待ちで、捨て牌に『2索』があります。相手から、捨てていない方の『5索』が出ました！ロンできる？',
+          subtext: '5索自体は捨てていませんが…？',
+          river: [{ tile: '9m' }, { tile: '1z' }, { tile: '2s', highlight: true }, { tile: '4z' }],
+          blocks: [
+            { tiles: ['2m','3m','4m'], label: '完成' },
+            { tiles: ['5p','6p','7p'], label: '完成' },
+            { tiles: ['7z','7z','7z'], label: '中3枚' },
+            { tiles: ['8p','8p'], label: 'アタマ' },
+            { tiles: ['3s','4s'], label: '2・5索待ち', isWait: true }
+          ],
+          options: [
+            { text: '❌ 5索でもロンできない！（片方でも捨てていたら全部ロン不可）', correct: true },
+            { text: '⭕ 5索は捨てていないからロンできる', correct: false }
+          ],
+          explanation: 'よくぞ見抜きました！待ち牌のうち1種類でも自分の捨て牌にあると、他の当たり牌でも「ロン」は一切できなくなります。'
+        },
+        {
+          id: 's5-5',
+          type: 'scaffold-wait',
+          defaultScaffold: true,
+          modeLabel: '最終問題！',
+          question: 'うっかりフリテンになってしまいました！もうこの局はアガる方法はないでしょうか？',
+          subtext: '「ロン（相手からもらう）」がダメなら…？',
+          river: [{ tile: '9m' }, { tile: '1z' }, { tile: '2s', highlight: true }, { tile: '4z' }],
+          blocks: [
+            { tiles: ['2m','3m','4m'], label: '完成' },
+            { tiles: ['5p','6p','7p'], label: '完成' },
+            { tiles: ['7z','7z','7z'], label: '中3枚' },
+            { tiles: ['8p','8p'], label: 'アタマ' },
+            { tiles: ['3s','4s'], label: '2・5索待ち', isWait: true }
+          ],
+          options: [
+            { text: '⭕ 自分の番に山から引けば（ツモなら）アガれる！', correct: true },
+            { text: '❌ どうやっても絶対にアガれない', correct: false }
+          ],
+          explanation: '大正解！！フリテンで禁止されるのは「相手からのロン」だけ。自分で引く「ツモ」ならいつでもアガれます！これで超入門は卒業です🎉'
+        }
+      ]
+    };
+
+    /**
+     * 牌ソート補助（補助輪OFF時に実戦同様の理牌順にする）
+     */
+    function sortTiles(tiles) {
+      const suitOrder = { m: 1, p: 2, s: 3, z: 4 };
+      return [...tiles].sort((a, b) => {
+        const sa = suitOrder[a.charAt(1)] || 9;
+        const sb = suitOrder[b.charAt(1)] || 9;
+        if (sa !== sb) return sa - sb;
+        const na = a.charAt(0) === '0' ? 5.5 : Number(a.charAt(0));
+        const nb = b.charAt(0) === '0' ? 5.5 : Number(b.charAt(0));
+        return na - nb;
+      });
+    }
+
+    /**
+     * アプリメインコントローラー
+     */
+    const app = {
+      currentStageKey: 'stage1',
+      questions: [],
+      qIndex: 0,
+      score: 0,
+      answered: false,
+      scaffoldOn: true,
+      clearedStages: {},
+      gasExecUrl: 'https://script.google.com/macros/s/AKfycbzbNWhOLf_gQiEiOO0QUk0Apt2XFx_8XdWh3qaEiV4qHPg-t4QKvqAtXNOseGaSmn0O/exec',
+
+      init() {
+        this.loadState();
+        this.setupLinks();
+        this.renderStageCards();
+        lucide.createIcons();
+      },
+
+      setupLinks() {
+        // GAS環境（iframe内）で動いている場合はトップウィンドウ遷移に対応させる
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          const applyUrl = (url) => {
+            this.gasExecUrl = url;
+            ['linkToMainBoard', 'footerLinkMain', 'clearLinkMain'].forEach(id => {
+              const el = document.getElementById(id);
+              if (el) {
+                el.href = url;
+                el.target = '_top';
+              }
+            });
+          };
+          applyUrl(this.gasExecUrl);
+          if (google.script.run.getWebAppUrl) {
+            google.script.run.withSuccessHandler(u => { if (u) applyUrl(u); }).getWebAppUrl();
+          }
+        }
+      },
+
+      loadState() {
+        try {
+          const raw = localStorage.getItem('MAHJONG_BEGINNER_CLEARED');
+          if (raw) this.clearedStages = JSON.parse(raw);
+        } catch (e) {}
+      },
+
+      saveState() {
+        try {
+          localStorage.setItem('MAHJONG_BEGINNER_CLEARED', JSON.stringify(this.clearedStages));
+        } catch (e) {}
+      },
+
+      renderStageCards() {
+        const box = document.getElementById('stageCardsContainer');
+        if (!box) return;
+        box.innerHTML = '';
+
+        let clearedCount = 0;
+        STAGES_META.forEach((st) => {
+          const isCleared = Boolean(this.clearedStages[st.key]);
+          if (isCleared) clearedCount++;
+
+          const card = document.createElement('div');
+          card.className = `bg-white rounded-xl p-4 shadow-sm hover:shadow-md border-2 ${isCleared ? 'border-teal-500/70' : 'border-slate-200/90'} hover:border-teal-600 transition cursor-pointer flex flex-col justify-between group`;
+          card.onclick = () => this.startStage(st.key);
+
+          card.innerHTML = `
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-900">${st.num}</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded">${st.badge}</span>
+                  ${isCleared ? '<span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">💮 クリア済</span>' : ''}
+                </div>
+              </div>
+              <h4 class="font-bold text-slate-800 group-hover:text-teal-700 text-base mb-1 flex items-center gap-1.5">
+                <span class="text-lg">${st.icon}</span>
+                <span>${st.title}</span>
+              </h4>
+              <p class="text-xs text-slate-600 leading-relaxed">${st.desc}</p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-teal-700 font-bold">
+              <span>${STAGE_QUESTIONS[st.key].length}問でサクッと遊ぶ</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
+            </div>
+          `;
+          box.appendChild(card);
+        });
+
+        const badge = document.getElementById('progressBadge');
+        if (badge) badge.textContent = `クリア済み: ${clearedCount} / ${STAGES_META.length} ステージ`;
+        lucide.createIcons();
+      },
+
+      showHome() {
+        document.getElementById('homeView').classList.remove('hidden');
+        document.getElementById('playView').classList.add('hidden');
+        document.getElementById('clearView').classList.add('hidden');
+        this.renderStageCards();
+      },
+
+      startStage(stageKey) {
+        this.currentStageKey = stageKey;
+        this.questions = [...(STAGE_QUESTIONS[stageKey] || STAGE_QUESTIONS.stage1)];
+        this.qIndex = 0;
+        this.score = 0;
+
+        document.getElementById('homeView').classList.add('hidden');
+        document.getElementById('clearView').classList.add('hidden');
+        document.getElementById('playView').classList.remove('hidden');
+
+        const meta = STAGES_META.find(s => s.key === stageKey);
+        document.getElementById('stageBadge').textContent = meta ? `${meta.num}: ${meta.title}` : stageKey;
+        document.getElementById('qTotal').textContent = this.questions.length;
+
+        this.renderQuestion();
+      },
+
+      renderQuestion() {
+        const q = this.questions[this.qIndex];
+        if (!q) {
+          this.showStageClear();
+          return;
+        }
+        this.answered = false;
+        if (q.type === 'scaffold-wait') {
+          this.scaffoldOn = q.defaultScaffold !== false;
+        }
+
+        document.getElementById('qCurrent').textContent = this.qIndex + 1;
+        document.getElementById('playProgressBar').style.width = `${(this.qIndex / this.questions.length) * 100}%`;
+
+        document.getElementById('modeInstructionBadge').textContent = q.modeLabel || 'パズル';
+        document.getElementById('playQuestion').textContent = q.question;
+        document.getElementById('playSubtext').textContent = q.subtext || '';
+
+        document.getElementById('feedbackCard').classList.add('hidden');
+        document.getElementById('discardedPreview').classList.add('hidden');
+
+        // 河（捨て牌）表示
+        const riverArea = document.getElementById('riverArea');
+        const riverTiles = document.getElementById('riverTiles');
+        if (q.river && q.river.length > 0) {
+          riverArea.classList.remove('hidden');
+          riverTiles.innerHTML = q.river.map(r =>
+            TileRenderer.render(r.tile, { highlight: r.highlight, badge: r.highlight ? '捨てた牌' : '' })
+          ).join('');
+        } else {
+          riverArea.classList.add('hidden');
+        }
+
+        // 補助輪バーの表示制御
+        const scaffoldBar = document.getElementById('scaffoldBar');
+        if (q.type === 'scaffold-wait') {
+          scaffoldBar.classList.remove('hidden');
+          this.updateScaffoldBtnUI();
+        } else {
+          scaffoldBar.classList.add('hidden');
+        }
+
+        this.renderBoardAndAnswers(q);
+        lucide.createIcons();
+        Sound.clack();
+      },
+
+      updateScaffoldBtnUI() {
+        const btn = document.getElementById('scaffoldToggleBtn');
+        if (!btn) return;
+        if (this.scaffoldOn) {
+          btn.className = 'text-xs font-bold px-3 py-1 rounded-full bg-amber-400 text-slate-900 transition shadow';
+          btn.textContent = '🚲 補助輪 ON（ブロック区切り中）';
+        } else {
+          btn.className = 'text-xs font-bold px-3 py-1 rounded-full bg-white/15 hover:bg-white/25 text-white border border-white/30 transition';
+          btn.textContent = '🚲 補助輪 OFF（実戦の並び・タップでON）';
+        }
+      },
+
+      toggleScaffold() {
+        const q = this.questions[this.qIndex];
+        if (!q || q.type !== 'scaffold-wait') return;
+        this.scaffoldOn = !this.scaffoldOn;
+        this.updateScaffoldBtnUI();
+        this.renderScaffoldHand(q);
+        Sound.clack();
+      },
+
+      renderScaffoldHand(q) {
+        const row = document.getElementById('boardTilesRow');
+        const cap = document.getElementById('boardHelperCaption');
+        row.innerHTML = '';
+
+        if (this.scaffoldOn) {
+          row.className = 'flex items-center justify-center flex-wrap gap-1 py-1';
+          q.blocks.forEach(b => {
+            const div = document.createElement('div');
+            div.className = `scaffold-block ${b.isWait ? 'scaffold-block-wait' : ''}`;
+            const tilesHtml = b.tiles.map(t => TileRenderer.render(t)).join('');
+            div.innerHTML = `
+              <div class="flex items-center gap-0.5">${tilesHtml}</div>
+              <span class="text-[10px] font-bold mt-1 ${b.isWait ? 'text-amber-300' : 'text-teal-200/80'}">${b.label}</span>
+            `;
+            row.appendChild(div);
+          });
+          cap.textContent = '💡 黄色い枠のパーツに注目！';
+        } else {
+          row.className = 'flex items-center justify-center flex-nowrap gap-0.5 py-2';
+          const flat = [];
+          q.blocks.forEach(b => flat.push(...b.tiles));
+          const sorted = sortTiles(flat);
+          row.innerHTML = sorted.map(t => TileRenderer.render(t)).join('');
+          cap.textContent = '実戦と同じ13枚並び（迷ったら上の『補助輪』ボタンを押してみよう！）';
+        }
+      },
+
+      renderBoardAndAnswers(q) {
+        const row = document.getElementById('boardTilesRow');
+        const cap = document.getElementById('boardHelperCaption');
+        const ans = document.getElementById('answerArea');
+        row.innerHTML = '';
+        ans.innerHTML = '';
+        row.className = 'flex items-center justify-center gap-2 flex-nowrap py-1';
+
+        // 1) tile-choice: 大きな牌3択
+        if (q.type === 'tile-choice') {
+          row.innerHTML = `<div class="text-teal-100 text-sm sm:text-base font-bold py-3 px-4 rounded-xl bg-white/10 border border-white/15">👇 下の大きな牌から正解をタップ！</div>`;
+          cap.textContent = q.boardNote || '';
+
+          const grid = document.createElement('div');
+          grid.className = 'grid grid-cols-3 gap-3 my-2';
+          q.tileOptions.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-4 shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-2';
+            btn.innerHTML = `
+              ${TileRenderer.render(opt.tile, { large: true })}
+              ${opt.label ? `<span class="text-xs font-bold text-slate-600">${opt.label}</span>` : ''}
+            `;
+            btn.onclick = () => this.submitChoice(opt.correct, btn, q);
+            grid.appendChild(btn);
+          });
+          ans.appendChild(grid);
+          return;
+        }
+
+        // 2) slot-fill: [2p] [3p] [ ? ] 穴埋めパズル
+        if (q.type === 'slot-fill') {
+          row.innerHTML = q.slots.map(s => {
+            if (s === '?') return `<div id="activeEmptySlot" class="mj-slot-empty">？</div>`;
+            return TileRenderer.render(s, { large: true });
+          }).join('');
+          cap.textContent = '［ ？ ］にはまる牌を下の候補からタップ！';
+
+          const grid = document.createElement('div');
+          grid.className = 'grid grid-cols-3 gap-3 my-2';
+          q.tileOptions.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-3.5 shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-1.5';
+            btn.innerHTML = `
+              ${TileRenderer.render(opt.tile, { large: true })}
+              <span class="text-[11px] font-bold text-teal-700">これをはめる</span>
+            `;
+            btn.onclick = () => {
+              if (this.answered) return;
+              if (opt.correct) {
+                const slotEl = document.getElementById('activeEmptySlot');
+                if (slotEl) {
+                  slotEl.outerHTML = `<div class="animate-pop-in inline-block">${TileRenderer.render(opt.tile, { large: true, badge: '完成!' })}</div>`;
+                }
+              }
+              this.submitChoice(opt.correct, btn, q);
+            };
+            grid.appendChild(btn);
+          });
+          ans.appendChild(grid);
+          return;
+        }
+
+        // 3) tap-hand / discard-8: 並んでいる手牌そのものを直接タップ
+        if (q.type === 'tap-hand' || q.type === 'discard-8') {
+          q.hand.forEach((tile, idx) => {
+            const wrap = document.createElement('div');
+            wrap.className = 'inline-block';
+            wrap.innerHTML = TileRenderer.render(tile, { large: true, interactive: true });
+            wrap.onclick = () => this.handleHandTileTap(tile, idx, wrap, q);
+            row.appendChild(wrap);
+          });
+          cap.textContent = q.caption || '👆 いらない牌を1枚直接タップして捨てよう！';
+
+          ans.innerHTML = `
+            <div class="text-center text-xs text-slate-500 bg-white rounded-xl py-2.5 px-4 border border-slate-200">
+              💡 緑のボードに並んでいる牌を直接タップしてください
+            </div>
+          `;
+          return;
+        }
+
+        // 4) text-choice: ボードに参考牌＋下に2〜3択ボタン
+        if (q.type === 'text-choice') {
+          row.innerHTML = (q.boardTiles || []).map(t => TileRenderer.render(t, { large: true })).join('');
+          cap.textContent = q.caption || '';
+          this.renderTextOptions(q, ans);
+          return;
+        }
+
+        // 5) scaffold-wait: 補助輪つき13枚＋下に選択肢
+        if (q.type === 'scaffold-wait') {
+          this.renderScaffoldHand(q);
+          this.renderTextOptions(q, ans);
+          return;
+        }
+      },
+
+      renderTextOptions(q, container) {
+        const grid = document.createElement('div');
+        grid.className = `grid grid-cols-1 ${q.options.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3'} gap-2.5 my-2`;
+        q.options.forEach((opt, i) => {
+          const btn = document.createElement('button');
+          btn.className = 'w-full p-4 rounded-xl bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 font-bold text-slate-800 shadow-sm transition text-left sm:text-center flex items-center justify-between sm:justify-center gap-2.5';
+          btn.innerHTML = `
+            <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs flex items-center justify-center font-mono border border-slate-200 flex-shrink-0">${i + 1}</span>
+            <span class="text-sm sm:text-base">${opt.text}</span>
+          `;
+          btn.onclick = () => this.submitChoice(opt.correct, btn, q);
+          grid.appendChild(btn);
+        });
+        container.appendChild(grid);
+      },
+
+      handleHandTileTap(tile, idx, tileWrapperEl, q) {
+        if (this.answered) return;
+        const isCorrect = q.correctTiles.includes(tile);
+
+        if (isCorrect && q.type === 'discard-8') {
+          // 捨てた牌を半透明縮小させ、テンパイ完成表示を出す
+          tileWrapperEl.classList.add('opacity-25', 'scale-75');
+          const prev = document.getElementById('discardedPreview');
+          prev.classList.remove('hidden');
+          prev.innerHTML = `✨ ナイス打牌！テンパイ完成（<strong>${q.waitDesc}</strong>）`;
+        } else if (!isCorrect) {
+          tileWrapperEl.classList.add('ring-4', 'ring-rose-400', 'rounded-lg');
+        } else {
+          tileWrapperEl.classList.add('ring-4', 'ring-emerald-400', 'rounded-lg');
+        }
+
+        this.submitChoice(isCorrect, null, q);
+      },
+
+      submitChoice(isCorrect, btnEl, q) {
+        if (this.answered) return;
+        this.answered = true;
+
+        const ans = document.getElementById('answerArea');
+        ans.classList.add('pointer-events-none');
+
+        if (btnEl) {
+          btnEl.classList.remove('bg-white', 'border-slate-200');
+          if (isCorrect) {
+            btnEl.classList.add('bg-emerald-100', 'border-emerald-600', 'text-emerald-950');
+          } else {
+            btnEl.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-950');
+          }
+        }
+
+        const fb = document.getElementById('feedbackCard');
+        const badge = document.getElementById('fbBadge');
+        const title = document.getElementById('fbTitle');
+        const body = document.getElementById('fbBody');
+
+        if (isCorrect) {
+          this.score++;
+          Sound.chime();
+          confetti({ particleCount: 35, spread: 55, origin: { y: 0.72 } });
+          fb.className = 'rounded-2xl p-4 shadow-lg border-2 border-emerald-500 bg-emerald-50 text-emerald-950 animate-pop-in';
+          badge.className = 'w-10 h-10 rounded-full bg-emerald-200 text-emerald-800 flex items-center justify-center text-xl flex-shrink-0 font-bold';
+          badge.textContent = '⭕';
+          title.textContent = '大正解！バッチリです！';
+        } else {
+          Sound.softBuzz();
+          fb.className = 'rounded-2xl p-4 shadow-lg border-2 border-amber-400 bg-amber-50 text-amber-950 animate-pop-in';
+          badge.className = 'w-10 h-10 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center text-xl flex-shrink-0 font-bold';
+          badge.textContent = '💡';
+          title.textContent = 'おしい！ここだけ押さえればOK！';
+        }
+
+        body.textContent = q.explanation;
+        fb.classList.remove('hidden');
+        ans.classList.remove('pointer-events-none');
+        lucide.createIcons();
+      },
+
+      nextQuestion() {
+        this.qIndex++;
+        if (this.qIndex >= this.questions.length) {
+          this.showStageClear();
+        } else {
+          this.renderQuestion();
+        }
+      },
+
+      showStageClear() {
+        document.getElementById('playView').classList.add('hidden');
+        document.getElementById('clearView').classList.remove('hidden');
+
+        this.clearedStages[this.currentStageKey] = true;
+        this.saveState();
+
+        const total = this.questions.length;
+        const acc = Math.round((this.score / total) * 100);
+
+        const currentIdx = STAGES_META.findIndex(s => s.key === this.currentStageKey);
+        const currentMeta = STAGES_META[currentIdx];
+        const nextMeta = STAGES_META[currentIdx + 1] || null;
+
+        document.getElementById('clearStageLabel').textContent = `${currentMeta.num} クリア！`;
+        document.getElementById('clearTitle').textContent = `${currentMeta.icon} ${currentMeta.title} 完了！`;
+        document.getElementById('clearScore').textContent = this.score;
+        document.getElementById('clearTotal').textContent = total;
+        document.getElementById('clearAccuracy').textContent = `${acc}%`;
+
+        confetti({ particleCount: 90, spread: 80, origin: { y: 0.6 } });
+
+        const msgEl = document.getElementById('clearMessage');
+        const actEl = document.getElementById('clearActions');
+        actEl.innerHTML = '';
+
+        if (nextMeta) {
+          msgEl.textContent = `素晴らしいペースです！次は「${nextMeta.num}：${nextMeta.title}」に進んでみましょう！`;
+          actEl.innerHTML = `
+            <button onclick="app.startStage('${nextMeta.key}')" class="w-full bg-teal-700 hover:bg-teal-600 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm sm:text-base">
+              <span>次の ${nextMeta.num} へ進む</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+            <button onclick="app.startStage('${currentMeta.key}')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-xs sm:text-sm">
+              もう1回このステージを遊ぶ
+            </button>
+            <button onclick="app.showHome()" class="w-full text-slate-500 hover:text-slate-700 font-medium py-2 text-xs">
+              ステージ一覧にもどる
+            </button>
+          `;
+        } else {
+          msgEl.textContent = '全5ステージ制覇おめでとうございます！！これで14枚の手牌も怖くありません。次は『麻雀トレーニングボード』で役と点数にチャレンジしましょう！';
+          const isGas = (typeof google !== 'undefined' && google.script && google.script.run);
+          const mainHref = isGas ? this.gasExecUrl : './index.html';
+          const targetAttr = isGas ? 'target="_top"' : '';
+          actEl.innerHTML = `
+            <a id="clearLinkMain" href="${mainHref}" ${targetAttr} class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-900 font-bold py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm sm:text-base">
+              <span>🎓 『麻雀トレーニングボード』へ進む！</span>
+              <i data-lucide="external-link" class="w-4 h-4"></i>
+            </a>
+            <button onclick="app.showHome()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl transition text-xs sm:text-sm">
+              ステージ一覧にもどる
+            </button>
+          `;
+        }
+        lucide.createIcons();
+      },
+
+      openGuide() {
+        document.getElementById('guideModal').classList.remove('hidden');
+      },
+      closeGuide() {
+        document.getElementById('guideModal').classList.add('hidden');
+      },
+
+      toggleSound() {
+        Sound.enabled = !Sound.enabled;
+        const btn = document.getElementById('soundToggleBtn');
+        btn.innerHTML = Sound.enabled
+          ? `<i data-lucide="volume-2" class="w-5 h-5"></i>`
+          : `<i data-lucide="volume-x" class="w-5 h-5 text-rose-300"></i>`;
+        lucide.createIcons();
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => app.init());
+  </script>
+</body>
+</html>

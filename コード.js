@@ -9,15 +9,27 @@
  */
 
 function doGet(e) {
-  var template = HtmlService.createTemplateFromFile('index');
+  var page = (e && e.parameter && e.parameter.page === 'beginner') ? 'beginner' : 'index';
+  var template = HtmlService.createTemplateFromFile(page);
   
   // パラメータがあればテンプレートに渡す
   template.mode = (e && e.parameter && e.parameter.mode) ? e.parameter.mode : 'all';
 
+  var title = (page === 'beginner')
+    ? '麻雀ファーストステップ 🧩 ゼロからパズル入門'
+    : '麻雀トレーニングボード 🀄';
+
   return template.evaluate()
-    .setTitle('麻雀トレーニングボード 🀄')
+    .setTitle(title)
     .addMetaTag('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+/**
+ * Webアプリの公開URLを取得（ページ間遷移用）
+ */
+function getWebAppUrl() {
+  return ScriptApp.getService().getUrl();
 }
 
 /**

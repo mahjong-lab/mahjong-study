@@ -193,6 +193,27 @@
         </div>
       </div>
 
+      <!-- 超入門パズル（麻雀ファーストステップ）への導線カード -->
+      <div class="bg-gradient-to-r from-teal-50 to-amber-50/70 rounded-2xl p-4 sm:p-5 border-2 border-teal-300/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
+        <div class="flex items-start gap-3">
+          <div class="w-11 h-11 rounded-xl bg-teal-600 text-white flex items-center justify-center text-2xl flex-shrink-0 shadow-sm">
+            🧩
+          </div>
+          <div>
+            <div class="inline-flex items-center gap-1.5 mb-0.5">
+              <span class="text-[11px] font-bold bg-teal-700 text-white px-2 py-0.5 rounded-full">ゼロからの超入門</span>
+              <span class="text-xs font-bold text-teal-800">14枚見るのがまだ難しい方へ</span>
+            </div>
+            <h3 class="font-bold text-slate-800 text-sm sm:text-base">『麻雀ファーストステップ』で3枚パズル・8枚麻雀から始める！</h3>
+            <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">牌の絵柄 → 3枚ブロック穴埋め → 8枚ミニ麻雀 → 補助輪つき13枚と、ゲーム感覚で基礎が身につきます。</p>
+          </div>
+        </div>
+        <a id="linkToBeginnerBoard" href="./beginner.html" class="w-full sm:w-auto text-center whitespace-nowrap bg-teal-700 hover:bg-teal-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow transition flex items-center justify-center gap-1.5">
+          <span>パズル超入門へ</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+
       <!-- 学習フェーズ一覧カード -->
       <div>
         <h3 class="text-base font-bold text-slate-700 mb-3 flex items-center gap-2">
@@ -823,7 +844,7 @@
 
   <!-- フッター -->
   <footer class="bg-slate-200 border-t border-slate-300 py-3 text-center text-xs text-slate-500">
-    麻雀トレーニングボード | Web App
+    麻雀トレーニングボード 🀄 | <a id="footerLinkBeginner" href="./beginner.html" class="underline hover:text-emerald-700">超入門パズル（麻雀ファーストステップ）へ</a>
   </footer>
 
   <!-- アプリケーションロジック & 牌SVGジェネレーター -->
@@ -991,14 +1012,15 @@
         const blue = '#1d4ed8';
 
         if (num === '1') {
-          // 1索: 孔雀/鳳凰のシンボル
+          // 1索: 鳥のイラスト（くちばし・羽・尾がわかりやすい日本式デザイン）
           return `
-            <g transform="translate(0, 0)">
-              <!-- 鳥のシルエット風 -->
-              <path d="M 22 14 C 20 18, 14 24, 14 34 C 14 42, 22 46, 22 46 C 22 46, 30 42, 30 34 C 30 24, 24 18, 22 14 Z" fill="${green}" />
-              <circle cx="22" cy="18" r="4" fill="${red}" />
-              <path d="M 22 14 L 18 10 L 22 12 L 26 10 Z" fill="${green}" />
-              <circle cx="22" cy="32" r="3" fill="#ffffff" />
+            <g>
+              <circle cx="22" cy="17" r="5" fill="${green}" />
+              <polygon points="14,17 18,15 18,19" fill="#f59e0b" />
+              <circle cx="21" cy="16" r="1.3" fill="#ffffff" />
+              <path d="M 22 22 C 13 24, 12 36, 17 44 L 27 44 C 32 36, 31 24, 22 22 Z" fill="${green}" />
+              <path d="M 19 27 C 17 32, 18 38, 22 41 C 26 38, 27 32, 25 27 Z" fill="${red}" />
+              <rect x="16" y="45" width="12" height="4" rx="1.5" fill="${green}" />
             </g>
           `;
         }
@@ -1075,10 +1097,10 @@
         if (!h) return '';
 
         if (h.isHaku) {
-          // 白: 青い幾何学フレーム
+          // 日本式の真っ白な「白」牌（立体感がわかる上品な薄枠のみ）
           return `
             <g>
-              <rect x="10" y="12" width="24" height="36" rx="2" fill="none" stroke="#2563eb" stroke-width="2.2" />
+              <rect x="7" y="9" width="30" height="41" rx="3" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
             </g>
           `;
         }
@@ -1291,65 +1313,67 @@
       phase1: [
         {
           id: 'p1-1',
-          question: '他家から「8s」が出ました。チーしてアガれる？（役はある？）',
-          subtext: '手牌の中に1・9・字牌はありません。',
-          hand: ['2m','3m','4m', '3p','4p','5p', '6s','7s', '5s','5s'],
+          question: '上家から「8索」が出ました。チーして進めてもアガれる？（役はある？）',
+          subtext: '浮いている8筒を捨てる想定です。手牌の中に1・9・字牌はありません。',
+          hand: ['2m','3m','4m', '6m','7m', '3p','4p','5p', '8p', '5s','5s', '6s','7s'],
           targetTile: '8s',
           isNakiCheck: true,
           options: [
-            { text: '⭕ 鳴いてOK（アガれる）', correct: true },
-            { text: '❌ 鳴いちゃダメ（役なしチョンボ）', correct: false }
+            { text: '⭕ 鳴いてOK（タンヤオでアガれる）', correct: true },
+            { text: '❌ 鳴いちゃダメ（役なしになる）', correct: false }
           ],
           hint: 'すべて2〜8の数牌だけで作られているので、鳴いても「タンヤオ」がつきます！',
           explanation: '正解！1・9・字牌が1枚もなければ、鳴いてもタンヤオで堂々アガれます！'
         },
         {
           id: 'p1-2',
-          question: '他家から「2m」が出ました。ポンしてアガれる？',
-          subtext: '手牌に1・9牌が混ざっています。役はあるかな？',
-          hand: ['1m','2m','3m', '4p','5p','6p', '7s','8s','9s', '2m'],
-          targetTile: '2m',
+          question: '他家から「4筒」が出ました。ポンして進めてもアガれる？',
+          subtext: '手牌に1萬や9索が混ざっています。鳴いたあとに役は残るかな？',
+          hand: ['1m','2m','3m', '4p','4p', '6p','7p', '8p', '3s','3s', '7s','8s','9s'],
+          targetTile: '4p',
           isNakiCheck: true,
           options: [
-            { text: '❌ 鳴いちゃダメ（役なしチョンボ）', correct: true },
+            { text: '❌ 鳴いちゃダメ（役なしになる！）', correct: true },
             { text: '⭕ 鳴いてOK（アガれる）', correct: false }
           ],
-          hint: '1mや9sが入っているのでタンヤオになりません。鳴くとリーチも消えるので役なしになります！',
-          explanation: '正解！1・9が入っているのでタンヤオにならず、ポンすると役なしチョンボに！鳴かずに門前で進めましょう。'
+          hint: '1mや9sが入っているのでタンヤオになりません。鳴くとリーチもできなくなるので役なしになります！',
+          explanation: '正解！1・9が入っているのでタンヤオにならず、ポンすると役がなくなってアガれません。鳴かずに門前で進めましょう！'
         },
         {
           id: 'p1-3',
-          question: '平和（ピンフ）の手です。他家から待ち牌の「4s」が出ました。チーしていい？',
-          subtext: 'ピンフは鳴いても残る役でしょうか？',
-          hand: ['2m','3m','4m', '4p','5p','6p', '7s','8s','9s', '8s','8s', '2s','3s'],
-          targetTile: '4s',
+          question: '平和（ピンフ）になりそうな手です。上家から「3筒」が出ました。チーしていい？',
+          subtext: 'ピンフは鳴いても残る役でしょうか？（手牌に9索もあります）',
+          hand: ['2m','3m','4m', '9m', '4p','5p', '6p','6p', '2s','3s', '7s','8s','9s'],
+          targetTile: '3p',
           isNakiCheck: true,
           options: [
-            { text: '❌ 鳴いちゃダメ（役が消える！）', correct: true },
+            { text: '❌ 鳴いちゃダメ（ピンフが消える！）', correct: true },
             { text: '⭕ 鳴いてOK', correct: false }
           ],
-          hint: 'ピンフは「絶対に鳴かない（門前限定）」のがルール！チーするとピンフが消えて役なしになります。',
-          explanation: '正解！平和（ピンフ）は鳴いた瞬間に消滅します。「ピンフは絶対門前！」と心に刻みましょう。'
+          hint: 'ピンフは「絶対に鳴かない（門前限定）」のがルール！チーするとピンフもリーチも消えて役なしになります。',
+          explanation: '正解！平和（ピンフ）は鳴いた瞬間に消滅します。「ピンフは絶対門前！」と押さえておけば完璧です。'
         },
         {
           id: 'p1-4',
-          question: '他家から「發」が出ました。ポンしてアガれる？',
-          subtext: '手牌に發が2枚（トイツ）あります。',
-          hand: ['1m','2m','3m', '4p','5p','6p', '7s','8s','9s', '2m','2m', '6z'],
+          question: '他家から「發」が出ました。ポンして進めてもアガれる？',
+          subtext: '手牌に發が2枚（トイツ）あります。端っこの1・9牌も混ざっていますが…？',
+          hand: ['1m','2m','3m', '2m','2m', '4p','5p', '9p', '7s','8s','9s', '6z','6z'],
           targetTile: '6z',
           isNakiCheck: true,
           options: [
-            { text: '⭕ 鳴いてOK（アガれる）', correct: true },
+            { text: '⭕ 鳴いてOK（役牌がつく！）', correct: true },
             { text: '❌ 鳴いちゃダメ', correct: false }
           ],
           hint: '白・發・中は誰でも鳴いて3枚にすれば「役牌」確定！',
-          explanation: '正解！發をポンすればそれだけで役牌がつき、役なしチョンボの心配なくアガれます！'
+          explanation: '正解！發をポンすればそれだけで「役牌」がつくので、1・9牌が混ざっていても安心してアガれます！'
         },
         {
           id: 'p1-5',
-          question: '東場・南家です。他家から「西」が出ました。ポンしてアガれる？',
-          subtext: '西は今のあなたの役牌になるでしょうか？',
-          hand: ['2m','3m','4m', '5p','6p','7p', '7s','8s','9s', '3m','3m', '3z'],
+          badgeRound: '東1局・東場',
+          badgePlayer: '子（南家）',
+          question: '東場・南家です。他家から「西」が出ました。ポンして進めてもアガれる？',
+          subtext: '手牌に西が2枚あります。西は今のあなたの役牌になるでしょうか？',
+          hand: ['2m','3m','4m', '3m','3m', '1p', '5p','6p', '7s','8s','9s', '3z','3z'],
           targetTile: '3z', // 西
           isNakiCheck: true,
           options: [
@@ -1357,7 +1381,7 @@
             { text: '⭕ 鳴いてOK', correct: false }
           ],
           hint: '東場（場風は東）、南家（自風は南）。西はどちらでもない「オタ風」なのでポンしても役になりません！',
-          explanation: '正解！場風でも自風でもない風牌（オタ風）は、ポンしても役になりません！役なしチョンボに直結する罠です。'
+          explanation: '正解！場風でも自風でもない風牌（オタ風）は、ポンしても役になりません！ここはスルーが正解です。'
         }
       ],
 
@@ -1599,8 +1623,30 @@
 
       init() {
         this.loadProgress();
+        this.setupLinks();
         this.updateStatsUI();
         lucide.createIcons();
+      },
+
+      setupLinks() {
+        // GAS環境（iframe内）で動いている場合は ?page=beginner へのトップウィンドウ遷移に対応させる
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+          const fallback = 'https://script.google.com/macros/s/AKfycbzbNWhOLf_gQiEiOO0QUk0Apt2XFx_8XdWh3qaEiV4qHPg-t4QKvqAtXNOseGaSmn0O/exec';
+          const applyUrl = (url) => {
+            const targetUrl = `${url}?page=beginner`;
+            ['linkToBeginnerBoard', 'footerLinkBeginner'].forEach(id => {
+              const el = document.getElementById(id);
+              if (el) {
+                el.href = targetUrl;
+                el.target = '_top';
+              }
+            });
+          };
+          applyUrl(fallback);
+          if (google.script.run.getWebAppUrl) {
+            google.script.run.withSuccessHandler(u => { if (u) applyUrl(u); }).getWebAppUrl();
+          }
+        }
       },
 
       // ホーム画面を表示
