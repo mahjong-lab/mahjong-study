@@ -2,6 +2,36 @@
  * 実戦編『麻雀トレーニングボード』メインコントローラー (js/main-app.js)
  * 依存: tile-renderer.js, sound-engine.js, term-dict.js, data/main-questions.js
  */
+const PRAISE_CORRECT = [
+  'お見事！センス抜群です！👏',
+  '完璧！すばらしい判断！✨',
+  'さすが！もう見抜けてますね！🎉',
+  'その調子！どんどん感覚掴めてます！🥰',
+  '大正解！実戦でもバッチリ使えますよ！🀄',
+  'ナイスアガリ！めちゃくちゃ筋がいいです！💖',
+  'すごい！もう迷わず選べてますね！💫',
+  '大正解！バッチリです！🌟'
+];
+
+const PRAISE_WRONG = [
+  'おしい！ここだけ押さえれば完璧です！🌱',
+  '大丈夫！みんな最初につまずくポイントです💡',
+  'ドンマイ！一度知ればもう次は間違えませんよ✨',
+  '惜しい！次は絶対に見抜けます！😊'
+];
+
+function getPraiseTitle(isCorrect, streak = 0) {
+  if (isCorrect) {
+    if (streak >= 5) return `怒涛の${streak}問連続正解！天才かも！？👑✨`;
+    if (streak === 4) return '4連続正解！完全にマスターしてます！🔥';
+    if (streak === 3) return '3連勝！波に乗ってきましたね！🎉';
+    if (streak === 2) return '2問連続正解！その調子です！✨';
+    return PRAISE_CORRECT[Math.floor(Math.random() * PRAISE_CORRECT.length)];
+  } else {
+    return PRAISE_WRONG[Math.floor(Math.random() * PRAISE_WRONG.length)];
+  }
+}
+
 const app = {
   currentCategory: 'yaku',
   currentQuestionIndex: 0,
@@ -315,14 +345,14 @@ const app = {
     if (selectedOpt.correct) {
       mHeader.className = 'px-4 py-3.5 flex items-center justify-between gap-2 bg-gradient-to-r from-emerald-700 to-felt text-white';
       mIcon.textContent = '⭕';
-      mTitle.textContent = 'ナイスアガリ！完璧です！';
+      mTitle.textContent = getPraiseTitle(true, this.stats.streak);
       mStamp.textContent = `🀄 ${callLabel}`;
       mStamp.classList.remove('hidden');
       if (mCorrectBadge) mCorrectBadge.classList.add('hidden');
     } else {
       mHeader.className = 'px-4 py-3.5 flex items-center justify-between gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white';
       mIcon.textContent = '💡';
-      mTitle.textContent = '惜しい！ここだけ押さえよう！';
+      mTitle.textContent = getPraiseTitle(false, 0);
       mStamp.classList.add('hidden');
       const okOpt = (q.options || []).find(o => o.correct);
       if (mCorrectBadge && okOpt) {

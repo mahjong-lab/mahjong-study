@@ -2,11 +2,42 @@
  * 超入門編『麻雀ファーストステップ』メインコントローラー (js/beginner-app.js)
  * 依存: tile-renderer.js, sound-engine.js, term-dict.js, data/beginner-questions.js
  */
+const PRAISE_CORRECT = [
+  'お見事！センス抜群です！👏',
+  '完璧！すばらしい判断！✨',
+  'さすが！もう見抜けてますね！🎉',
+  'その調子！どんどん感覚掴めてます！🥰',
+  '大正解！実戦でもバッチリ使えますよ！🀄',
+  'ナイス！めちゃくちゃ筋がいいです！💖',
+  'すごい！もう迷わず選べてますね！💫',
+  '大正解！バッチリです！🌟'
+];
+
+const PRAISE_WRONG = [
+  'おしい！ここだけ押さえれば完璧です！🌱',
+  '大丈夫！みんな最初につまずくポイントです💡',
+  'ドンマイ！一度知ればもう次は間違えませんよ✨',
+  '惜しい！次は絶対に見抜けます！😊'
+];
+
+function getPraiseTitle(isCorrect, streak = 0) {
+  if (isCorrect) {
+    if (streak >= 5) return `怒涛の${streak}問連続正解！天才かも！？👑✨`;
+    if (streak === 4) return '4連続正解！完全にマスターしてます！🔥';
+    if (streak === 3) return '3連勝！波に乗ってきましたね！🎉';
+    if (streak === 2) return '2問連続正解！その調子です！✨';
+    return PRAISE_CORRECT[Math.floor(Math.random() * PRAISE_CORRECT.length)];
+  } else {
+    return PRAISE_WRONG[Math.floor(Math.random() * PRAISE_WRONG.length)];
+  }
+}
+
 const app = {
   currentStageKey: 'stage1',
   questions: [],
   qIndex: 0,
   score: 0,
+  streak: 0,
   answered: false,
   scaffoldOn: false, // デフォルトは補助輪OFF（実戦並び）
   clearedStages: {},
@@ -153,6 +184,7 @@ const app = {
     }
     this.qIndex = 0;
     this.score = 0;
+    this.streak = 0;
 
     document.getElementById('homeView').classList.add('hidden');
     document.getElementById('clearView').classList.add('hidden');
@@ -299,12 +331,8 @@ const app = {
       grid.className = 'grid grid-cols-3 gap-3 my-1';
       shuffleArray(q.tileOptions).forEach(opt => {
         const btn = document.createElement('button');
-        btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-3.5 sm:p-4 shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-2';
-        const labelText = opt.label || TileRenderer.getTileNameJa(opt.tile);
-        btn.innerHTML = `
-          ${TileRenderer.render(opt.tile, { large: true })}
-          <span class="text-xs font-bold text-slate-700">${labelText}</span>
-        `;
+        btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-4 sm:p-5 shadow-sm transition transform active:scale-95 flex items-center justify-center';
+        btn.innerHTML = TileRenderer.render(opt.tile, { large: true });
         btn.onclick = () => this.submitChoice(opt.correct, btn, q, 80);
         grid.appendChild(btn);
       });
@@ -324,12 +352,8 @@ const app = {
       grid.className = 'grid grid-cols-3 gap-3 my-1';
       shuffleArray(q.tileOptions).forEach(opt => {
         const btn = document.createElement('button');
-        btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-3.5 shadow-sm transition transform active:scale-95 flex flex-col items-center justify-center gap-1.5';
-        const tileName = TileRenderer.getTileNameJa(opt.tile);
-        btn.innerHTML = `
-          ${TileRenderer.render(opt.tile, { large: true })}
-          <span class="text-xs font-bold text-slate-700">${tileName}</span>
-        `;
+        btn.className = 'bg-white hover:bg-teal-50 border-2 border-slate-200 hover:border-teal-500 rounded-2xl p-3.5 sm:p-4 shadow-sm transition transform active:scale-95 flex items-center justify-center';
+        btn.innerHTML = TileRenderer.render(opt.tile, { large: true });
         btn.onclick = () => {
           if (this.answered) return;
           if (opt.correct) {
@@ -473,11 +497,13 @@ const app = {
 
     if (isCorrect) {
       this.score++;
+      this.streak = (this.streak || 0) + 1;
       Sound.playCall(callType);
       if (typeof confetti === 'function') {
         confetti({ particleCount: 35, spread: 55, origin: { y: 0.72 } });
       }
     } else {
+      this.streak = 0;
       Sound.softBuzz();
     }
 
@@ -511,14 +537,14 @@ const app = {
     if (isCorrect) {
       mHeader.className = 'px-4 py-3.5 flex items-center justify-between gap-2 bg-gradient-to-r from-emerald-600 to-teal-700 text-white';
       mIcon.textContent = '⭕';
-      mTitle.textContent = '大正解！バッチリです！';
+      mTitle.textContent = getPraiseTitle(true, this.streak);
       mStamp.textContent = `🀄 ${callLabel}`;
       mStamp.classList.remove('hidden');
       if (mCorrectBadge) mCorrectBadge.classList.add('hidden');
     } else {
       mHeader.className = 'px-4 py-3.5 flex items-center justify-between gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white';
       mIcon.textContent = '💡';
-      mTitle.textContent = 'おしい！ここだけ押さえよう！';
+      mTitle.textContent = getPraiseTitle(false, 0);
       mStamp.classList.add('hidden');
       const corrLabel = this.getCorrectAnswerLabel(q);
       if (mCorrectBadge && corrLabel) {
@@ -596,8 +622,19 @@ const app = {
     const actEl = document.getElementById('clearActions');
     actEl.innerHTML = '';
 
+    let praiseSummary = '';
+    if (acc === 100) {
+      praiseSummary = '🏆 パーフェクト達成！プロ級のセンスです！✨';
+    } else if (acc >= 80) {
+      praiseSummary = '🎉 すごい正解率！麻雀の勘がめちゃくちゃ鋭いです！';
+    } else if (acc >= 50) {
+      praiseSummary = '✨ ナイスファイト！着実に基礎が身についてきていますよ！';
+    } else {
+      praiseSummary = '🌱 おつかれさまでした！何度も遊ぶうちに自然と見抜けるようになりますよ😊';
+    }
+
     if (this.currentStageKey === 'random5') {
-      msgEl.textContent = 'ランダムおさらい完了！何度でも違う組み合わせで麻雀用語と形を復習できます！';
+      msgEl.innerHTML = `<span class="block text-teal-800 font-bold mb-1">${praiseSummary}</span>何度でも違う組み合わせで麻雀用語と形を楽しく復習できます！`;
       actEl.innerHTML = `
         <button onclick="app.startStage('random5')" class="w-full bg-teal-700 hover:bg-teal-600 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm sm:text-base">
           <span>🎲 別のランダム5問に挑戦！</span>
@@ -607,7 +644,7 @@ const app = {
         </button>
       `;
     } else if (nextMeta) {
-      msgEl.textContent = `素晴らしいペースです！次は「${nextMeta.num}：${nextMeta.title}」に進んでみましょう！`;
+      msgEl.innerHTML = `<span class="block text-teal-800 font-bold mb-1">${praiseSummary}</span>次は「${nextMeta.num}：${nextMeta.title}」に進んでみましょう！`;
       actEl.innerHTML = `
         <button onclick="app.startStage('${nextMeta.key}')" class="w-full bg-teal-700 hover:bg-teal-600 text-white font-bold py-3.5 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm sm:text-base">
           <span>次の ${nextMeta.num} へ進む</span>
@@ -621,7 +658,7 @@ const app = {
         </button>
       `;
     } else {
-      msgEl.textContent = `全6ステージ（全${allCount}問収録）クリアおめでとうございます！！これで手牌の形・鳴き・麻雀用語はバッチリです。次は『麻雀トレーニングボード』で役と点数にチャレンジしましょう！`;
+      msgEl.innerHTML = `<span class="block text-teal-800 font-bold mb-1">${praiseSummary}</span>全6ステージ（全${allCount}問）クリアおめでとうございます！！これで手牌の形・鳴き・用語はバッチリです。次は『麻雀トレーニングボード』で役と点数にチャレンジ！`;
       actEl.innerHTML = `
         <a id="clearLinkMain" href="./index.html" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-900 font-bold py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm sm:text-base">
           <span>🎓 『麻雀トレーニングボード』へ進む！</span>
