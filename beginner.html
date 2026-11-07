@@ -56,7 +56,7 @@
   </script>
 
   <!-- 共通麻雀スタイル -->
-  <link rel="stylesheet" href="./css/mahjong.css?v=20261107_v6">
+  <link rel="stylesheet" href="./css/mahjong.css?v=20261107_v7">
 </head>
 <body class="page-beginner bg-amber-50/40 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-teal-200">
 
@@ -365,16 +365,64 @@
 
       <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-700">
         <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
-          <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-1.5">
-            <span>🔊</span>
-            <span>麻雀の5大発声サウンド（タップで鳴らせます）</span>
-          </h4>
-          <div class="grid grid-cols-5 gap-1.5 text-center">
-            <button onclick="Sound.playCall('pon')" class="bg-white hover:bg-teal-50 active:scale-95 border border-slate-300 rounded-lg py-2 font-bold text-xs text-teal-900 shadow-sm">ポン！</button>
-            <button onclick="Sound.playCall('chi')" class="bg-white hover:bg-teal-50 active:scale-95 border border-slate-300 rounded-lg py-2 font-bold text-xs text-teal-900 shadow-sm">チー！</button>
-            <button onclick="Sound.playCall('kan')" class="bg-white hover:bg-teal-50 active:scale-95 border border-slate-300 rounded-lg py-2 font-bold text-xs text-teal-900 shadow-sm">カン！</button>
-            <button onclick="Sound.playCall('tsumo')" class="bg-white hover:bg-amber-50 active:scale-95 border border-amber-300 rounded-lg py-2 font-bold text-xs text-amber-900 shadow-sm">ツモ！</button>
-            <button onclick="Sound.playCall('ron')" class="bg-white hover:bg-rose-50 active:scale-95 border border-rose-300 rounded-lg py-2 font-bold text-xs text-rose-900 shadow-sm">ロン！</button>
+          <div class="flex items-center justify-between mb-2 flex-wrap gap-1">
+            <h4 class="font-bold text-slate-800 flex items-center gap-1.5 text-xs sm:text-sm">
+              <span>📢</span>
+              <span>麻雀の5大発声と意味（いつ言うの？）</span>
+            </h4>
+            <span class="text-[10px] text-teal-800 bg-teal-100 font-bold px-2 py-0.5 rounded-full">タップで解説を見る</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-5 gap-2">
+            <!-- ポン -->
+            <div onclick="TermHelper.open('pon', event)" class="bg-white hover:bg-teal-50 active:scale-98 border border-slate-200 hover:border-teal-500 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
+              <div class="flex items-center justify-between sm:block mb-1">
+                <span class="font-black text-teal-900 text-sm sm:text-base">ポン！</span>
+                <span class="text-[10px] bg-teal-100 text-teal-900 font-bold px-1.5 py-0.5 rounded">誰からでもOK</span>
+              </div>
+              <div class="text-[11px] text-slate-600 leading-snug">
+                <strong>同じ牌3枚</strong>を作るときに宣言
+              </div>
+            </div>
+            <!-- チー -->
+            <div onclick="TermHelper.open('chi', event)" class="bg-white hover:bg-teal-50 active:scale-98 border border-slate-200 hover:border-teal-500 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
+              <div class="flex items-center justify-between sm:block mb-1">
+                <span class="font-black text-teal-900 text-sm sm:text-base">チー！</span>
+                <span class="text-[10px] bg-emerald-100 text-emerald-900 font-bold px-1.5 py-0.5 rounded">左隣からだけ</span>
+              </div>
+              <div class="text-[11px] text-slate-600 leading-snug">
+                <strong>階段3枚</strong>を作るときに宣言
+              </div>
+            </div>
+            <!-- カン -->
+            <div onclick="TermHelper.open('kan', event)" class="bg-white hover:bg-teal-50 active:scale-98 border border-slate-200 hover:border-teal-500 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
+              <div class="flex items-center justify-between sm:block mb-1">
+                <span class="font-black text-teal-900 text-sm sm:text-base">カン！</span>
+                <span class="text-[10px] bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded">4枚揃える</span>
+              </div>
+              <div class="text-[11px] text-slate-600 leading-snug">
+                <strong>同じ牌4枚</strong>組＆ドラが1枚増える！
+              </div>
+            </div>
+            <!-- ツモ -->
+            <div onclick="TermHelper.open('tsumo', event)" class="bg-white hover:bg-amber-50 active:scale-98 border border-amber-200 hover:border-amber-400 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
+              <div class="flex items-center justify-between sm:block mb-1">
+                <span class="font-black text-amber-700 text-sm sm:text-base">ツモ！</span>
+                <span class="text-[10px] bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded">自分でアガリ</span>
+              </div>
+              <div class="text-[11px] text-slate-600 leading-snug">
+                自分で山から引いてアガリ！<strong>3人全員で支払い</strong>
+              </div>
+            </div>
+            <!-- ロン -->
+            <div onclick="TermHelper.open('ron', event)" class="bg-white hover:bg-rose-50 active:scale-98 border border-rose-200 hover:border-rose-400 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
+              <div class="flex items-center justify-between sm:block mb-1">
+                <span class="font-black text-rose-700 text-sm sm:text-base">ロン！</span>
+                <span class="text-[10px] bg-rose-100 text-rose-900 font-bold px-1.5 py-0.5 rounded">相手からアガリ</span>
+              </div>
+              <div class="text-[11px] text-slate-600 leading-snug">
+                相手が捨てた牌でアガリ！<strong>捨てた人1人が支払い</strong>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -437,12 +485,12 @@
   </footer>
 
   <!-- モジュール読み込み -->
-  <script src="./js/shared/tile-renderer.js?v=20261107_v6"></script>
-  <script src="./js/shared/sound-engine.js?v=20261107_v6"></script>
-  <script src="./js/shared/term-dict.js?v=20261107_v6"></script>
-  <script src="./js/shared/share-helper.js?v=20261107_v6"></script>
-  <script src="./js/data/beginner-questions.js?v=20261107_v6"></script>
-  <script src="./js/beginner-app.js?v=20261107_v6"></script>
+  <script src="./js/shared/tile-renderer.js?v=20261107_v7"></script>
+  <script src="./js/shared/sound-engine.js?v=20261107_v7"></script>
+  <script src="./js/shared/term-dict.js?v=20261107_v7"></script>
+  <script src="./js/shared/share-helper.js?v=20261107_v7"></script>
+  <script src="./js/data/beginner-questions.js?v=20261107_v7"></script>
+  <script src="./js/beginner-app.js?v=20261107_v7"></script>
 
   <!-- PWA Service Worker 登録 -->
   <script>
