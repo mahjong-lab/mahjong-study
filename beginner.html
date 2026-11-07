@@ -56,7 +56,7 @@
   </script>
 
   <!-- 共通麻雀スタイル -->
-  <link rel="stylesheet" href="./css/mahjong.css?v=20261107_v10">
+  <link rel="stylesheet" href="./css/mahjong.css?v=20261107_v11">
 </head>
 <body class="page-beginner bg-amber-50/40 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-teal-200">
 
@@ -75,9 +75,6 @@
       </div>
 
       <div class="flex items-center gap-1.5 flex-shrink-0">
-        <a href="./scan.html" class="flex items-center gap-1 bg-white/15 hover:bg-white/25 text-white font-bold px-2.5 sm:px-3 py-1.5 rounded-lg transition transform active:scale-95 text-xs sm:text-sm whitespace-nowrap border border-white/20">
-          <span>📷 カメラ判定</span>
-        </a>
         <button onclick="app.openGuide()" class="flex items-center gap-1 bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold px-2.5 sm:px-3 py-1.5 rounded-lg shadow transition transform active:scale-95 text-xs sm:text-sm whitespace-nowrap">
           <i data-lucide="help-circle" class="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0"></i>
           <span>基礎メモ 📖</span>
@@ -149,26 +146,6 @@
         <a id="linkToMainBoard" href="./index.html" class="w-full sm:w-auto text-center whitespace-nowrap bg-emerald-700 hover:bg-emerald-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-sm transition flex items-center justify-center gap-1.5">
           <span>役・点数ボードへ</span>
           <i data-lucide="external-link" class="w-4 h-4"></i>
-        </a>
-      </div>
-
-      <!-- カメラ点数スキャナーへの案内カード -->
-      <div class="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-2xl p-4 sm:p-5 border-2 border-teal-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div class="flex items-start gap-3">
-          <div class="w-11 h-11 rounded-xl bg-teal-600 text-white flex items-center justify-center text-2xl flex-shrink-0 shadow-sm">
-            📷
-          </div>
-          <div>
-            <div class="inline-flex items-center gap-1 text-[11px] font-bold text-teal-800 bg-teal-100 px-2 py-0.5 rounded-full mb-0.5">
-              <span>実戦便利ツール</span>
-            </div>
-            <h4 class="font-bold text-slate-800 text-sm sm:text-base">手牌を撮るだけ！『カメラ点数スキャナー』</h4>
-            <p class="text-xs text-slate-600 mt-0.5">写真からAIが手牌を自動認識して、役・飜数・点数・申告コールをパッと教えてくれます。</p>
-          </div>
-        </div>
-        <a id="linkToScanner" href="./scan.html" class="w-full sm:w-auto text-center whitespace-nowrap bg-teal-700 hover:bg-teal-600 text-white font-bold px-4 py-2.5 rounded-xl text-xs sm:text-sm shadow-sm transition flex items-center justify-center gap-1.5">
-          <span>カメラ計算機へ</span>
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
       </div>
 
@@ -536,12 +513,12 @@
   </footer>
 
   <!-- モジュール読み込み -->
-  <script src="./js/shared/tile-renderer.js?v=20261107_v10"></script>
-  <script src="./js/shared/sound-engine.js?v=20261107_v10"></script>
-  <script src="./js/shared/term-dict.js?v=20261107_v10"></script>
-  <script src="./js/shared/share-helper.js?v=20261107_v10"></script>
-  <script src="./js/data/beginner-questions.js?v=20261107_v10"></script>
-  <script src="./js/beginner-app.js?v=20261107_v10"></script>
+  <script src="./js/shared/tile-renderer.js?v=20261107_v11"></script>
+  <script src="./js/shared/sound-engine.js?v=20261107_v11"></script>
+  <script src="./js/shared/term-dict.js?v=20261107_v11"></script>
+  <script src="./js/shared/share-helper.js?v=20261107_v11"></script>
+  <script src="./js/data/beginner-questions.js?v=20261107_v11"></script>
+  <script src="./js/beginner-app.js?v=20261107_v11"></script>
 
   <!-- PWA Service Worker 登録 -->
   <script>

@@ -41,9 +41,9 @@
   ],
   "shortcuts": [
     {
-      "name": "手牌カメラ判定 📷",
-      "short_name": "カメラ判定",
-      "url": "./scan.html",
+      "name": "超入門パズル 🧩",
+      "short_name": "パズル入門",
+      "url": "./beginner.html",
       "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }]
     },
     {

@@ -2,12 +2,11 @@
  * Service Worker: 麻雀ファーストステップ & 麻雀トレーニングボード (sw.js)
  * キャッシュ戦略: Network-First (常に最新を取得し、オフライン時はキャッシュで起動)
  */
-const CACHE_NAME = 'mahjong-study-v20261107_v10';
+const CACHE_NAME = 'mahjong-study-v20261107_v11';
 const PRECACHE_ASSETS = [
   './',
   './beginner.html',
   './index.html',
-  './scan.html',
   './css/mahjong.css',
   './js/shared/tile-renderer.js',
   './js/shared/sound-engine.js',
@@ -17,7 +16,6 @@ const PRECACHE_ASSETS = [
   './js/data/main-questions.js',
   './js/beginner-app.js',
   './js/main-app.js',
-  './js/scan-app.js',
   './manifest.json',
   './favicon.svg',
   './icons/icon-192.png',
