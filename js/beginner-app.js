@@ -722,7 +722,7 @@ const app = {
         </button>
       `;
     } else {
-      msgEl.innerHTML = `<span class="block text-teal-800 font-bold mb-1">${praiseSummary}</span>全6ステージ（全${allCount}問）クリアおめでとうございます！！これで手牌の形・鳴き・用語はバッチリです。次は『麻雀トレーニングボード』で役と点数にチャレンジ！`;
+      msgEl.innerHTML = `<span class="block text-teal-800 font-bold mb-1">${praiseSummary}</span>全6ステップ（全${allCount}問）クリアおめでとうございます！！これで手牌の形・鳴き・用語はバッチリです。次は『麻雀トレーニングボード』で役と点数にチャレンジ！`;
       actEl.innerHTML = `
         <a id="clearLinkMain" href="./index.html" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-900 font-bold py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm sm:text-base">
           <span>🎓 『麻雀トレーニングボード』へ進む！</span>

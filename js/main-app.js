@@ -96,11 +96,11 @@ const app = {
 
     const catNames = {
       quick3: '今日の3問サクッとドリル',
-      yaku: '牌を見て役を当てる',
-      phase1: 'Phase 1: 鳴き判定',
-      phase2: 'Phase 2: 飜数カウント',
-      phase3: 'Phase 3: 子の点数マスター',
-      phase4: 'Phase 4: 親・ツモ申告'
+      yaku: 'ステップ 1: 牌を見て役を当てる',
+      phase1: 'ステップ 2: 鳴き判定',
+      phase2: 'ステップ 3: 飜数カウント',
+      phase3: 'ステップ 4: 子の点数マスター',
+      phase4: 'ステップ 5: 親・ツモ申告'
     };
     document.getElementById('quizCategoryBadge').textContent = catNames[categoryKey] || '麻雀レッスン';
     document.getElementById('totalQuestionsNum').textContent = this.questions.length;
@@ -474,11 +474,11 @@ const app = {
     const acc = Math.round((this.score / total) * 100);
     const catNames = {
       quick3: '今日の3問サクッとドリル',
-      yaku: '牌を見て役を当てる',
-      phase1: 'Phase 1: 鳴き判定',
-      phase2: 'Phase 2: 飜数カウント',
-      phase3: 'Phase 3: 子の点数マスター',
-      phase4: 'Phase 4: 親・ツモ申告'
+      yaku: 'ステップ 1: 牌を見て役を当てる',
+      phase1: 'ステップ 2: 鳴き判定',
+      phase2: 'ステップ 3: 飜数カウント',
+      phase3: 'ステップ 4: 子の点数マスター',
+      phase4: 'ステップ 5: 親・ツモ申告'
     };
     const catTitle = catNames[this.currentCategory] || '麻雀レッスン';
 

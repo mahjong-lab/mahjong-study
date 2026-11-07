@@ -61,7 +61,7 @@
   </script>
 
   <!-- 共通麻雀スタイル -->
-  <link rel="stylesheet" href="./css/mahjong.css?v=20261107_v7">
+  <link rel="stylesheet" href="./css/mahjong.css?v=20261107_v8">
 </head>
 <body class="page-main bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-amber-200">
 
@@ -143,7 +143,7 @@
         </a>
       </div>
 
-      <!-- 学習フェーズ一覧カード -->
+      <!-- 学習ステップ一覧カード -->
       <div>
         <h3 class="text-base font-bold text-slate-700 mb-3 flex items-center gap-2">
           <i data-lucide="compass" class="w-5 h-5 text-emerald-700"></i>
@@ -156,7 +156,7 @@
           <div onclick="app.startQuiz('yaku')" class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md border border-slate-200/80 hover:border-emerald-500/80 transition cursor-pointer flex flex-col justify-between group">
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">ステップ 0</span>
+                <span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">ステップ 1</span>
                 <span class="text-xs text-slate-400">2〜3択で直感</span>
               </div>
               <h4 class="font-bold text-slate-800 group-hover:text-emerald-700 text-base mb-1 flex items-center gap-1.5">
@@ -176,7 +176,7 @@
           <div onclick="app.startQuiz('phase1')" class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md border border-slate-200/80 hover:border-emerald-500/80 transition cursor-pointer flex flex-col justify-between group">
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800">Phase 1</span>
+                <span class="text-xs font-bold px-2 py-0.5 rounded bg-blue-100 text-blue-800">ステップ 2</span>
                 <span class="text-xs text-slate-400">○ × の2択</span>
               </div>
               <h4 class="font-bold text-slate-800 group-hover:text-emerald-700 text-base mb-1 flex items-center gap-1.5">
@@ -196,7 +196,7 @@
           <div onclick="app.startQuiz('phase2')" class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md border border-slate-200/80 hover:border-emerald-500/80 transition cursor-pointer flex flex-col justify-between group">
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">Phase 2</span>
+                <span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">ステップ 3</span>
                 <span class="text-xs text-slate-400">指折りカウント</span>
               </div>
               <h4 class="font-bold text-slate-800 group-hover:text-emerald-700 text-base mb-1">
@@ -215,7 +215,7 @@
           <div onclick="app.startQuiz('phase3')" class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md border border-slate-200/80 hover:border-emerald-500/80 transition cursor-pointer flex flex-col justify-between group">
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-800">Phase 3</span>
+                <span class="text-xs font-bold px-2 py-0.5 rounded bg-purple-100 text-purple-800">ステップ 4</span>
                 <span class="text-xs text-slate-400">実戦の8割カバー</span>
               </div>
               <h4 class="font-bold text-slate-800 group-hover:text-emerald-700 text-base mb-1">
@@ -234,7 +234,7 @@
           <div onclick="app.startQuiz('phase4')" class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md border border-slate-200/80 hover:border-emerald-500/80 transition cursor-pointer flex flex-col justify-between group">
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span class="text-xs font-bold px-2 py-0.5 rounded bg-rose-100 text-rose-800">Phase 4</span>
+                <span class="text-xs font-bold px-2 py-0.5 rounded bg-rose-100 text-rose-800">ステップ 5</span>
                 <span class="text-xs text-slate-400">親番＆ツモコール</span>
               </div>
               <h4 class="font-bold text-slate-800 group-hover:text-emerald-700 text-base mb-1">
@@ -838,12 +838,12 @@
   </footer>
 
   <!-- モジュール読み込み -->
-  <script src="./js/shared/tile-renderer.js?v=20261107_v7"></script>
-  <script src="./js/shared/sound-engine.js?v=20261107_v7"></script>
-  <script src="./js/shared/term-dict.js?v=20261107_v7"></script>
-  <script src="./js/shared/share-helper.js?v=20261107_v7"></script>
-  <script src="./js/data/main-questions.js?v=20261107_v7"></script>
-  <script src="./js/main-app.js?v=20261107_v7"></script>
+  <script src="./js/shared/tile-renderer.js?v=20261107_v8"></script>
+  <script src="./js/shared/sound-engine.js?v=20261107_v8"></script>
+  <script src="./js/shared/term-dict.js?v=20261107_v8"></script>
+  <script src="./js/shared/share-helper.js?v=20261107_v8"></script>
+  <script src="./js/data/main-questions.js?v=20261107_v8"></script>
+  <script src="./js/main-app.js?v=20261107_v8"></script>
 
   <!-- PWA Service Worker 登録 -->
   <script>

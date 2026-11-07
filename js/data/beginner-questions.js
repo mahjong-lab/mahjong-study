@@ -18,7 +18,7 @@
 const STAGES_META = [
   {
     key: "stage1",
-    num: "Stage 1",
+    num: "ステップ 1",
     icon: "🐣",
     title: "牌の絵柄と「端っこ」仕分け",
     badge: "まずは3秒！",
@@ -26,7 +26,7 @@ const STAGES_META = [
   },
   {
     key: "stage2",
-    num: "Stage 2",
+    num: "ステップ 2",
     icon: "🧩",
     title: "3枚ブロック＆アタマパズル",
     badge: "穴埋めパズル",
@@ -34,7 +34,7 @@ const STAGES_META = [
   },
   {
     key: "stage3",
-    num: "Stage 3",
+    num: "ステップ 3",
     icon: "🗑️",
     title: "1枚ポイッ！「8枚ミニ麻雀」",
     badge: "手牌をタップ！",
@@ -42,7 +42,7 @@ const STAGES_META = [
   },
   {
     key: "stage4",
-    num: "Stage 4",
+    num: "ステップ 4",
     icon: "🚲",
     title: "13枚「待ち牌」あて（補助輪つき）",
     badge: "補助輪ON/OFF",
@@ -50,7 +50,7 @@ const STAGES_META = [
   },
   {
     key: "stage5",
-    num: "Stage 5",
+    num: "ステップ 5",
     icon: "🛡️",
     title: "実戦の約束「3大武器とフリテン」",
     badge: "ルール攻略",
@@ -58,7 +58,7 @@ const STAGES_META = [
   },
   {
     key: "stage6",
-    num: "Stage 6",
+    num: "ステップ 6",
     icon: "⚡",
     title: "合体！「ポン・チー・カン入門」",
     badge: "新ステージ！",
