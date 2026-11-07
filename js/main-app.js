@@ -38,6 +38,8 @@ const app = {
   questions: [],
   score: 0,
   answered: false,
+  hasRetried: false,
+  lastWrongBtn: null,
   inputFormat: 'choice', // 'choice' (2〜3択) or 'chips' (役一覧から選ぶ)
   seenIds: {},
   modalTimer: null,
@@ -296,6 +298,19 @@ const app = {
     }
   },
 
+  retryCurrentQuestion() {
+    this.closeResultModal(false);
+    this.answered = false;
+    this.hasRetried = true;
+
+    const optContainer = document.getElementById('optionsContainer');
+    if (optContainer) optContainer.classList.remove('pointer-events-none');
+
+    if (this.lastWrongBtn) {
+      this.lastWrongBtn.classList.add('opacity-40', 'pointer-events-none', 'cursor-not-allowed');
+    }
+  },
+
   handleAnswer(selectedOpt, btnElement, q) {
     if (this.answered) return;
     this.answered = true;
@@ -317,6 +332,7 @@ const app = {
     } else {
       SoundManager.playWrong();
       this.stats.streak = 0;
+      this.lastWrongBtn = btnElement;
       btnElement.classList.remove('bg-white', 'border-slate-200');
       btnElement.classList.add('bg-rose-50', 'border-rose-400', 'text-rose-900');
     }
@@ -336,15 +352,30 @@ const app = {
     const mReading = document.getElementById('modalTermReading');
     const mTiles = document.getElementById('modalTermTiles');
     const mDesc = document.getElementById('modalTermDesc');
+    const mTermSummary = document.getElementById('modalTermSummary');
+    const mTermSummaryText = document.getElementById('modalTermSummaryText');
+    const mNextBtn = document.getElementById('modalNextBtn');
     const mNextText = document.getElementById('modalNextBtnText');
+    const mRetryBtn = document.getElementById('modalRetryBtn');
+    const isLast = (this.currentQuestionIndex + 1 >= this.questions.length);
 
     if (selectedOpt.correct) {
       mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-emerald-700 to-teal-800 text-white';
       mIcon.textContent = '⭕';
-      mTitle.textContent = getPraiseTitle(true, this.stats.streak);
+      mTitle.textContent = this.hasRetried
+        ? '💡 リベンジ大正解！見抜くセンス抜群です！✨'
+        : getPraiseTitle(true, this.stats.streak);
       mStamp.textContent = `🀄 ${callLabel}`;
       mStamp.classList.remove('hidden');
       if (mCorrectBadge) mCorrectBadge.classList.add('hidden');
+
+      if (mRetryBtn) mRetryBtn.classList.add('hidden');
+      if (mNextBtn) {
+        mNextBtn.className = 'w-full bg-gradient-to-r from-emerald-700 to-felt hover:from-emerald-600 hover:to-emerald-700 active:scale-[0.98] text-white font-bold py-3.5 px-5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm sm:text-base';
+      }
+      if (mNextText) {
+        mNextText.textContent = isLast ? 'セッション結果を見る 🎉' : '次の問題へすすむ';
+      }
     } else {
       mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white';
       mIcon.textContent = '💡';
@@ -354,6 +385,14 @@ const app = {
       if (mCorrectBadge && okOpt) {
         mCorrectBadge.textContent = `✅ 正解：${okOpt.text}`;
         mCorrectBadge.classList.remove('hidden');
+      }
+
+      if (mRetryBtn) mRetryBtn.classList.remove('hidden');
+      if (mNextBtn) {
+        mNextBtn.className = 'w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-4 rounded-xl transition text-xs sm:text-sm flex items-center justify-center gap-1';
+      }
+      if (mNextText) {
+        mNextText.textContent = isLast ? '解説を読んだので結果を見る' : '解説を読んだので次の問題へ';
       }
     }
 
@@ -365,13 +404,15 @@ const app = {
       mReading.textContent = termInfo.reading;
       mDesc.textContent = termInfo.desc;
       mTiles.innerHTML = (termInfo.tiles || []).map(t => TileRenderer.render(t)).join('');
+
+      if (termInfo.summary && mTermSummary && mTermSummaryText) {
+        mTermSummaryText.textContent = termInfo.summary;
+        mTermSummary.classList.remove('hidden');
+      } else if (mTermSummary) {
+        mTermSummary.classList.add('hidden');
+      }
     } else if (mTermBox) {
       mTermBox.classList.add('hidden');
-    }
-
-    const isLast = (this.currentQuestionIndex + 1 >= this.questions.length);
-    if (mNextText) {
-      mNextText.textContent = isLast ? 'セッション結果を見る 🎉' : '次の問題へすすむ';
     }
 
     this.openResultModal();
@@ -379,6 +420,8 @@ const app = {
 
   nextQuestion() {
     this.closeResultModal(false);
+    this.hasRetried = false;
+    this.lastWrongBtn = null;
     this.currentQuestionIndex++;
     if (this.currentQuestionIndex >= this.questions.length) {
       this.showResult();
@@ -400,13 +443,19 @@ const app = {
     document.getElementById('resultAccuracy').textContent = `${accuracy}%`;
     document.getElementById('resultStreak').textContent = `${this.stats.streak}問連続 🔥`;
 
-    if (accuracy >= 80 && typeof confetti === 'function') {
-      confetti({ particleCount: 100, spread: 90, origin: { y: 0.6 } });
+    if (typeof confetti === 'function') {
+      if (accuracy === 100) {
+        confetti({ particleCount: 80, spread: 100, origin: { x: 0.2, y: 0.6 } });
+        setTimeout(() => confetti({ particleCount: 80, spread: 100, origin: { x: 0.8, y: 0.6 } }), 180);
+        setTimeout(() => confetti({ particleCount: 110, spread: 120, origin: { x: 0.5, y: 0.5 } }), 360);
+      } else if (accuracy >= 80) {
+        confetti({ particleCount: 90, spread: 80, origin: { y: 0.6 } });
+      }
     }
 
     const msgBox = document.getElementById('resultMessage');
     if (accuracy === 100) {
-      msgBox.textContent = '全問正解！素晴らしい！牌感覚、完全に定着しています！💮';
+      msgBox.textContent = '💮 満点パーフェクト達成！全問正解お見事すぎます！牌感覚が完全に定着しています！✨';
     } else if (accuracy >= 60) {
       msgBox.textContent = 'ナイスファイト！「見ながら解く」を続ければ、実戦でも自信を持ってアガれます！👍';
     } else {

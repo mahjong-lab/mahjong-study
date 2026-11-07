@@ -127,32 +127,48 @@ const app = {
     box.innerHTML = '';
 
     let clearedCount = 0;
-    STAGES_META.forEach((st) => {
+    let firstUncompletedIdx = -1;
+    STAGES_META.forEach((st, idx) => {
+      if (this.clearedStages[st.key]) {
+        clearedCount++;
+      } else if (firstUncompletedIdx === -1) {
+        firstUncompletedIdx = idx;
+      }
+    });
+
+    STAGES_META.forEach((st, idx) => {
       const isCleared = Boolean(this.clearedStages[st.key]);
-      if (isCleared) clearedCount++;
+      const isNext = (idx === firstUncompletedIdx);
       const poolLen = (STAGE_QUESTIONS[st.key] || []).length;
 
       const card = document.createElement('div');
-      card.className = `bg-white rounded-xl p-4 shadow-sm hover:shadow-md border-2 ${isCleared ? 'border-teal-500/70' : 'border-slate-200/90'} hover:border-teal-600 transition cursor-pointer flex flex-col justify-between group`;
+      let borderClass = 'border-slate-200/90';
+      if (isCleared) borderClass = 'border-teal-400/80 bg-teal-50/20';
+      else if (isNext) borderClass = 'border-amber-400 ring-2 ring-amber-300/50 shadow-md bg-amber-50/20';
+
+      card.className = `bg-white rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md border-2 ${borderClass} hover:border-teal-600 transition cursor-pointer flex flex-col justify-between group relative overflow-hidden`;
       card.onclick = () => this.startStage(st.key);
 
       card.innerHTML = `
         <div>
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-900">${st.num}</span>
+          <div class="flex items-center justify-between mb-2 gap-2 flex-wrap">
             <div class="flex items-center gap-1.5">
-              <span class="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded">${st.badge}</span>
-              ${isCleared ? '<span class="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">💮 クリア済</span>' : ''}
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-900">${st.num}</span>
+              ${isNext ? '<span class="guide-pointer-badge">👉 つぎはここ！</span>' : ''}
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md font-medium">${st.badge}</span>
+              ${isCleared ? '<span class="stamp-badge">💮 CLEAR!</span>' : ''}
             </div>
           </div>
-          <h4 class="font-bold text-slate-800 group-hover:text-teal-700 text-base mb-1 flex items-center gap-1.5">
-            <span class="text-lg">${st.icon}</span>
+          <h4 class="font-bold text-slate-800 group-hover:text-teal-700 text-base mb-1.5 flex items-center gap-1.5">
+            <span class="text-xl">${st.icon}</span>
             <span>${st.title}</span>
           </h4>
           <p class="text-xs text-slate-600 leading-relaxed">${st.desc}</p>
         </div>
-        <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-teal-700 font-bold">
-          <span>🎲 毎回ちがう${Math.min(this.sessionSize, poolLen)}問（全${poolLen}種収録）</span>
+        <div class="mt-3.5 pt-2.5 border-t border-slate-100 flex items-center justify-between text-xs text-teal-700 font-bold">
+          <span>🎲 毎回ちがう${Math.min(this.sessionSize, poolLen)}問（全${poolLen}種）</span>
           <i data-lucide="chevron-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
         </div>
       `;
@@ -185,6 +201,8 @@ const app = {
     this.qIndex = 0;
     this.score = 0;
     this.streak = 0;
+    this.hasRetried = false;
+    this.lastWrongBtn = null;
 
     document.getElementById('homeView').classList.add('hidden');
     document.getElementById('clearView').classList.add('hidden');
@@ -485,6 +503,21 @@ const app = {
     }
   },
 
+  retryCurrentQuestion() {
+    this.closeResultModal(false);
+    this.answered = false;
+    this.hasRetried = true;
+
+    const ans = document.getElementById('answerArea');
+    if (ans) ans.classList.remove('pointer-events-none');
+    const boardArea = document.getElementById('boardTilesRow');
+    if (boardArea) boardArea.classList.remove('pointer-events-none');
+
+    if (this.lastWrongBtn) {
+      this.lastWrongBtn.classList.add('opacity-40', 'pointer-events-none', 'cursor-not-allowed');
+    }
+  },
+
   submitChoice(isCorrect, btnEl, q, popupDelayMs = 80) {
     if (this.answered) return;
     this.answered = true;
@@ -503,6 +536,7 @@ const app = {
       }
     } else {
       this.streak = 0;
+      this.lastWrongBtn = btnEl;
       Sound.softBuzz();
     }
 
@@ -530,15 +564,30 @@ const app = {
     const mReading = document.getElementById('modalTermReading');
     const mTiles = document.getElementById('modalTermTiles');
     const mDesc = document.getElementById('modalTermDesc');
+    const mTermSummary = document.getElementById('modalTermSummary');
+    const mTermSummaryText = document.getElementById('modalTermSummaryText');
+    const mNextBtn = document.getElementById('modalNextBtn');
     const mNextText = document.getElementById('modalNextBtnText');
+    const mRetryBtn = document.getElementById('modalRetryBtn');
+    const isLast = (this.qIndex + 1 >= this.questions.length);
 
     if (isCorrect) {
       mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-emerald-600 to-teal-700 text-white';
       mIcon.textContent = '⭕';
-      mTitle.textContent = getPraiseTitle(true, this.streak);
+      mTitle.textContent = this.hasRetried
+        ? '💡 リベンジ大正解！見抜くセンス抜群です！✨'
+        : getPraiseTitle(true, this.streak);
       mStamp.textContent = `🀄 ${callLabel}`;
       mStamp.classList.remove('hidden');
       if (mCorrectBadge) mCorrectBadge.classList.add('hidden');
+
+      if (mRetryBtn) mRetryBtn.classList.add('hidden');
+      if (mNextBtn) {
+        mNextBtn.className = 'w-full bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-600 hover:to-emerald-600 active:scale-[0.98] text-white font-bold py-3.5 px-5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm sm:text-base';
+      }
+      if (mNextText) {
+        mNextText.textContent = isLast ? 'ステージ結果を見る 🎉' : '次の問題へすすむ';
+      }
     } else {
       mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white';
       mIcon.textContent = '💡';
@@ -548,6 +597,14 @@ const app = {
       if (mCorrectBadge && corrLabel) {
         mCorrectBadge.textContent = `✅ 正解：${corrLabel}`;
         mCorrectBadge.classList.remove('hidden');
+      }
+
+      if (mRetryBtn) mRetryBtn.classList.remove('hidden');
+      if (mNextBtn) {
+        mNextBtn.className = 'w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-4 rounded-xl transition text-xs sm:text-sm flex items-center justify-center gap-1';
+      }
+      if (mNextText) {
+        mNextText.textContent = isLast ? '解説を読んだので結果を見る' : '解説を読んだので次の問題へ';
       }
     }
 
@@ -559,13 +616,15 @@ const app = {
       mReading.textContent = termInfo.reading;
       mDesc.textContent = termInfo.desc;
       mTiles.innerHTML = (termInfo.tiles || []).map(t => TileRenderer.render(t)).join('');
+
+      if (termInfo.summary && mTermSummary && mTermSummaryText) {
+        mTermSummaryText.textContent = termInfo.summary;
+        mTermSummary.classList.remove('hidden');
+      } else if (mTermSummary) {
+        mTermSummary.classList.add('hidden');
+      }
     } else if (mTermBox) {
       mTermBox.classList.add('hidden');
-    }
-
-    const isLast = (this.qIndex + 1 >= this.questions.length);
-    if (mNextText) {
-      mNextText.textContent = isLast ? 'ステージ結果を見る 🎉' : '次の問題へすすむ';
     }
 
     if (popupDelayMs > 0) {
@@ -579,6 +638,8 @@ const app = {
 
   nextQuestion() {
     this.closeResultModal(false);
+    this.hasRetried = false;
+    this.lastWrongBtn = null;
     this.qIndex++;
     if (this.qIndex >= this.questions.length) {
       this.showStageClear();
@@ -612,7 +673,13 @@ const app = {
     document.getElementById('clearAccuracy').textContent = `${acc}%`;
 
     if (typeof confetti === 'function') {
-      confetti({ particleCount: 90, spread: 80, origin: { y: 0.6 } });
+      if (acc === 100) {
+        confetti({ particleCount: 80, spread: 100, origin: { x: 0.2, y: 0.6 } });
+        setTimeout(() => confetti({ particleCount: 80, spread: 100, origin: { x: 0.8, y: 0.6 } }), 180);
+        setTimeout(() => confetti({ particleCount: 110, spread: 120, origin: { x: 0.5, y: 0.5 } }), 360);
+      } else {
+        confetti({ particleCount: 90, spread: 80, origin: { y: 0.6 } });
+      }
     }
 
     const msgEl = document.getElementById('clearMessage');
@@ -621,7 +688,7 @@ const app = {
 
     let praiseSummary = '';
     if (acc === 100) {
-      praiseSummary = '🏆 パーフェクト達成！プロ級のセンスです！✨';
+      praiseSummary = '💮 満点パーフェクト達成！全問正解お見事すぎます！✨';
     } else if (acc >= 80) {
       praiseSummary = '🎉 すごい正解率！麻雀の勘がめちゃくちゃ鋭いです！';
     } else if (acc >= 50) {
