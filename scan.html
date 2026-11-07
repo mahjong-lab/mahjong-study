@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>麻雀カメラ点数スキャナー 📷 | 手牌写真から点数を自動計算</title>
+  <meta name="description" content="スマホで手牌の写真を撮るだけ！AIが牌を自動認識して役・飜数・点数・申告コールをパッと教えてくれる麻雀点数計算ツール。">
+
+  <!-- OGP -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="麻雀カメラ点数スキャナー 📷 | 手牌写真から点数を自動計算">
+  <meta property="og:description" content="スマホで手牌の写真を撮るだけ！AIが牌を自動認識して役・点数を教えてくれる！">
+  <meta property="og:image" content="https://mahjong-lab.github.io/mahjong-study/icons/icon-512.png">
+
+  <!-- Favicon & PWA Icons -->
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0f766e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="麻雀カメラ">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'sans-serif'],
+            serif: ['"Kaisei Decol"', 'serif'],
+          },
+          colors: {
+            boardDark: '#134e4a',
+            boardMain: '#0f766e',
+            boardLight: '#115e59',
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- 共通麻雀スタイル -->
+  <link rel="stylesheet" href="./css/mahjong.css?v=20261107_v10">
+</head>
+<body class="bg-amber-50/40 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-teal-200">
+
+  <!-- ヘッダー -->
+  <header class="bg-gradient-to-r from-teal-800 via-teal-700 to-emerald-800 text-white shadow-md sticky top-0 z-30">
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2">
+      <div class="flex items-center gap-2 cursor-pointer min-w-0" onclick="location.href='./index.html'">
+        <span class="text-xl sm:text-2xl filter drop-shadow flex-shrink-0">📷</span>
+        <div class="min-w-0">
+          <h1 class="text-[15px] sm:text-lg font-bold tracking-tight font-serif flex items-center gap-1.5 whitespace-nowrap">
+            <span>麻雀カメラ点数スキャナー</span>
+            <span class="hidden sm:inline-block text-[10px] bg-amber-400 text-slate-900 font-sans px-2 py-0.5 rounded-full font-bold">AI自動判定</span>
+          </h1>
+          <p class="text-[10px] sm:text-xs text-teal-200/90 truncate">手牌の写真を撮るだけで役・点数を一発計算</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <button onclick="scanApp.openSettingsModal()" class="text-xs bg-white/10 hover:bg-white/20 text-white font-bold px-2.5 py-1.5 rounded-lg border border-white/20 transition flex items-center gap-1">
+          <i data-lucide="settings" class="w-3.5 h-3.5"></i>
+          <span class="hidden sm:inline">GAS設定</span>
+        </button>
+        <a href="./beginner.html" class="text-xs bg-teal-900/60 hover:bg-teal-900 text-white font-bold px-2.5 py-1.5 rounded-lg border border-teal-600 transition flex items-center gap-1">
+          <span>超入門へ</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main class="max-w-3xl mx-auto w-full p-3.5 sm:p-5 flex-1 flex flex-col gap-4">
+
+    <!-- 接続ステータス & アナウンス -->
+    <div class="flex items-center justify-between gap-2 flex-wrap">
+      <span id="gasStatusBadge" class="inline-flex items-center gap-1 text-[11px] font-bold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full cursor-pointer">
+        <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+        <span>お試し体験モード（タップでGAS設定）</span>
+      </span>
+      <span class="text-[11px] text-slate-500 font-medium">※撮影した写真は端末内で安全に自動軽量化されます</span>
+    </div>
+
+    <!-- お試しモード時の案内バナー -->
+    <div id="demoModeNotice" class="hidden bg-amber-50 border border-amber-300 text-amber-900 rounded-xl p-3 text-xs leading-relaxed flex items-start gap-2 shadow-2xs">
+      <span class="text-base flex-shrink-0">💡</span>
+      <div>
+        <strong>現在はお試し体験モードです</strong><br>
+        GASのWeb App URLを設定すると、あなたのスマホで撮った実際の手牌写真をAIがリアルタイムに判定できるようになります！（右上の「⚙ 設定」から3分で連携可能）
+      </div>
+    </div>
+
+    <!-- 1. 写真撮影 / アップロードカード -->
+    <section class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 text-center relative overflow-hidden">
+      <!-- 隠しファイルインプット（カメラ直接起動） -->
+      <input type="file" id="cameraFileInput" accept="image/*" capture="environment" class="hidden">
+
+      <div id="scannerUploadPrompt" class="space-y-4">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-teal-50 text-teal-700 mx-auto flex items-center justify-center text-3xl sm:text-4xl shadow-inner border border-teal-200/80">
+          📸
+        </div>
+
+        <div>
+          <h2 class="text-lg sm:text-xl font-bold font-serif text-slate-800 mb-1">
+            手牌の写真を撮ってください
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-md mx-auto">
+            アガリ形（14枚または鳴き牌）が横一列に見えるように撮影すると、AIが自動で役と点数を計算します。
+          </p>
+        </div>
+
+        <!-- 撮影・選択アクションボタン -->
+        <div class="flex flex-col sm:flex-row gap-2.5 justify-center max-w-md mx-auto">
+          <button type="button" onclick="scanApp.triggerCamera()" class="flex-1 bg-gradient-to-r from-teal-700 to-emerald-700 hover:from-teal-600 hover:to-emerald-600 active:scale-[0.98] text-white font-bold py-3.5 px-5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm sm:text-base">
+            <i data-lucide="camera" class="w-5 h-5"></i>
+            <span>カメラで撮影する</span>
+          </button>
+          <button type="button" onclick="scanApp.loadDemoSample()" class="sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 px-4 rounded-xl transition text-xs sm:text-sm flex items-center justify-center gap-1.5 border border-slate-200">
+            <span>🎲 体験サンプルで試す</span>
+          </button>
+        </div>
+
+        <!-- 撮影のコツ -->
+        <div class="bg-slate-50 rounded-xl p-3 text-left border border-slate-200/80 max-w-md mx-auto space-y-1 text-[11px] text-slate-600">
+          <div class="font-bold text-slate-700 flex items-center gap-1 text-xs">
+            <span>✨ きれいに読み取るコツ</span>
+          </div>
+          <p>・牌が斜めになりすぎないよう、<strong>正面やや上から</strong>全体を写す</p>
+          <p>・卓の照明による<strong>白飛びや影</strong>を少し避ける</p>
+          <p>・一番右端のアガリ牌を<strong>少し離して置く</strong>とアガリ牌を正確に特定できます</p>
+        </div>
+      </div>
+
+      <!-- 写真プレビュー（撮影後） -->
+      <div class="mt-4 max-w-md mx-auto">
+        <img id="capturedPreviewImg" src="" alt="撮影プレビュー" class="hidden w-full max-h-48 object-cover rounded-xl border border-slate-200 shadow-sm mx-auto">
+      </div>
+
+      <!-- ローディング表示 -->
+      <div id="scannerLoadingArea" class="hidden py-8 space-y-3">
+        <div class="w-12 h-12 border-4 border-teal-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <div class="font-bold text-slate-800 text-sm sm:text-base">
+          AIが手牌を読み取っています…💭
+        </div>
+        <p class="text-xs text-slate-500">
+          牌の種類・役・符・点数を計算中。数秒お待ちください。
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. 解析・計算結果表示エリア -->
+    <section id="scannerResultArea" class="hidden space-y-4 animate-pop-in">
+
+      <!-- 読み取られた手牌姿 -->
+      <div class="bg-gradient-to-b from-boardMain to-boardDark text-white rounded-2xl p-4 sm:p-5 shadow-lg border-2 border-teal-950">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs text-teal-100 font-bold flex items-center gap-1">
+            <span>🀄 読み取った手牌姿</span>
+          </span>
+          <span class="text-[10px] text-amber-200 bg-black/30 px-2 py-0.5 rounded-full">
+            牌をタップして修正可能
+          </span>
+        </div>
+
+        <div class="bg-black/25 rounded-xl px-2 py-3 sm:p-4 border border-white/10 overflow-x-auto flex justify-center">
+          <div id="scannedHandTiles" class="flex items-center justify-center gap-1 flex-nowrap py-1 w-max mx-auto"></div>
+        </div>
+      </div>
+
+      <!-- 点数表示 ＆ 申告コールカード -->
+      <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 space-y-4">
+
+        <!-- 親 / 子 切り替え ＆ ロン / ツモ 切り替え -->
+        <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1 rounded-xl text-xs font-bold">
+          <div class="flex bg-slate-200/70 p-0.5 rounded-lg">
+            <button id="playerTabChild" type="button" onclick="scanApp.setPlayerType('child')" class="flex-1 py-1.5 font-bold text-xs rounded-md bg-white text-emerald-900 shadow-sm transition">
+              子（南家・西家・北家）
+            </button>
+            <button id="playerTabParent" type="button" onclick="scanApp.setPlayerType('parent')" class="flex-1 py-1.5 font-bold text-xs rounded-md text-slate-600 hover:text-slate-900 transition">
+              親（東家）
+            </button>
+          </div>
+          <div class="flex bg-slate-200/70 p-0.5 rounded-lg">
+            <button id="winTabRon" type="button" onclick="scanApp.setWinType('ron')" class="flex-1 py-1.5 font-bold text-xs rounded-md bg-white text-emerald-900 shadow-sm transition">
+              ロン（相手から）
+            </button>
+            <button id="winTabTsumo" type="button" onclick="scanApp.setWinType('tsumo')" class="flex-1 py-1.5 font-bold text-xs rounded-md text-slate-600 hover:text-slate-900 transition">
+              ツモ（自分で引いた）
+            </button>
+          </div>
+        </div>
+
+        <!-- 点数ハイライト -->
+        <div class="bg-gradient-to-br from-amber-50 via-amber-50/70 to-emerald-50/60 border-2 border-amber-300 rounded-2xl p-5 text-center relative overflow-hidden">
+          <div class="flex items-center justify-center gap-2 mb-1">
+            <span id="scannedHanFuBadge" class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full">
+              4飜 30符
+            </span>
+            <span id="scannedScoreTitleBadge" class="font-bold text-xs bg-amber-400 text-amber-950 px-2.5 py-0.5 rounded-full shadow-2xs">
+              満貫
+            </span>
+          </div>
+
+          <div id="scannedScoreValue" class="text-3xl sm:text-4xl font-black font-serif text-slate-900 tracking-tight my-1">
+            8,000 点
+          </div>
+
+          <div id="scannedPaymentDetail" class="text-xs text-slate-600 font-medium">
+            相手（放銃した人）が全額を支払います
+          </div>
+
+          <!-- 卓上での申告コール文面 -->
+          <div class="mt-4 pt-3.5 border-t border-amber-200/80 bg-white/70 rounded-xl p-3">
+            <div class="text-[11px] font-bold text-amber-900 mb-1 flex items-center justify-center gap-1">
+              <span>🗣 卓上でこう言おう！申告コール</span>
+            </div>
+            <div id="scannedSpeechCall" class="text-base sm:text-lg font-black text-emerald-800 font-serif">
+              「ロン！ 8000点です！」
+            </div>
+          </div>
+        </div>
+
+        <!-- 成立している役一覧 -->
+        <div>
+          <h4 class="font-bold text-slate-800 text-xs sm:text-sm mb-2 flex items-center gap-1.5">
+            <span>📜 成立している役の内訳</span>
+          </h4>
+          <div id="scannedYakuList" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+        </div>
+
+        <!-- ワンポイントアドバイス -->
+        <div class="bg-teal-50 border border-teal-200 rounded-xl p-3 text-xs text-teal-900 leading-relaxed flex items-start gap-2">
+          <span class="text-base flex-shrink-0">💡</span>
+          <div id="scannedAdvice">落ち着いて相手に申告しましょう！</div>
+        </div>
+
+        <!-- 再撮影ボタン -->
+        <div class="pt-2">
+          <button type="button" onclick="scanApp.triggerCamera()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl transition text-xs sm:text-sm flex items-center justify-center gap-2">
+            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            <span>別の手牌を撮影する</span>
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- 牌修正ピッカーモーダル -->
+  <div id="tilePickerModal" onclick="if(event.target===this)scanApp.closeTilePicker()" class="fixed inset-0 bg-black/60 z-50 hidden backdrop-blur-sm flex justify-center items-center p-3.5">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden p-4 space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+        <h4 class="font-bold text-slate-800 text-sm">正しい牌を選んで修正</h4>
+        <button type="button" onclick="scanApp.closeTilePicker()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="pickerTilesGrid" class="grid grid-cols-10 gap-1.5 max-h-60 overflow-y-auto p-1 bg-slate-50 rounded-xl border border-slate-200"></div>
+      <p class="text-[11px] text-slate-500 text-center">タップすると選んだ牌に入れ替わります</p>
+    </div>
+  </div>
+
+  <!-- GAS 連携設定モーダル -->
+  <div id="settingsModal" onclick="if(event.target===this)scanApp.closeSettingsModal()" class="fixed inset-0 bg-black/60 z-50 hidden backdrop-blur-sm flex justify-center items-center p-3.5">
+    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden p-5 space-y-4 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">⚙️</span>
+          <h4 class="font-bold text-slate-800 text-base">GAS連携設定（Gemini AI接続）</h4>
+        </div>
+        <button type="button" onclick="scanApp.closeSettingsModal()" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-700 leading-relaxed">
+        <p>
+          Google Apps Script (GAS) にコードを配置し、発行された「ウェブアプリURL」を入力すると、自分のスマホ写真がリアルタイムにAI解析されるようになります。
+        </p>
+
+        <div>
+          <label class="font-bold block text-slate-800 mb-1">GAS ウェブアプリ URL：</label>
+          <input type="url" id="gasUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full px-3 py-2.5 border border-slate-300 rounded-xl text-xs font-mono focus:outline-none focus:ring-2 focus:ring-teal-500">
+          <span class="text-[10px] text-slate-400 block mt-1">※末尾が /exec で終わるURLを入力してください</span>
+        </div>
+
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 text-[11px]">
+          <strong class="text-slate-800 block text-xs">📝 3分でできるGASのセットアップ手順：</strong>
+          <ol class="list-decimal list-inside space-y-1">
+            <li><a href="https://script.google.com/" target="_blank" class="text-teal-700 underline font-bold">script.google.com</a> で「新しいプロジェクト」を作成</li>
+            <li>プロジェクト内の <code class="bg-slate-200 px-1 py-0.5 rounded">gas/MahjongScoreScanner.js</code> のコードをそのまま貼り付け</li>
+            <li>⚙️「プロジェクトの設定」>「スクリプト プロパティ」に <code class="font-mono bg-slate-200 px-1 rounded">GEMINI_API_KEY</code> を追加</li>
+            <li>「デプロイ」>「新しいデプロイ」>「ウェブアプリ」を選択</li>
+            <li><strong>アクセスできるユーザーを「全員 (Anyone)」</strong>にしてデプロイ</li>
+            <li>発行されたURLを上の入力欄に貼り付けて保存！</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button type="button" onclick="scanApp.closeSettingsModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs">
+          キャンセル
+        </button>
+        <button type="button" onclick="scanApp.saveSettings()" class="flex-1 bg-teal-700 hover:bg-teal-600 text-white font-bold py-2.5 rounded-xl text-xs shadow transition">
+          保存する
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <footer class="bg-slate-100 border-t border-slate-200 py-3 text-center text-xs text-slate-500">
+    麻雀カメラ点数スキャナー 📷 | <a href="./beginner.html" class="underline hover:text-teal-700">超入門パズル</a> | <a href="./index.html" class="underline hover:text-teal-700">実戦トレーニング</a>
+  </footer>
+
+  <!-- モジュール読み込み -->
+  <script src="./js/shared/tile-renderer.js?v=20261107_v10"></script>
+  <script src="./js/scan-app.js?v=20261107_v10"></script>
+
+  <!-- PWA Service Worker 登録 -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

@@ -38,5 +38,19 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "手牌カメラ判定 📷",
+      "short_name": "カメラ判定",
+      "url": "./scan.html",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "実戦トレーニング 🀄",
+      "short_name": "実戦",
+      "url": "./index.html",
+      "icons": [{ "src": "./icons/icon-192.png", "sizes": "192x192" }]
+    }
   ]
 }
