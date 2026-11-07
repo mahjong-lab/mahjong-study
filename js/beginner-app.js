@@ -746,6 +746,29 @@ const app = {
     document.getElementById('guideModal').classList.add('hidden');
   },
 
+  shareResult(type, btnEl) {
+    const total = (this.questions && this.questions.length) || 1;
+    const acc = Math.round((this.score / total) * 100);
+    const currentIdx = STAGES_META.findIndex(s => s.key === this.currentStageKey);
+    const meta = currentIdx >= 0 ? STAGES_META[currentIdx] : null;
+    const stageTitle = meta ? `${meta.num}：${meta.title}` : 'ランダム5問特訓';
+
+    const isPerfect = (acc === 100);
+    const lead = isPerfect ? '💮 全問正解パーフェクト達成！✨' : '🎉 ステージクリア！';
+    const text = `麻雀ファーストステップ🧩で【${stageTitle}】をクリア！（${this.score}/${total}問正解・正答率${acc}%）\n${lead}\n14枚見なくてOK！3枚パズルで麻雀の形がスッキリ身につく！`;
+    const url = 'https://mahjong-lab.github.io/mahjong-study/beginner.html';
+
+    if (typeof ShareHelper !== 'undefined') {
+      if (type === 'line') {
+        ShareHelper.shareToLine({ text, url });
+      } else if (type === 'x') {
+        ShareHelper.shareToX({ text, url, hashtags: ['麻雀ファーストステップ', '麻雀初心者', '麻雀'] });
+      } else if (type === 'copy') {
+        ShareHelper.copyResult({ text, url, btnElement: btnEl });
+      }
+    }
+  },
+
   toggleSound() {}
 };
 

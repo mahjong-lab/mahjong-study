@@ -469,6 +469,35 @@ const app = {
     this.startQuiz(this.currentCategory);
   },
 
+  shareResult(type, btnEl) {
+    const total = (this.questions && this.questions.length) || 1;
+    const acc = Math.round((this.score / total) * 100);
+    const catNames = {
+      quick3: '今日の3問サクッとドリル',
+      yaku: '牌を見て役を当てる',
+      phase1: 'Phase 1: 鳴き判定',
+      phase2: 'Phase 2: 飜数カウント',
+      phase3: 'Phase 3: 子の点数マスター',
+      phase4: 'Phase 4: 親・ツモ申告'
+    };
+    const catTitle = catNames[this.currentCategory] || '麻雀レッスン';
+
+    const isPerfect = (acc === 100);
+    const lead = isPerfect ? '💮 全問正解パーフェクト達成！✨' : '🎉 セッションクリア！';
+    const text = `麻雀トレーニングボード🀄で【${catTitle}】をクリア！（${this.score}/${total}問正解・正答率${acc}%）\n${lead}\n符計算なし・カンペ付きで役と点数の感覚が身につく！`;
+    const url = 'https://mahjong-lab.github.io/mahjong-study/index.html';
+
+    if (typeof ShareHelper !== 'undefined') {
+      if (type === 'line') {
+        ShareHelper.shareToLine({ text, url });
+      } else if (type === 'x') {
+        ShareHelper.shareToX({ text, url, hashtags: ['麻雀トレーニングボード', '麻雀', '麻雀勉強中'] });
+      } else if (type === 'copy') {
+        ShareHelper.copyResult({ text, url, btnElement: btnEl });
+      }
+    }
+  },
+
   openCheatSheet() {
     const modal = document.getElementById('cheatSheetModal');
     const sheet = document.getElementById('cheatSheetContent');
