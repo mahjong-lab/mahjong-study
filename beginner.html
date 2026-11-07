@@ -56,7 +56,7 @@
   </script>
 
   <!-- 共通麻雀スタイル -->
-  <link rel="stylesheet" href="./css/mahjong.css?v=20261107_v8">
+  <link rel="stylesheet" href="./css/mahjong.css?v=20261107_v9">
 </head>
 <body class="page-beginner bg-amber-50/40 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-teal-200">
 
@@ -355,7 +355,7 @@
           <span class="text-xl">📖</span>
           <div>
             <h3 class="font-bold text-base">超入門！麻雀の基礎ミニ図鑑</h3>
-            <p class="text-[11px] text-teal-200">迷ったらここを見ればすぐ分かります</p>
+            <p class="text-[11px] text-teal-200">タブをタップして知りたい項目をチェック！</p>
           </div>
         </div>
         <button onclick="app.closeGuide()" class="p-1.5 rounded-full hover:bg-white/10">
@@ -363,111 +363,139 @@
         </button>
       </div>
 
-      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-700">
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
-          <div class="flex items-center justify-between mb-2 flex-wrap gap-1">
-            <h4 class="font-bold text-slate-800 flex items-center gap-1.5 text-xs sm:text-sm">
-              <span>📢</span>
-              <span>麻雀の5大発声と意味（いつ言うの？）</span>
-            </h4>
-            <span class="text-[10px] text-teal-800 bg-teal-100 font-bold px-2 py-0.5 rounded-full">タップで解説を見る</span>
+      <!-- タブ切り替えバー（横スクロール対応） -->
+      <div class="flex border-b border-slate-200 bg-slate-50 text-xs font-bold overflow-x-auto">
+        <button onclick="app.switchGuideTab('guideTabBasics')" id="guideTabBtnBasics" class="px-3.5 py-2.5 border-b-2 border-teal-700 text-teal-800 bg-white whitespace-nowrap flex items-center gap-1 cursor-pointer">
+          <span>① 牌とアガリの形</span>
+        </button>
+        <button onclick="app.switchGuideTab('guideTabCalls')" id="guideTabBtnCalls" class="px-3.5 py-2.5 border-b-2 border-transparent text-slate-600 hover:text-slate-800 whitespace-nowrap flex items-center gap-1 cursor-pointer">
+          <span>② 5大発声</span>
+        </button>
+        <button onclick="app.switchGuideTab('guideTabWeapons')" id="guideTabBtnWeapons" class="px-3.5 py-2.5 border-b-2 border-transparent text-slate-600 hover:text-slate-800 whitespace-nowrap flex items-center gap-1 cursor-pointer">
+          <span>③ 3つの武器と注意</span>
+        </button>
+        <button onclick="app.switchGuideTab('guideTabGlossary')" id="guideTabBtnGlossary" class="px-3.5 py-2.5 border-b-2 border-transparent text-slate-600 hover:text-slate-800 whitespace-nowrap flex items-center gap-1 cursor-pointer">
+          <span>④ 用語ミニ図鑑</span>
+        </button>
+      </div>
+
+      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-700 flex-1">
+        <!-- タブ1: 牌とアガリの形 -->
+        <div id="guideTabBasics" class="space-y-4">
+          <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5">
+            <h4 class="font-bold text-amber-900 mb-2">① 牌の種類はたった4つだけ！</h4>
+            <ul class="space-y-1.5 text-xs">
+              <li>・<strong>マンズ（萬子）</strong>：漢数字の「一〜九」＋「萬」（例：ウーマン（五萬）＝5）</li>
+              <li>・<strong>ピンズ（筒子）</strong>：丸いボールの数で「1〜9」を表す（例：スーピン（4筒）＝4）</li>
+              <li>・<strong>ソーズ（索子）</strong>：緑の竹の本数で「1〜9」。<strong>※「イーソー（1索）」だけは鳥のイラスト！</strong></li>
+              <li>・<strong>ジハイ（字牌）</strong>：東南西北・白發中の7種類。<strong>※数字じゃないので階段（1-2-3）は作れません！</strong></li>
+            </ul>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-5 gap-2">
-            <!-- ポン -->
-            <div onclick="TermHelper.open('pon', event)" class="bg-white hover:bg-teal-50 active:scale-98 border border-slate-200 hover:border-teal-500 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
-              <div class="flex items-center justify-between sm:block mb-1">
-                <span class="font-black text-teal-900 text-sm sm:text-base">ポン！</span>
-                <span class="text-[10px] bg-teal-100 text-teal-900 font-bold px-1.5 py-0.5 rounded">誰からでもOK</span>
+
+          <div class="bg-teal-50 border border-teal-200 rounded-xl p-3.5">
+            <h4 class="font-bold text-teal-900 mb-2">② アガリの形 ＝「3枚組×4つ ＋ ペア1つ」（14枚）</h4>
+            <p class="text-xs text-slate-600 mb-2">以下の部品を集めるだけのパズルです：</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div class="bg-white p-2.5 rounded-lg border border-teal-100">
+                <strong class="text-teal-800 block">階段の3枚組（シュンツ）</strong>
+                同じ種類で連続する数字3枚（例：リャンピン・サンピン・スーピン（2・3・4筒））
               </div>
-              <div class="text-[11px] text-slate-600 leading-snug">
-                <strong>同じ牌3枚</strong>を作るときに宣言
-              </div>
-            </div>
-            <!-- チー -->
-            <div onclick="TermHelper.open('chi', event)" class="bg-white hover:bg-teal-50 active:scale-98 border border-slate-200 hover:border-teal-500 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
-              <div class="flex items-center justify-between sm:block mb-1">
-                <span class="font-black text-teal-900 text-sm sm:text-base">チー！</span>
-                <span class="text-[10px] bg-emerald-100 text-emerald-900 font-bold px-1.5 py-0.5 rounded">左隣からだけ</span>
-              </div>
-              <div class="text-[11px] text-slate-600 leading-snug">
-                <strong>階段3枚</strong>を作るときに宣言
+              <div class="bg-white p-2.5 rounded-lg border border-teal-100">
+                <strong class="text-teal-800 block">同じ牌の3枚組（コーツ）</strong>
+                まったく同じ牌3枚（例：中・中・中）
               </div>
             </div>
-            <!-- カン -->
-            <div onclick="TermHelper.open('kan', event)" class="bg-white hover:bg-teal-50 active:scale-98 border border-slate-200 hover:border-teal-500 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
-              <div class="flex items-center justify-between sm:block mb-1">
-                <span class="font-black text-teal-900 text-sm sm:text-base">カン！</span>
-                <span class="text-[10px] bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded">4枚揃える</span>
-              </div>
-              <div class="text-[11px] text-slate-600 leading-snug">
-                <strong>同じ牌4枚</strong>組＆ドラが1枚増える！
-              </div>
+            <div class="bg-white p-2.5 rounded-lg border border-teal-100 mt-2 text-xs">
+              <strong class="text-teal-800 block">アタマ（2枚ペア）</strong>
+              最後に同じ牌を2枚1組（例：8索・8索）作れば完成！
             </div>
-            <!-- ツモ -->
-            <div onclick="TermHelper.open('tsumo', event)" class="bg-white hover:bg-amber-50 active:scale-98 border border-amber-200 hover:border-amber-400 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
-              <div class="flex items-center justify-between sm:block mb-1">
-                <span class="font-black text-amber-700 text-sm sm:text-base">ツモ！</span>
-                <span class="text-[10px] bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded">自分でアガリ</span>
-              </div>
-              <div class="text-[11px] text-slate-600 leading-snug">
-                自分で山から引いてアガリ！<strong>3人全員で支払い</strong>
-              </div>
+          </div>
+        </div>
+
+        <!-- タブ2: 5大発声 -->
+        <div id="guideTabCalls" class="hidden space-y-4">
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
+            <div class="flex items-center justify-between mb-2 flex-wrap gap-1">
+              <h4 class="font-bold text-slate-800 flex items-center gap-1.5 text-xs sm:text-sm">
+                <span>📢</span>
+                <span>麻雀の5大発声と意味（いつ言うの？）</span>
+              </h4>
+              <span class="text-[10px] text-teal-800 bg-teal-100 font-bold px-2 py-0.5 rounded-full">タップで解説を見る</span>
             </div>
-            <!-- ロン -->
-            <div onclick="TermHelper.open('ron', event)" class="bg-white hover:bg-rose-50 active:scale-98 border border-rose-200 hover:border-rose-400 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
-              <div class="flex items-center justify-between sm:block mb-1">
-                <span class="font-black text-rose-700 text-sm sm:text-base">ロン！</span>
-                <span class="text-[10px] bg-rose-100 text-rose-900 font-bold px-1.5 py-0.5 rounded">相手からアガリ</span>
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-2">
+              <!-- ポン -->
+              <div onclick="TermHelper.open('pon', event)" class="bg-white hover:bg-teal-50 active:scale-98 border border-slate-200 hover:border-teal-500 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
+                <div class="flex items-center justify-between sm:block mb-1">
+                  <span class="font-black text-teal-900 text-sm sm:text-base">ポン！</span>
+                  <span class="text-[10px] bg-teal-100 text-teal-900 font-bold px-1.5 py-0.5 rounded">誰からでもOK</span>
+                </div>
+                <div class="text-[11px] text-slate-600 leading-snug">
+                  <strong>同じ牌3枚</strong>を作るときに宣言
+                </div>
               </div>
-              <div class="text-[11px] text-slate-600 leading-snug">
-                相手が捨てた牌でアガリ！<strong>捨てた人1人が支払い</strong>
+              <!-- チー -->
+              <div onclick="TermHelper.open('chi', event)" class="bg-white hover:bg-teal-50 active:scale-98 border border-slate-200 hover:border-teal-500 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
+                <div class="flex items-center justify-between sm:block mb-1">
+                  <span class="font-black text-teal-900 text-sm sm:text-base">チー！</span>
+                  <span class="text-[10px] bg-emerald-100 text-emerald-900 font-bold px-1.5 py-0.5 rounded">左隣からだけ</span>
+                </div>
+                <div class="text-[11px] text-slate-600 leading-snug">
+                  <strong>階段3枚</strong>を作るときに宣言
+                </div>
+              </div>
+              <!-- カン -->
+              <div onclick="TermHelper.open('kan', event)" class="bg-white hover:bg-teal-50 active:scale-98 border border-slate-200 hover:border-teal-500 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
+                <div class="flex items-center justify-between sm:block mb-1">
+                  <span class="font-black text-teal-900 text-sm sm:text-base">カン！</span>
+                  <span class="text-[10px] bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded">4枚揃える</span>
+                </div>
+                <div class="text-[11px] text-slate-600 leading-snug">
+                  <strong>同じ牌4枚</strong>組＆ドラが1枚増える！
+                </div>
+              </div>
+              <!-- ツモ -->
+              <div onclick="TermHelper.open('tsumo', event)" class="bg-white hover:bg-amber-50 active:scale-98 border border-amber-200 hover:border-amber-400 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
+                <div class="flex items-center justify-between sm:block mb-1">
+                  <span class="font-black text-amber-700 text-sm sm:text-base">ツモ！</span>
+                  <span class="text-[10px] bg-amber-100 text-amber-900 font-bold px-1.5 py-0.5 rounded">自分でアガリ</span>
+                </div>
+                <div class="text-[11px] text-slate-600 leading-snug">
+                  自分で山から引いてアガリ！<strong>3人全員で支払い</strong>
+                </div>
+              </div>
+              <!-- ロン -->
+              <div onclick="TermHelper.open('ron', event)" class="bg-white hover:bg-rose-50 active:scale-98 border border-rose-200 hover:border-rose-400 rounded-xl p-2.5 shadow-2xs transition cursor-pointer flex flex-col justify-between">
+                <div class="flex items-center justify-between sm:block mb-1">
+                  <span class="font-black text-rose-700 text-sm sm:text-base">ロン！</span>
+                  <span class="text-[10px] bg-rose-100 text-rose-900 font-bold px-1.5 py-0.5 rounded">相手からアガリ</span>
+                </div>
+                <div class="text-[11px] text-slate-600 leading-snug">
+                  相手が捨てた牌でアガリ！<strong>捨てた人1人が支払い</strong>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5">
-          <h4 class="font-bold text-amber-900 mb-2">① 牌の種類はたった4つだけ！</h4>
-          <ul class="space-y-1.5 text-xs">
-            <li>・<strong>マンズ（萬子）</strong>：漢数字の「一〜九」＋「萬」（例：ウーマン（五萬）＝5）</li>
-            <li>・<strong>ピンズ（筒子）</strong>：丸いボールの数で「1〜9」を表す（例：スーピン（4筒）＝4）</li>
-            <li>・<strong>ソーズ（索子）</strong>：緑の竹の本数で「1〜9」。<strong>※「イーソー（1索）」だけは鳥のイラスト！</strong></li>
-            <li>・<strong>ジハイ（字牌）</strong>：東南西北・白發中の7種類。<strong>※数字じゃないので階段（1-2-3）は作れません！</strong></li>
-          </ul>
-        </div>
-
-        <div class="bg-teal-50 border border-teal-200 rounded-xl p-3.5">
-          <h4 class="font-bold text-teal-900 mb-2">② アガリの形 ＝「3枚組×4つ ＋ ペア1つ」（14枚）</h4>
-          <p class="text-xs text-slate-600 mb-2">以下の部品を集めるだけのパズルです：</p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-            <div class="bg-white p-2.5 rounded-lg border border-teal-100">
-              <strong class="text-teal-800 block">階段の3枚組（シュンツ）</strong>
-              同じ種類で連続する数字3枚（例：リャンピン・サンピン・スーピン（2・3・4筒））
-            </div>
-            <div class="bg-white p-2.5 rounded-lg border border-teal-100">
-              <strong class="text-teal-800 block">同じ牌の3枚組（コーツ）</strong>
-              まったく同じ牌3枚（例：中・中・中）
-            </div>
-          </div>
-          <div class="bg-white p-2.5 rounded-lg border border-teal-100 mt-2 text-xs">
-            <strong class="text-teal-800 block">アタマ（2枚ペア）</strong>
-            最後に同じ牌を2枚1組（例：8索・8索）作れば完成！
+        <!-- タブ3: 3つの武器と注意 -->
+        <div id="guideTabWeapons" class="hidden space-y-4">
+          <div class="bg-rose-50 border border-rose-200 rounded-xl p-3.5">
+            <h4 class="font-bold text-rose-900 mb-2">③ 最初は「3つの武器」と「フリテン注意」だけ！</h4>
+            <ul class="space-y-1.5 text-xs">
+              <li>⭕ <strong>武器1：リーチ</strong>（1回もポン・チーせずにあと1枚になったら宣言！）</li>
+              <li>⭕ <strong>武器2：白・發・中</strong>（どれか3枚集めればポンしてもアガれる！）</li>
+              <li>⭕ <strong>武器3：タンヤオ</strong>（2〜8の数牌だけで揃えれば鳴いてもアガれる！）</li>
+              <li>⚠️ <strong>フリテン注意</strong>：自分が過去に捨てた牌が待ちに含まれていると、相手から「ロン」はできません（自分で引く「ツモ」ならOK！）。</li>
+            </ul>
           </div>
         </div>
 
-        <div class="bg-rose-50 border border-rose-200 rounded-xl p-3.5">
-          <h4 class="font-bold text-rose-900 mb-2">③ 最初は「3つの武器」と「フリテン注意」だけ！</h4>
-          <ul class="space-y-1.5 text-xs">
-            <li>⭕ <strong>武器1：リーチ</strong>（1回もポン・チーせずにあと1枚になったら宣言！）</li>
-            <li>⭕ <strong>武器2：白・發・中</strong>（どれか3枚集めればポンしてもアガれる！）</li>
-            <li>⭕ <strong>武器3：タンヤオ</strong>（2〜8の数牌だけで揃えれば鳴いてもアガれる！）</li>
-            <li>⚠️ <strong>フリテン注意</strong>：自分が過去に捨てた牌が待ちに含まれていると、相手から「ロン」はできません（自分で引く「ツモ」ならOK！）。</li>
-          </ul>
-        </div>
-
-        <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-3.5">
-          <h4 class="font-bold text-indigo-950 mb-2">④ アプリで覚えられる麻雀用語一覧</h4>
-          <div id="guideGlossaryList" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
+        <!-- タブ4: 用語ミニ図鑑 -->
+        <div id="guideTabGlossary" class="hidden space-y-4">
+          <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-3.5">
+            <h4 class="font-bold text-indigo-950 mb-2">④ アプリで覚えられる麻雀用語一覧</h4>
+            <div id="guideGlossaryList" class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs"></div>
+          </div>
         </div>
       </div>
 
@@ -485,12 +513,12 @@
   </footer>
 
   <!-- モジュール読み込み -->
-  <script src="./js/shared/tile-renderer.js?v=20261107_v8"></script>
-  <script src="./js/shared/sound-engine.js?v=20261107_v8"></script>
-  <script src="./js/shared/term-dict.js?v=20261107_v8"></script>
-  <script src="./js/shared/share-helper.js?v=20261107_v8"></script>
-  <script src="./js/data/beginner-questions.js?v=20261107_v8"></script>
-  <script src="./js/beginner-app.js?v=20261107_v8"></script>
+  <script src="./js/shared/tile-renderer.js?v=20261107_v9"></script>
+  <script src="./js/shared/sound-engine.js?v=20261107_v9"></script>
+  <script src="./js/shared/term-dict.js?v=20261107_v9"></script>
+  <script src="./js/shared/share-helper.js?v=20261107_v9"></script>
+  <script src="./js/data/beginner-questions.js?v=20261107_v9"></script>
+  <script src="./js/beginner-app.js?v=20261107_v9"></script>
 
   <!-- PWA Service Worker 登録 -->
   <script>

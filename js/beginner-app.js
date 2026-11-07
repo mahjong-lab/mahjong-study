@@ -739,11 +739,41 @@ const app = {
     if (typeof lucide !== 'undefined') lucide.createIcons();
   },
 
-  openGuide() {
+  openGuide(tabId = 'guideTabBasics') {
+    this.switchGuideTab(tabId);
     document.getElementById('guideModal').classList.remove('hidden');
   },
   closeGuide() {
     document.getElementById('guideModal').classList.add('hidden');
+  },
+
+  switchGuideTab(tabId) {
+    const tabs = ['guideTabBasics', 'guideTabCalls', 'guideTabWeapons', 'guideTabGlossary'];
+    tabs.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    });
+    const targetEl = document.getElementById(tabId);
+    if (targetEl) targetEl.classList.remove('hidden');
+
+    const btnMap = {
+      guideTabBasics: 'guideTabBtnBasics',
+      guideTabCalls: 'guideTabBtnCalls',
+      guideTabWeapons: 'guideTabBtnWeapons',
+      guideTabGlossary: 'guideTabBtnGlossary'
+    };
+
+    Object.values(btnMap).forEach(btnId => {
+      const btn = document.getElementById(btnId);
+      if (btn) {
+        btn.className = 'px-3.5 py-2.5 border-b-2 border-transparent text-slate-600 hover:text-slate-800 whitespace-nowrap flex items-center gap-1 cursor-pointer';
+      }
+    });
+
+    const activeBtn = document.getElementById(btnMap[tabId]);
+    if (activeBtn) {
+      activeBtn.className = 'px-3.5 py-2.5 border-b-2 border-teal-700 text-teal-800 bg-white whitespace-nowrap flex items-center gap-1 font-bold cursor-pointer';
+    }
   },
 
   shareResult(type, btnEl) {
