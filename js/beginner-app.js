@@ -315,12 +315,17 @@ const app = {
       });
       cap.textContent = '💡 黄色い枠のパーツに注目！';
     } else {
-      row.className = 'flex items-center justify-center flex-nowrap gap-[2px] sm:gap-1 py-2 w-max mx-auto';
+      row.className = 'flex flex-col items-start justify-center gap-1.5 py-2 w-max mx-auto';
       const flat = [];
       q.blocks.forEach(b => flat.push(...b.tiles));
       const sorted = sortTiles(flat);
-      row.innerHTML = sorted.map(t => TileRenderer.render(t)).join('');
-      cap.textContent = '実戦と同じ13枚並び（迷ったら上の『🚲 補助輪』ボタンを押してみよう！）';
+      const topRow = sorted.slice(0, 7).map(t => TileRenderer.render(t)).join('');
+      const bottomRow = sorted.slice(7).map(t => TileRenderer.render(t)).join('');
+      row.innerHTML = `
+        <div class="flex items-center justify-start gap-1 sm:gap-1.5 flex-nowrap">${topRow}</div>
+        ${bottomRow ? `<div class="flex items-center justify-start gap-1 sm:gap-1.5 flex-nowrap">${bottomRow}</div>` : ''}
+      `;
+      cap.textContent = '実戦と同じ13枚並び（上7枚＋下6枚｜迷ったら上の『🚲 補助輪』ボタンを押してみよう！）';
     }
   },
 
@@ -572,7 +577,7 @@ const app = {
     const isLast = (this.qIndex + 1 >= this.questions.length);
 
     if (isCorrect) {
-      mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-emerald-600 to-teal-700 text-white';
+      mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex-shrink-0';
       mIcon.textContent = '⭕';
       mTitle.textContent = this.hasRetried
         ? '💡 リベンジ大正解！見抜くセンス抜群です！✨'
@@ -589,7 +594,7 @@ const app = {
         mNextText.textContent = isLast ? 'ステージ結果を見る 🎉' : '次の問題へすすむ';
       }
     } else {
-      mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white';
+      mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white flex-shrink-0';
       mIcon.textContent = '💡';
       mTitle.textContent = getPraiseTitle(false, 0);
       mStamp.classList.add('hidden');
@@ -766,13 +771,13 @@ const app = {
     Object.values(btnMap).forEach(btnId => {
       const btn = document.getElementById(btnId);
       if (btn) {
-        btn.className = 'px-3.5 py-2.5 border-b-2 border-transparent text-slate-600 hover:text-slate-800 whitespace-nowrap flex items-center gap-1 cursor-pointer';
+        btn.className = 'px-2.5 py-2 rounded-lg border-2 border-transparent text-slate-600 hover:text-slate-800 bg-white/60 hover:bg-white flex items-center justify-center gap-1 cursor-pointer transition';
       }
     });
 
     const activeBtn = document.getElementById(btnMap[tabId]);
     if (activeBtn) {
-      activeBtn.className = 'px-3.5 py-2.5 border-b-2 border-teal-700 text-teal-800 bg-white whitespace-nowrap flex items-center gap-1 font-bold cursor-pointer';
+      activeBtn.className = 'px-2.5 py-2 rounded-lg border-2 border-teal-700 text-teal-800 bg-white shadow-xs flex items-center justify-center gap-1 font-bold cursor-pointer transition';
     }
   },
 

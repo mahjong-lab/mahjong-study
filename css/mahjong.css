@@ -50,31 +50,31 @@ button, a, [role="button"], .mj-tile {
 
 @media (max-width: 640px) {
   .mj-tile {
-    width: 21px;
-    height: 30px;
-    border-radius: 3px;
-    border-bottom-width: 2px;
+    width: 30px;
+    height: 42px;
+    border-radius: 4px;
+    border-bottom-width: 2.5px;
   }
-  /* 実戦編（14枚＋鳴き牌）の卓内はスマホ1画面に収まるスリム幅 */
+  /* 実戦編（7牌折り返し＋独立アガリ牌）の卓内もくっきり見やすいサイズ */
   .page-main #tileHandContainer .mj-tile {
-    width: 18.5px;
-    height: 27px;
-    border-radius: 2.5px;
-    border-bottom-width: 2px;
+    width: 30px;
+    height: 42px;
+    border-radius: 4px;
+    border-bottom-width: 2.5px;
   }
 }
 
 @media (max-width: 380px) {
   .mj-tile {
-    width: 19px;
-    height: 27px;
-    border-radius: 2.5px;
+    width: 28px;
+    height: 40px;
+    border-radius: 3.5px;
     border-bottom-width: 2px;
   }
   .page-main #tileHandContainer .mj-tile {
-    width: 18px;
-    height: 26px;
-    border-radius: 2px;
+    width: 28px;
+    height: 40px;
+    border-radius: 3.5px;
     border-bottom-width: 2px;
   }
 }

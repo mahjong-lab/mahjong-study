@@ -61,7 +61,7 @@
   </script>
 
   <!-- 共通麻雀スタイル -->
-  <link rel="stylesheet" href="./css/mahjong.css?v=20261107_v11">
+  <link rel="stylesheet" href="./css/mahjong.css?v=20261109_v12">
 </head>
 <body class="page-main bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-amber-200">
 
@@ -359,11 +359,11 @@
           <p id="questionSubtext" class="text-xs sm:text-sm text-emerald-200/90 mt-1"></p>
         </div>
 
-        <!-- 牌姿表示エリア -->
-        <div class="relative z-10 bg-tatami/80 px-2 py-3.5 sm:p-4 rounded-xl border border-emerald-700/50 shadow-inner my-1.5 flex flex-col justify-center overflow-x-auto">
-          <div id="tileHandContainer" class="flex items-center justify-center gap-[1.5px] sm:gap-1 flex-nowrap py-1 w-max mx-auto"></div>
+        <!-- 牌姿表示エリア（7牌折り返し ＋ 独立アガリ牌レイアウト） -->
+        <div class="relative z-10 bg-tatami/80 px-2 py-3 sm:p-4 rounded-xl border border-emerald-700/50 shadow-inner my-1.5 flex flex-col items-center justify-center">
+          <div id="tileHandContainer" class="w-full flex flex-col items-center justify-center gap-2 py-1"></div>
           <div id="tileHandCaption" class="text-[11px] text-emerald-300/80 mt-2 text-center">
-            一番右の離れた牌が【アガリ牌】です
+            手牌は7枚で折り返し｜右の独立枠が【アガリ牌】です
           </div>
         </div>
 
@@ -467,7 +467,7 @@
   <div id="resultTermModal" onclick="if(event.target===this)app.closeResultModal(true)" class="fixed inset-0 bg-black/65 z-50 hidden backdrop-blur-sm flex justify-center items-center p-3.5 sm:p-5">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-pop-in border-2 border-emerald-800/30 flex flex-col max-h-[88vh]">
       <!-- モーダルヘッダー（タイトルがボタンに被らないようflex-1と折り返しを設定） -->
-      <div id="modalHeaderBar" class="px-4 py-3 flex items-center justify-between gap-3 bg-emerald-700 text-white">
+      <div id="modalHeaderBar" class="px-4 py-3 flex items-center justify-between gap-3 bg-emerald-700 text-white flex-shrink-0">
         <div class="flex items-center gap-2.5 flex-1 min-w-0">
           <span id="modalStatusIcon" class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-lg font-bold flex-shrink-0">⭕</span>
           <div class="flex-1 min-w-0">
@@ -480,7 +480,7 @@
         </button>
       </div>
 
-      <div class="p-4 sm:p-5 space-y-3 overflow-y-auto">
+      <div class="p-4 sm:p-5 space-y-3 overflow-y-auto min-h-0 flex-1">
         <div id="modalCorrectAnswer" class="hidden text-xs sm:text-sm font-bold text-emerald-900 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2"></div>
         <p id="modalExplanation" class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium"></p>
 
@@ -507,7 +507,7 @@
         </div>
       </div>
 
-      <div class="px-4 pb-4 pt-1 bg-white space-y-2">
+      <div class="px-4 pb-4 pt-1 bg-white space-y-2 flex-shrink-0">
         <button type="button" id="modalRetryBtn" onclick="app.retryCurrentQuestion()" class="hidden w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 active:scale-[0.98] text-slate-900 font-bold py-3 px-4 rounded-xl shadow transition flex items-center justify-center gap-2 text-sm sm:text-base border border-amber-500/30">
           <span>💡 もう一度選び直す！</span>
           <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
@@ -523,7 +523,7 @@
   <!-- カンニングペーパー（チートシート）スライドシートモーダル -->
   <div id="cheatSheetModal" onclick="if(event.target===this)app.closeCheatSheet()" class="fixed inset-0 bg-black/60 z-50 hidden backdrop-blur-sm transition-opacity opacity-0 flex justify-center items-end sm:items-center p-0 sm:p-4">
     <div id="cheatSheetContent" class="bg-white w-full max-w-2xl max-h-[90vh] sm:rounded-2xl rounded-t-2xl shadow-2xl flex flex-col overflow-hidden transform translate-y-full sm:translate-y-0 transition-transform duration-300">
-      <div class="bg-gradient-to-r from-emerald-900 to-felt text-white px-5 py-3.5 flex items-center justify-between border-b border-emerald-800">
+      <div class="bg-gradient-to-r from-emerald-900 to-felt text-white px-5 py-3.5 flex items-center justify-between border-b border-emerald-800 flex-shrink-0">
         <div class="flex items-center gap-2">
           <span class="text-xl">📖</span>
           <div>
@@ -538,22 +538,22 @@
         </button>
       </div>
 
-      <div class="flex border-b border-slate-200 bg-slate-50 text-xs font-bold overflow-x-auto">
-        <button onclick="app.switchTab('tabNaki')" id="tabBtnNaki" class="px-3.5 py-2.5 border-b-2 border-emerald-700 text-emerald-800 bg-white whitespace-nowrap flex items-center gap-1">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-2 border-b border-slate-200 bg-slate-100 text-xs font-bold flex-shrink-0">
+        <button onclick="app.switchTab('tabNaki')" id="tabBtnNaki" class="px-2.5 py-2 rounded-lg border-2 border-emerald-700 text-emerald-800 bg-white shadow-xs flex items-center justify-center gap-1 transition">
           <span>① 鳴いてOK / NG</span>
         </button>
-        <button onclick="app.switchTab('tabYaku')" id="tabBtnYaku" class="px-3.5 py-2.5 border-b-2 border-transparent text-slate-600 hover:text-slate-800 whitespace-nowrap flex items-center gap-1">
+        <button onclick="app.switchTab('tabYaku')" id="tabBtnYaku" class="px-2.5 py-2 rounded-lg border-2 border-transparent text-slate-600 hover:text-slate-800 bg-white/60 hover:bg-white flex items-center justify-center gap-1 transition">
           <span>② 超基本役 6選</span>
         </button>
-        <button onclick="app.switchTab('tabChild')" id="tabBtnChild" class="px-3.5 py-2.5 border-b-2 border-transparent text-slate-600 hover:text-slate-800 whitespace-nowrap flex items-center gap-1">
+        <button onclick="app.switchTab('tabChild')" id="tabBtnChild" class="px-2.5 py-2 rounded-lg border-2 border-transparent text-slate-600 hover:text-slate-800 bg-white/60 hover:bg-white flex items-center justify-center gap-1 transition">
           <span>③ 子の点数 4大パターン</span>
         </button>
-        <button onclick="app.switchTab('tabParent')" id="tabBtnParent" class="px-3.5 py-2.5 border-b-2 border-transparent text-slate-600 hover:text-slate-800 whitespace-nowrap flex items-center gap-1">
+        <button onclick="app.switchTab('tabParent')" id="tabBtnParent" class="px-2.5 py-2 rounded-lg border-2 border-transparent text-slate-600 hover:text-slate-800 bg-white/60 hover:bg-white flex items-center justify-center gap-1 transition">
           <span>④ 親・ツモ申告</span>
         </button>
       </div>
 
-      <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-700 flex-1">
+      <div class="p-4 sm:p-6 overflow-y-auto min-h-0 space-y-4 text-xs sm:text-sm text-slate-700 flex-1">
         <!-- タブ1: 鳴きOK / NG -->
         <div id="tabNaki" class="space-y-4">
           <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5">
@@ -824,7 +824,7 @@
         </div>
       </div>
 
-      <div class="p-3 bg-slate-100 border-t border-slate-200 text-center">
+      <div class="p-3 bg-slate-100 border-t border-slate-200 text-center flex-shrink-0">
         <button onclick="app.closeCheatSheet()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-6 py-2 rounded-lg text-xs sm:text-sm transition">
           閉じて問題を解く
         </button>
@@ -838,12 +838,12 @@
   </footer>
 
   <!-- モジュール読み込み -->
-  <script src="./js/shared/tile-renderer.js?v=20261107_v11"></script>
-  <script src="./js/shared/sound-engine.js?v=20261107_v11"></script>
-  <script src="./js/shared/term-dict.js?v=20261107_v11"></script>
-  <script src="./js/shared/share-helper.js?v=20261107_v11"></script>
-  <script src="./js/data/main-questions.js?v=20261107_v11"></script>
-  <script src="./js/main-app.js?v=20261107_v11"></script>
+  <script src="./js/shared/tile-renderer.js?v=20261109_v12"></script>
+  <script src="./js/shared/sound-engine.js?v=20261109_v12"></script>
+  <script src="./js/shared/term-dict.js?v=20261109_v12"></script>
+  <script src="./js/shared/share-helper.js?v=20261109_v12"></script>
+  <script src="./js/data/main-questions.js?v=20261109_v12"></script>
+  <script src="./js/main-app.js?v=20261109_v12"></script>
 
   <!-- PWA Service Worker 登録 -->
   <script>

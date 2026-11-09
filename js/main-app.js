@@ -154,47 +154,72 @@ const app = {
     const handBox = document.getElementById('tileHandContainer');
     handBox.innerHTML = '';
 
-    if (q.hand && q.hand.length > 0) {
-      q.hand.forEach(tile => {
-        handBox.innerHTML += TileRenderer.render(tile);
-      });
-    }
+    // 1) 手牌本体を「7牌で折り返し（上段最大7枚＋下段残り）」に分割
+    const handTiles = Array.isArray(q.hand) ? q.hand : [];
+    const topTiles = handTiles.slice(0, 7);
+    const bottomTiles = handTiles.slice(7);
 
-    if (q.winTile) {
-      handBox.innerHTML += '<div class="mj-agari-spacer"></div>';
-      handBox.innerHTML += TileRenderer.render(q.winTile, {
-        isAgari: true,
-        isRon: q.isRon !== false,
-        agariText: q.isRon !== false ? 'ロン！' : 'ツモ！'
-      });
-    }
+    const topRowHtml = topTiles.map(tile => TileRenderer.render(tile)).join('');
+    const bottomRowHtml = bottomTiles.map(tile => TileRenderer.render(tile)).join('');
 
-    if (q.melds && q.melds.length > 0) {
-      handBox.innerHTML += '<div class="w-px bg-emerald-500/60 h-6 mx-1 sm:mx-2 flex-shrink-0"></div>';
-      q.melds.forEach((m, mIdx) => {
-        m.forEach((tile, idx) => {
-          const isSideways = (idx === 0);
-          handBox.innerHTML += TileRenderer.render(tile, { isSideways });
-        });
-        if (mIdx + 1 < q.melds.length) {
-          handBox.innerHTML += '<div class="w-0.5 sm:w-1.5 flex-shrink-0"></div>';
-        }
-      });
-    }
-
+    // 2) 独立したアガリ牌（または鳴き判定の出た牌）ブロック
+    const specialTile = q.winTile || q.targetTile || null;
+    let specialLabel = 'ロン牌 🎯';
     if (q.targetTile) {
-      handBox.innerHTML += '<div class="mj-agari-spacer"></div>';
-      handBox.innerHTML += TileRenderer.render(q.targetTile, {
-        isAgari: true,
-        agariText: '出た牌！'
-      });
+      specialLabel = '出た牌 ⚡';
+    } else if (q.isRon === false) {
+      specialLabel = 'ツモ牌 ✨';
     }
+
+    const specialBoxHtml = specialTile ? `
+      <div class="w-px self-stretch bg-emerald-500/40 my-1 flex-shrink-0"></div>
+      <div class="flex flex-col items-center justify-center gap-1.5 flex-shrink-0 bg-emerald-950/75 px-2 py-1.5 rounded-xl border border-emerald-500/50 shadow-md">
+        <span class="text-[10px] font-bold text-rose-200 bg-rose-950/90 px-2 py-0.5 rounded-full border border-rose-500/60 whitespace-nowrap shadow-xs">
+          ${specialLabel}
+        </span>
+        <div class="flex items-center justify-center">
+          ${TileRenderer.render(specialTile, { highlight: true })}
+        </div>
+      </div>
+    ` : '';
+
+    // 上部メインエリア（手牌7枚折り返し ＋ 独立アガリ牌）
+    let containerHtml = `
+      <div class="flex items-center justify-center gap-2 sm:gap-3.5 w-full">
+        <div class="flex flex-col items-start justify-center gap-1.5 flex-shrink-0">
+          <div class="flex items-center justify-start gap-1 sm:gap-1.5 flex-nowrap">${topRowHtml}</div>
+          ${bottomTiles.length > 0 ? `<div class="flex items-center justify-start gap-1 sm:gap-1.5 flex-nowrap">${bottomRowHtml}</div>` : ''}
+        </div>
+        ${specialBoxHtml}
+      </div>
+    `;
+
+    // 3) 鳴き牌（副露）がある場合は下段に独立表示
+    if (q.melds && q.melds.length > 0) {
+      const meldsGroupsHtml = q.melds.map(m => {
+        const tilesHtml = m.map((tile, idx) => TileRenderer.render(tile, { isSideways: idx === 0 })).join('');
+        return `<div class="flex items-center gap-0.5 bg-emerald-950/70 px-1.5 py-1 rounded-lg border border-emerald-600/50 shadow-xs">${tilesHtml}</div>`;
+      }).join('');
+
+      containerHtml += `
+        <div class="w-full pt-2 mt-1 border-t border-emerald-700/50 flex items-center justify-center gap-2 flex-wrap">
+          <span class="text-[10px] font-bold text-emerald-200 bg-emerald-900/90 px-2 py-0.5 rounded-full border border-emerald-600/60">鳴いた牌（副露）</span>
+          <div class="flex items-center justify-center gap-2 flex-wrap">${meldsGroupsHtml}</div>
+        </div>
+      `;
+    }
+
+    handBox.innerHTML = containerHtml;
 
     const captionEl = document.getElementById('tileHandCaption');
     if (captionEl) {
-      captionEl.textContent = q.isNakiCheck
-        ? '右端の離れた牌が相手から出た牌です'
-        : '一番右の離れた牌が【アガリ牌】です';
+      if (q.isNakiCheck) {
+        captionEl.textContent = '手牌13枚（上段7枚＋下段6枚）｜右の独立枠が相手から【出た牌】です';
+      } else if (q.melds && q.melds.length > 0) {
+        captionEl.textContent = '左が手牌・右の独立枠が【アガリ牌】・下段が【鳴いた牌】です';
+      } else {
+        captionEl.textContent = '手牌13枚（上段7枚＋下段6枚）｜右の独立枠が【アガリ牌】です';
+      }
     }
 
     const hintBox = document.getElementById('hintBox');
@@ -360,7 +385,7 @@ const app = {
     const isLast = (this.currentQuestionIndex + 1 >= this.questions.length);
 
     if (selectedOpt.correct) {
-      mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-emerald-700 to-teal-800 text-white';
+      mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-emerald-700 to-teal-800 text-white flex-shrink-0';
       mIcon.textContent = '⭕';
       mTitle.textContent = this.hasRetried
         ? '💡 リベンジ大正解！見抜くセンス抜群です！✨'
@@ -377,7 +402,7 @@ const app = {
         mNextText.textContent = isLast ? 'セッション結果を見る 🎉' : '次の問題へすすむ';
       }
     } else {
-      mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white';
+      mHeader.className = 'px-4 py-3 flex items-center justify-between gap-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white flex-shrink-0';
       mIcon.textContent = '💡';
       mTitle.textContent = getPraiseTitle(false, 0);
       mStamp.classList.add('hidden');
@@ -535,13 +560,13 @@ const app = {
     Object.values(btnMap).forEach(btnId => {
       const btn = document.getElementById(btnId);
       if (btn) {
-        btn.className = 'px-3.5 py-2.5 border-b-2 border-transparent text-slate-600 hover:text-slate-800 whitespace-nowrap flex items-center gap-1';
+        btn.className = 'px-2.5 py-2 rounded-lg border-2 border-transparent text-slate-600 hover:text-slate-800 bg-white/60 hover:bg-white flex items-center justify-center gap-1 transition';
       }
     });
 
     const activeBtn = document.getElementById(btnMap[tabId]);
     if (activeBtn) {
-      activeBtn.className = 'px-3.5 py-2.5 border-b-2 border-emerald-700 text-emerald-800 bg-white whitespace-nowrap flex items-center gap-1';
+      activeBtn.className = 'px-2.5 py-2 rounded-lg border-2 border-emerald-700 text-emerald-800 bg-white shadow-xs flex items-center justify-center gap-1 transition';
     }
   },
 
