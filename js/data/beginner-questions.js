@@ -1024,8 +1024,8 @@ const STAGE_QUESTIONS = {
       "type": "text-choice",
       "callSound": "pon",
       "modeLabel": "ひっかけ注意！",
-      "question": "盤面のように別々の字牌を1枚ずつ計3枚集めました。これは1組のブロックになる？",
-      "subtext": "字牌のブロック条件を思い出そう！",
+      "question": "盤面の3枚の牌で、1組の3枚ブロック（面子）として完成しているでしょうか？",
+      "subtext": "並んでいる3枚の牌をよく見て判定しよう！",
       "boardTiles": [
         "1z",
         "2z",
@@ -1034,11 +1034,11 @@ const STAGE_QUESTIONS = {
       "caption": "東・南・西 を1枚ずつ並べた形",
       "options": [
         {
-          "text": "❌ ならない（字牌は同じ牌3枚のみ）",
+          "text": "❌ 完成していない",
           "correct": true
         },
         {
-          "text": "⭕ なる（方角3枚で階段扱いになる）",
+          "text": "⭕ 完成している",
           "correct": false
         }
       ],
@@ -1060,8 +1060,8 @@ const STAGE_QUESTIONS = {
       "type": "text-choice",
       "callSound": "chi",
       "modeLabel": "ひっかけ注意！",
-      "question": "盤面のように偶数を1つ飛ばしで3枚集めました。これは1組のブロックになる？",
-      "subtext": "数牌の階段（順子）のルールを思い出そう！",
+      "question": "盤面の3枚の牌で、1組の3枚ブロック（面子）として完成しているでしょうか？",
+      "subtext": "並んでいる3枚の牌の数字をよく見て判定しよう！",
       "boardTiles": [
         "2m",
         "4m",
@@ -1070,11 +1070,11 @@ const STAGE_QUESTIONS = {
       "caption": "2・4・6 と1つ飛ばしで並べた形",
       "options": [
         {
-          "text": "❌ ならない（隣り合う連続した3枚のみ）",
+          "text": "❌ 完成していない",
           "correct": true
         },
         {
-          "text": "⭕ なる（規則正しく並んでいるのでOK）",
+          "text": "⭕ 完成している",
           "correct": false
         }
       ],
@@ -1390,8 +1390,8 @@ const STAGE_QUESTIONS = {
       "type": "text-choice",
       "callSound": "ron",
       "modeLabel": "超頻出ひっかけ！",
-      "question": "盤面のように違う種類の数牌で数字を3つ並べました。これは階段ブロックになる？",
-      "subtext": "数牌の種類（マンズ・ピンズ・ソーズ）に注目！",
+      "question": "盤面の3枚の牌で、1組の3枚ブロック（面子）として完成しているでしょうか？",
+      "subtext": "並んでいる3枚の牌をよく見て判定しよう！",
       "boardTiles": [
         "3m",
         "4p",
@@ -1400,11 +1400,11 @@ const STAGE_QUESTIONS = {
       "caption": "マンズの3・ピンズの4・ソーズの5",
       "options": [
         {
-          "text": "❌ ならない（同じ種類の数牌で揃える）",
+          "text": "❌ 完成していない",
           "correct": true
         },
         {
-          "text": "⭕ なる（数字が続いていれば種類は自由）",
+          "text": "⭕ 完成している",
           "correct": false
         }
       ],
@@ -1425,8 +1425,8 @@ const STAGE_QUESTIONS = {
       "type": "text-choice",
       "callSound": "ron",
       "modeLabel": "ひっかけ注意！",
-      "question": "盤面のように三元牌を1種類ずつ計3枚集めました。これで1つの3枚ブロックになる？",
-      "subtext": "字牌のブロック条件を思い出そう！",
+      "question": "盤面の3枚の牌で、1組の3枚ブロック（面子）として完成しているでしょうか？",
+      "subtext": "並んでいる3枚の牌をよく見て判定しよう！",
       "boardTiles": [
         "5z",
         "6z",
@@ -1435,11 +1435,11 @@ const STAGE_QUESTIONS = {
       "caption": "白・發・中を1枚ずつ並べた形",
       "options": [
         {
-          "text": "❌ ならない（字牌は同じ牌を3枚揃える）",
+          "text": "❌ 完成していない",
           "correct": true
         },
         {
-          "text": "⭕ なる（三元牌3種セットで1ブロック）",
+          "text": "⭕ 完成している",
           "correct": false
         }
       ],
@@ -3554,8 +3554,8 @@ const STAGE_QUESTIONS = {
       "type": "text-choice",
       "callSound": "pon",
       "modeLabel": "風牌のひっかけ！",
-      "question": "今は「東場」で、あなたの席は「南家」です。他家から出た『西』をポンして3枚にしました。これだけで役になる？",
-      "subtext": "場風と自風を確認して判定しましょう！",
+      "question": "今は「東場」で、あなたの席は「南家」です。盤面の牌をポンして3枚にしました。これだけで役になる？",
+      "subtext": "盤面の風牌と、場風・自風を見比べて判定しましょう！",
       "boardTiles": [
         "3z",
         "3z",
@@ -3564,11 +3564,11 @@ const STAGE_QUESTIONS = {
       "caption": "東場・南家のときに集めた「西」3枚",
       "options": [
         {
-          "text": "❌ 役にならない（オタ風のため0飜）",
+          "text": "❌ 役にならない（0飜）",
           "correct": true
         },
         {
-          "text": "⭕ 役になる（字牌はどれでも1飜）",
+          "text": "⭕ 役になる（1飜）",
           "correct": false
         }
       ],
@@ -4121,8 +4121,8 @@ const STAGE_QUESTIONS = {
       "type": "text-choice",
       "callSound": "pon",
       "modeLabel": "自分の風（自風）",
-      "question": "今は「東場」で、あなたの席は「東家（親）」です。『東』をポンして3枚集めたら何飜つく？",
-      "subtext": "場風と自風が同じ風牌のときのルールを思い出そう！",
+      "question": "今は「東場」で、あなたの席は「東家（親）」です。盤面の牌をポンして3枚集めたら何飜つく？",
+      "subtext": "盤面の風牌と、場風・自風を見比べて判定しましょう！",
       "boardTiles": [
         "1z",
         "1z",
@@ -4131,11 +4131,11 @@ const STAGE_QUESTIONS = {
       "caption": "東場・東家で揃えた「東」3枚",
       "options": [
         {
-          "text": "⭕ 2飜つく（場風＋自風が重なる）",
+          "text": "⭕ 2飜つく",
           "correct": true
         },
         {
-          "text": "❌ 1飜だけ（重なっても1飜扱い）",
+          "text": "❌ 1飜だけつく",
           "correct": false
         }
       ],
@@ -4612,8 +4612,8 @@ const STAGE_QUESTIONS = {
       "type": "text-choice",
       "callSound": "ron",
       "modeLabel": "超入門・最終問題！",
-      "question": "盤面のように「2〜8の数牌」だけでまとまりそうな手牌です。早くアガるためにポン・チーして進めても役は残る？",
-      "subtext": "鳴いたときの役のルールを思い出そう！",
+      "question": "盤面の手牌（すべてこの範囲の数牌）から、ポン・チーして進めても役は残る？",
+      "subtext": "盤面の牌の数字をよく見て判断しましょう。",
       "boardTiles": [
         "2s",
         "3s",
@@ -4625,11 +4625,11 @@ const STAGE_QUESTIONS = {
       "caption": "赤ドラ入りのタンヤオ手牌",
       "options": [
         {
-          "text": "⭕ 鳴いてOK（タンヤオは鳴いても成立する）",
+          "text": "⭕ 鳴いてOK（役が残る）",
           "correct": true
         },
         {
-          "text": "❌ 鳴いちゃダメ（タンヤオは鳴くと消える）",
+          "text": "❌ 鳴いちゃダメ（役が消える）",
           "correct": false
         }
       ],
@@ -4761,8 +4761,8 @@ const STAGE_QUESTIONS = {
       "type": "text-choice",
       "callSound": "ron",
       "modeLabel": "鳴き判断実践！",
-      "question": "盤面のように端牌（1・2・3萬や9索）があり、役牌が1枚もない手牌です。ここから安易に「チー」するとどうなる？",
-      "subtext": "鳴く前に確認すべき一番大切なポイントです！",
+      "question": "盤面のような手牌（役牌なし）から、安易に「チー」して進めるとどうなる？",
+      "subtext": "盤面の牌をよく見て、鳴いたあとに役が残るか考えましょう。",
       "boardTiles": [
         "1m",
         "2m",
@@ -4773,11 +4773,11 @@ const STAGE_QUESTIONS = {
       "caption": "端牌があり、役牌がない手牌",
       "options": [
         {
-          "text": "❌ 『役なし』になり14枚揃ってもアガれなくなる",
+          "text": "❌ 『役なし』になりアガれなくなる",
           "correct": true
         },
         {
-          "text": "⭕ 14枚揃えば役がなくてもアガれる",
+          "text": "⭕ 14枚揃えば問題なくアガれる",
           "correct": false
         }
       ],

@@ -108,7 +108,7 @@ const QUIZ_DATA = {
     },
     {
       id: "y-6",
-      question: "この手牌でロンアガリしました。成立している2飜役はどれでしょう？",
+      question: "この手牌でロンアガリしました。成立している役はどれでしょう？",
       subtext: "手牌・アガリ牌・下段の鳴き牌を見て判断しましょう。",
       hand: ["8s"],
       melds: [["2m", "2m", "2m"], ["4p", "4p", "4p"], ["7s", "7s", "7s"], ["7z", "7z", "7z"]],
@@ -125,7 +125,7 @@ const QUIZ_DATA = {
     },
     {
       id: "y-7",
-      question: "この手牌でロンアガリしました。成立している2飜役はどれでしょう？",
+      question: "この手牌でロンアガリしました。成立している役はどれでしょう？",
       subtext: "手牌13枚と右のアガリ牌を見て判断しましょう。",
       hand: ["1m", "2m", "3m", "1p", "2p", "3p", "1s", "2s", "3s", "6s", "7s", "8s", "9m"],
       winTile: "9m",
@@ -153,8 +153,8 @@ const QUIZ_DATA = {
       targetTile: "8s",
       isNakiCheck: true,
       options: [
-        { text: "⭕ 鳴いてOK（鳴いても役がある）", correct: true },
-        { text: "❌ 鳴いちゃダメ（役なしになる）", correct: false }
+        { text: "⭕ 鳴いてOK", correct: true },
+        { text: "❌ 鳴いちゃダメ", correct: false }
       ],
       hint: "出た牌（8索）をチーして浮いている8筒を捨てても、手牌に1・9・字牌が1枚もありません！すべて2〜8の数牌だけなので「タンヤオ（1飜）」がつきます。",
       explanation: "正解！1・9・字牌が1枚もなければ、鳴いてもタンヤオ（喰いタン）で堂々アガれます！"
@@ -167,8 +167,8 @@ const QUIZ_DATA = {
       targetTile: "4p",
       isNakiCheck: true,
       options: [
-        { text: "❌ 鳴いちゃダメ（役なしになる）", correct: true },
-        { text: "⭕ 鳴いてOK（鳴いても役がある）", correct: false }
+        { text: "❌ 鳴いちゃダメ", correct: true },
+        { text: "⭕ 鳴いてOK", correct: false }
       ],
       hint: "手牌に一萬や9索が入っているためタンヤオになりません。役牌もなく、4筒をポンするとリーチもできなくなるため役なしになります！",
       explanation: "正解！1・9が入っているのでタンヤオにならず、ポンすると役がなくなってアガれません。鳴かずに門前でリーチを目指しましょう！"
@@ -181,8 +181,8 @@ const QUIZ_DATA = {
       targetTile: "3p",
       isNakiCheck: true,
       options: [
-        { text: "❌ 鳴いちゃダメ（役なしになる）", correct: true },
-        { text: "⭕ 鳴いてOK（鳴いても役がある）", correct: false }
+        { text: "❌ 鳴いちゃダメ", correct: true },
+        { text: "⭕ 鳴いてOK", correct: false }
       ],
       hint: "平和（ピンフ）は「門前限定（1回も鳴かない）」が絶対条件！しかも9索があるためタンヤオにもならず、3筒をチーすると役なしになります。",
       explanation: "正解！平和（ピンフ）は鳴いた瞬間に消滅します。端牌（9索）もあってタンヤオにもならないため、ここは鳴かずに門前で進めましょう！"
@@ -195,8 +195,8 @@ const QUIZ_DATA = {
       targetTile: "6z",
       isNakiCheck: true,
       options: [
-        { text: "⭕ 鳴いてOK（鳴いても役がある）", correct: true },
-        { text: "❌ 鳴いちゃダメ（役なしになる）", correct: false }
+        { text: "⭕ 鳴いてOK", correct: true },
+        { text: "❌ 鳴いちゃダメ", correct: false }
       ],
       hint: "出た牌は三元牌の「發（ハツ）」で、手牌にも發が2枚あります！白・發・中はポンして3枚にすれば、1・9牌が混ざっていても「役牌（1飜）」確定です！",
       explanation: "正解！發をポンすればそれだけで「役牌（1飜）」が確定するため、1・9牌が混ざっていても安心してアガれます！"
@@ -211,8 +211,8 @@ const QUIZ_DATA = {
       targetTile: "3z",
       isNakiCheck: true,
       options: [
-        { text: "❌ 鳴いちゃダメ（役なしになる）", correct: true },
-        { text: "⭕ 鳴いてOK（鳴いても役がある）", correct: false }
+        { text: "❌ 鳴いちゃダメ", correct: true },
+        { text: "⭕ 鳴いてOK", correct: false }
       ],
       hint: "いまは「東場（場風は東）」で、あなたは「南家（自風は南）」です。出た牌の「西」はどちらでもない『オタ風』なので、ポンしても役になりません！",
       explanation: "正解！場風でも自風でもない風牌（オタ風）は、ポンしても役になりません（1筒や9索もあるのでタンヤオにもなりません）。スルーが正解です！"
@@ -241,7 +241,7 @@ const QUIZ_DATA = {
     },
     {
       id: "p2-2",
-      question: "鳴いてこの手牌でアガリました。合計で何飜（ハン）でしょう？",
+      question: "この手牌でアガリました。合計で何飜（ハン）でしょう？",
       subtext: "状況バッジ・ドラ表示牌・手牌・鳴き牌を見て、合計何飜か数えましょう。",
       hand: ["2m", "3m", "4m", "4s", "0s", "6s", "2p", "3p", "4p", "8p"],
       melds: [["7z", "7z", "7z"]],
@@ -280,7 +280,7 @@ const QUIZ_DATA = {
   phase3: [
     {
       id: "p3-1",
-      question: "【子】鳴いてこの手牌でロンアガリ！何点でしょう？",
+      question: "【子】この手牌でロンアガリ！何点でしょう？",
       subtext: "手牌・鳴き牌・ドラ表示牌から役と飜数を数えて、点数を答えましょう。",
       hand: ["2m", "3m", "4m", "6s", "7s", "8s", "2p", "3p", "4p", "5s"],
       melds: [["3s", "4s", "5s"]],
@@ -297,7 +297,7 @@ const QUIZ_DATA = {
     },
     {
       id: "p3-2",
-      question: "【子】鳴いてこの手牌でロンアガリ！何点でしょう？",
+      question: "【子】この手牌でロンアガリ！何点でしょう？",
       subtext: "手牌・鳴き牌・ドラ表示牌から役と飜数を数えて、点数を答えましょう。",
       hand: ["2m", "3m", "4m", "4s", "0s", "6s", "2p", "3p", "4p", "8p"],
       melds: [["7z", "7z", "7z"]],
@@ -314,7 +314,7 @@ const QUIZ_DATA = {
     },
     {
       id: "p3-3",
-      question: "【子】鳴いてこの手牌でロンアガリ！何点でしょう？",
+      question: "【子】この手牌でロンアガリ！何点でしょう？",
       subtext: "手牌・鳴き牌・ドラ表示牌から役と飜数を数えて、点数を答えましょう。",
       hand: ["2m", "3m", "4m", "4s", "5s", "6s", "2p", "3p", "4p", "8p"],
       melds: [["7z", "7z", "7z"]],
@@ -385,7 +385,7 @@ const QUIZ_DATA = {
   phase4: [
     {
       id: "p4-1",
-      question: "【親】鳴いてこの手牌でロンアガリ！何点でしょう？",
+      question: "【親】この手牌でロンアガリ！何点でしょう？",
       subtext: "手牌・鳴き牌・ドラ表示牌から役と飜数を数えて、親の点数を答えましょう。",
       hand: ["2m", "3m", "4m", "6s", "7s", "8s", "2p", "3p", "4p", "5s"],
       melds: [["3s", "4s", "5s"]],
